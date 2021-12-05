@@ -24,11 +24,14 @@ class InnerContents extends StatelessWidget {
         title: const Text('費目の追加'),
       ),
       body: Container(
-        margin: EdgeInsets.all(MediaQuery.of(context).size.width * 0.05),
+        padding: EdgeInsets.only(
+          top: MediaQuery.of(context).size.width * 0.05,
+          right: MediaQuery.of(context).size.width * 0.05,
+          bottom: MediaQuery.of(context).size.width * 0.05,
+          left: MediaQuery.of(context).size.width * 0.01,
+        ),
         child: LayoutBuilder(builder: (context, constraints) {
-          print(constraints.maxWidth);
-          print(constraints.maxHeight);
-          final iconWidth = constraints.maxWidth * 0.15;
+          final iconWidth = constraints.maxWidth * 0.2;
 
           return Column(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -95,7 +98,7 @@ class InnerContents extends StatelessWidget {
                     child: Column(
                       children: [
                         Icon(Icons.note_alt, color: Colors.grey),
-                        AutoSizeText('内容'),
+                        AutoSizeText('内容', maxLines: 1),
                       ],
                     ),
                   ),
@@ -110,7 +113,7 @@ class InnerContents extends StatelessWidget {
                     child: Column(
                       children: [
                         Icon(Icons.person, color: Colors.grey),
-                        AutoSizeText('払う人'),
+                        AutoSizeText('払う人', maxLines: 1),
                       ],
                     ),
                   ),
