@@ -23,126 +23,175 @@ class InnerContents extends StatelessWidget {
       appBar: AppBar(
         title: const Text('費目の追加'),
       ),
-      body: Container(
-        padding: EdgeInsets.only(
-          top: MediaQuery.of(context).size.width * 0.05,
-          right: MediaQuery.of(context).size.width * 0.05,
-          bottom: MediaQuery.of(context).size.width * 0.05,
-          left: MediaQuery.of(context).size.width * 0.01,
-        ),
-        child: LayoutBuilder(builder: (context, constraints) {
-          final iconWidth = constraints.maxWidth * 0.2;
+      body: Column(
+        children: [
+          Expanded(
+            flex: 8,
+            child: Container(
+              padding: EdgeInsets.only(
+                top: MediaQuery.of(context).size.width * 0.05,
+                right: MediaQuery.of(context).size.width * 0.05,
+                bottom: MediaQuery.of(context).size.width * 0.05,
+                left: MediaQuery.of(context).size.width * 0.01,
+              ),
+              child: LayoutBuilder(
+                builder: (context, constraints) {
+                  final iconWidth = constraints.maxWidth * 0.2;
+                  return Column(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _Price(iconWidth: iconWidth),
+                      _Category(iconWidth: iconWidth),
+                      _Date(iconWidth: iconWidth),
+                      _Content(iconWidth: iconWidth),
+                    ],
+                  );
+                },
+              ),
+            ),
+          ),
+          Expanded(
+            flex: 2,
+            child: _RecordButton(),
+          ),
+        ],
+      ),
+    );
+  }
+}
 
-          return Column(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
+class _Price extends StatelessWidget {
+  const _Price({required this.iconWidth, Key? key}) : super(key: key);
+
+  final double iconWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: iconWidth,
+          child: Column(
             children: [
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: iconWidth,
-                    child: Column(
-                      children: [
-                        Icon(Icons.price_change, color: Colors.grey),
-                        AutoSizeText(
-                          '金額',
-                          maxLines: 1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text('金額を入力するところ'),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: iconWidth,
-                    child: Column(
-                      children: [
-                        Icon(Icons.dining, color: Colors.grey),
-                        AutoSizeText(
-                          'カテゴリ',
-                          maxLines: 1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text('食費'),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: iconWidth,
-                    child: Column(
-                      children: [
-                        Icon(Icons.calendar_today, color: Colors.grey),
-                        AutoSizeText(
-                          '日付',
-                          maxLines: 1,
-                        ),
-                      ],
-                    ),
-                  ),
-                  Text('現在の日付'),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: iconWidth,
-                    child: Column(
-                      children: [
-                        Icon(Icons.note_alt, color: Colors.grey),
-                        AutoSizeText('内容', maxLines: 1),
-                      ],
-                    ),
-                  ),
-                  Text('内容を記入'),
-                ],
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Container(
-                    width: iconWidth,
-                    child: Column(
-                      children: [
-                        Icon(Icons.person, color: Colors.grey),
-                        AutoSizeText('払う人', maxLines: 1),
-                      ],
-                    ),
-                  ),
-                  Text('払う人の表示'),
-                ],
-              ),
-              Center(
-                child: ElevatedButton.icon(
-                  style: ElevatedButton.styleFrom(
-                    elevation: 6.0,
-                    padding: EdgeInsets.only(
-                      top: 10,
-                      right: 20,
-                      bottom: 10,
-                      left: 20,
-                    ),
-                    shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(30.0)),
-                  ),
-                  icon: const Icon(Icons.edit),
-                  onPressed: () {
-                    // 計上する
-                  },
-                  label: const Text('計上する'),
-                ),
+              Icon(Icons.price_change, color: Colors.grey),
+              AutoSizeText(
+                '金額',
+                maxLines: 1,
               ),
             ],
-          );
-        }),
+          ),
+        ),
+        Text('金額を入力するところ'),
+      ],
+    );
+  }
+}
+
+class _Category extends StatelessWidget {
+  const _Category({required this.iconWidth, Key? key}) : super(key: key);
+
+  final double iconWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: iconWidth,
+          child: Column(
+            children: [
+              Icon(Icons.dining, color: Colors.grey),
+              AutoSizeText(
+                'カテゴリ',
+                maxLines: 1,
+              ),
+            ],
+          ),
+        ),
+        Text('食費'),
+      ],
+    );
+  }
+}
+
+class _Date extends StatelessWidget {
+  const _Date({required this.iconWidth, Key? key}) : super(key: key);
+
+  final double iconWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: iconWidth,
+          child: Column(
+            children: [
+              Icon(Icons.calendar_today, color: Colors.grey),
+              AutoSizeText(
+                '日付',
+                maxLines: 1,
+              ),
+            ],
+          ),
+        ),
+        Text('現在の日付'),
+      ],
+    );
+  }
+}
+
+class _Content extends StatelessWidget {
+  const _Content({required this.iconWidth, Key? key}) : super(key: key);
+
+  final double iconWidth;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+      children: [
+        Container(
+          width: iconWidth,
+          child: Column(
+            children: [
+              Icon(Icons.note_alt, color: Colors.grey),
+              AutoSizeText('内容', maxLines: 1),
+            ],
+          ),
+        ),
+        Text('内容を記入'),
+      ],
+    );
+  }
+}
+
+class _RecordButton extends StatelessWidget {
+  const _RecordButton({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Center(
+      child: ElevatedButton.icon(
+        style: ElevatedButton.styleFrom(
+          elevation: 6.0,
+          padding: EdgeInsets.only(
+            top: 10,
+            right: 20,
+            bottom: 10,
+            left: 20,
+          ),
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+        ),
+        icon: const Icon(Icons.edit),
+        onPressed: () {
+          // 計上する
+        },
+        label: const Text('計上する'),
       ),
     );
   }
