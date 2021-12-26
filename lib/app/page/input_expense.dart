@@ -1,8 +1,6 @@
-import 'package:copan_flutter/app/page/drawer.dart';
-import 'package:flutter/material.dart';
 import 'package:auto_size_text/auto_size_text.dart';
+import 'package:flutter/material.dart';
 
-import '../../main.dart';
 import 'common.dart';
 
 class InputExpense extends StatelessWidget {
@@ -10,7 +8,7 @@ class InputExpense extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return CustomSafeArea(content: InnerContents());
+    return const CustomSafeArea(content: InnerContents());
   }
 }
 
@@ -50,7 +48,7 @@ class InnerContents extends StatelessWidget {
               ),
             ),
           ),
-          Expanded(
+          const Expanded(
             flex: 2,
             child: _RecordButton(),
           ),
@@ -70,10 +68,10 @@ class _Price extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
+        SizedBox(
           width: iconWidth,
           child: Column(
-            children: [
+            children: const [
               Icon(Icons.price_change, color: Colors.grey),
               AutoSizeText(
                 '金額',
@@ -82,7 +80,7 @@ class _Price extends StatelessWidget {
             ],
           ),
         ),
-        Text('金額を入力するところ'),
+        const Text('金額を入力するところ'),
       ],
     );
   }
@@ -98,10 +96,10 @@ class _Category extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
+        SizedBox(
           width: iconWidth,
           child: Column(
-            children: [
+            children: const [
               Icon(Icons.dining, color: Colors.grey),
               AutoSizeText(
                 'カテゴリ',
@@ -110,7 +108,7 @@ class _Category extends StatelessWidget {
             ],
           ),
         ),
-        Text('食費'),
+        const Text('食費'),
       ],
     );
   }
@@ -126,10 +124,10 @@ class _Date extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
+        SizedBox(
           width: iconWidth,
           child: Column(
-            children: [
+            children: const [
               Icon(Icons.calendar_today, color: Colors.grey),
               AutoSizeText(
                 '日付',
@@ -138,7 +136,7 @@ class _Date extends StatelessWidget {
             ],
           ),
         ),
-        Text('現在の日付'),
+        const Text('現在の日付'),
       ],
     );
   }
@@ -154,16 +152,16 @@ class _Content extends StatelessWidget {
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        Container(
+        SizedBox(
           width: iconWidth,
           child: Column(
-            children: [
+            children: const [
               Icon(Icons.note_alt, color: Colors.grey),
               AutoSizeText('内容', maxLines: 1),
             ],
           ),
         ),
-        Text('内容を記入'),
+        const Text('内容を記入'),
       ],
     );
   }
@@ -178,7 +176,7 @@ class _RecordButton extends StatelessWidget {
       child: ElevatedButton.icon(
         style: ElevatedButton.styleFrom(
           elevation: 6.0,
-          padding: EdgeInsets.only(
+          padding: const EdgeInsets.only(
             top: 10,
             right: 20,
             bottom: 10,
