@@ -24,8 +24,8 @@ class MyApp extends StatelessWidget {
         ),
         home: const Expenses(),
         routes: <String, WidgetBuilder>{
-          '/home': (BuildContext context) => Expenses(),
-          '/inputExpense': (BuildContext context) => InputExpense(),
+          '/home': (BuildContext context) => const Expenses(),
+          '/inputExpense': (BuildContext context) => const InputExpense(),
         });
   }
 }
