@@ -1,4 +1,3 @@
-import 'package:auto_size_text/auto_size_text.dart';
 import 'package:flutter/material.dart';
 
 import 'common.dart';
@@ -25,27 +24,14 @@ class InnerContents extends StatelessWidget {
         children: [
           Expanded(
             flex: 8,
-            child: Container(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).size.width * 0.05,
-                right: MediaQuery.of(context).size.width * 0.05,
-                bottom: MediaQuery.of(context).size.width * 0.05,
-                left: MediaQuery.of(context).size.width * 0.01,
-              ),
-              child: LayoutBuilder(
-                builder: (context, constraints) {
-                  final iconWidth = constraints.maxWidth * 0.2;
-                  return Column(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      _Price(iconWidth: iconWidth),
-                      _Category(iconWidth: iconWidth),
-                      _Date(iconWidth: iconWidth),
-                      _Content(iconWidth: iconWidth),
-                    ],
-                  );
-                },
-              ),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: const [
+                _Price(),
+                _Category(),
+                _Date(),
+                _Content(),
+              ],
             ),
           ),
           const Expanded(
@@ -59,110 +45,87 @@ class InnerContents extends StatelessWidget {
 }
 
 class _Price extends StatelessWidget {
-  const _Price({required this.iconWidth, Key? key}) : super(key: key);
-
-  final double iconWidth;
+  const _Price({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: iconWidth,
-          child: Column(
-            children: const [
-              Icon(Icons.price_change, color: Colors.grey),
-              AutoSizeText(
-                '金額',
-                maxLines: 1,
-              ),
-            ],
-          ),
+    return const ListTile(
+      leading: Icon(Icons.price_change, color: Colors.grey),
+      title: TextField(
+        decoration: InputDecoration(
+          labelText: '金額',
         ),
-        const Text('金額を入力するところ'),
-      ],
+        textAlign: TextAlign.right,
+      ),
     );
   }
 }
 
 class _Category extends StatelessWidget {
-  const _Category({required this.iconWidth, Key? key}) : super(key: key);
-
-  final double iconWidth;
+  const _Category({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: iconWidth,
-          child: Column(
-            children: const [
-              Icon(Icons.dining, color: Colors.grey),
-              AutoSizeText(
-                'カテゴリ',
-                maxLines: 1,
-              ),
-            ],
-          ),
+    return const ListTile(
+      leading: Icon(Icons.dining, color: Colors.grey),
+      title: TextField(
+        decoration: InputDecoration(
+          labelText: 'カテゴリ',
         ),
-        const Text('食費'),
-      ],
+        textAlign: TextAlign.left,
+      ),
     );
   }
 }
 
-class _Date extends StatelessWidget {
-  const _Date({required this.iconWidth, Key? key}) : super(key: key);
-
-  final double iconWidth;
+class _Date extends StatefulWidget {
+  const _Date({Key? key}) : super(key: key);
 
   @override
+  State<_Date> createState() => _DateState();
+}
+
+class _DateState extends State<_Date> {
+  var _date = DateTime.now();
+  @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: iconWidth,
-          child: Column(
-            children: const [
-              Icon(Icons.calendar_today, color: Colors.grey),
-              AutoSizeText(
-                '日付',
-                maxLines: 1,
-              ),
-            ],
-          ),
-        ),
-        const Text('現在の日付'),
-      ],
+    return ListTile(
+      leading: const Icon(Icons.calendar_today, color: Colors.grey),
+      title: Text("${_date.year}年${_date.month}月${_date.day}日"),
+      onTap: () {
+        _selectDate(context);
+      },
     );
+  }
+
+  Future _selectDate(BuildContext context) async {
+    final picked = await showDatePicker(
+        context: context,
+        initialDate: _date,
+        firstDate: DateTime(2022),
+        lastDate: DateTime(2032),
+        helpText: '購入した日付を選択してください',
+        cancelText: 'キャンセル',
+        errorFormatText: 'その日付は指定できません');
+    if (picked != null) {
+      setState(() => _date = picked);
+    }
   }
 }
 
 class _Content extends StatelessWidget {
-  const _Content({required this.iconWidth, Key? key}) : super(key: key);
-
-  final double iconWidth;
+  const _Content({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        SizedBox(
-          width: iconWidth,
-          child: Column(
-            children: const [
-              Icon(Icons.note_alt, color: Colors.grey),
-              AutoSizeText('内容', maxLines: 1),
-            ],
-          ),
+    return const ListTile(
+      leading: Icon(Icons.note_alt, color: Colors.grey),
+      title: TextField(
+        decoration: InputDecoration(
+          labelText: '内容',
         ),
-        const Text('内容を記入'),
-      ],
+        textAlign: TextAlign.left,
+      ),
     );
   }
 }
