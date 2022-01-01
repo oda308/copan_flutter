@@ -1,18 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'common.dart';
-
 class InputExpense extends StatelessWidget {
   const InputExpense({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return const CustomSafeArea(content: InnerContents());
-  }
-}
-
-class InnerContents extends StatelessWidget {
-  const InnerContents({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,25 +9,27 @@ class InnerContents extends StatelessWidget {
       appBar: AppBar(
         title: const Text('費目の追加'),
       ),
-      body: Column(
-        children: [
-          Expanded(
-            flex: 8,
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceAround,
-              children: const [
-                _Price(),
-                _Category(),
-                _Date(),
-                _Content(),
-              ],
+      body: SafeArea(
+        child: Column(
+          children: [
+            Expanded(
+              flex: 8,
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                children: const [
+                  _Price(),
+                  _Category(),
+                  _Date(),
+                  _Content(),
+                ],
+              ),
             ),
-          ),
-          const Expanded(
-            flex: 2,
-            child: _RecordButton(),
-          ),
-        ],
+            const Expanded(
+              flex: 2,
+              child: _RecordButton(),
+            ),
+          ],
+        ),
       ),
     );
   }

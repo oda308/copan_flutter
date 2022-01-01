@@ -5,16 +5,39 @@ class AppDrawer extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    const List<String> drawerItem = ['家計簿の共有', '支払割合', 'ログアウト'];
-
     return Drawer(
-      child: ListView.builder(
-          itemCount: 3,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              title: Text(drawerItem[index]),
-            );
-          }),
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Container(
+            width: double.infinity,
+            color: Colors.green,
+            //child: SafeArea(
+            //  top: false,
+            //  bottom: false,
+            child: const DrawerHeader(
+              margin: EdgeInsets.only(bottom: 0),
+              child: Text(
+                '家計簿アプリCopan',
+                style: TextStyle(color: Colors.white),
+              ),
+            ),
+            //   ),
+          ),
+          ListTile(
+            title: const Text('家計簿の共有'),
+            onTap: () {},
+          ),
+          ListTile(
+            title: const Text('支払割合'),
+            onTap: () {},
+          ),
+          ListTile(
+            title: const Text('ログアウト'),
+            onTap: () {},
+          ),
+        ],
+      ),
     );
   }
 }

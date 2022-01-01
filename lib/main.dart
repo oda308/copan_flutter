@@ -5,7 +5,7 @@ import 'app/page/input_expense.dart';
 import 'app/page/expenses.dart';
 
 final index = DateIndex();
-const appTitle = '家計簿Copan';
+const appTitle = '家計簿アプリCopan';
 
 void main() {
   runApp(const MyApp());

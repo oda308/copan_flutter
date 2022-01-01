@@ -1,4 +1,3 @@
-import 'package:copan_flutter/app/page/common.dart';
 import 'package:copan_flutter/app/page/drawer.dart';
 import 'package:flutter/material.dart';
 
@@ -9,21 +8,14 @@ class Expenses extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const CustomSafeArea(content: _InnerContents());
-  }
-}
-
-class _InnerContents extends StatelessWidget {
-  const _InnerContents({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: const Text(appTitle),
       ),
       drawer: const AppDrawer(),
-      body: const MonthSelector(),
+      body: const SafeArea(
+        child: MonthSelector(),
+      ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).pushNamed('/inputExpense'),
         child: const Icon(Icons.add),
