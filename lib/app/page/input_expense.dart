@@ -15,7 +15,7 @@ class InputExpense extends StatelessWidget {
             Expanded(
               flex: 8,
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: const [
                   _Price(),
                   _Category(),
@@ -40,13 +40,24 @@ class _Price extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ListTile(
-      leading: Icon(Icons.price_change, color: Colors.grey),
-      title: TextField(
-        decoration: InputDecoration(
-          labelText: '金額',
+    return const Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: 20,
+      ),
+      child: ListTile(
+        leading: SizedBox(
+          height: double.infinity,
+          child: Icon(
+            Icons.price_change,
+            color: Colors.grey,
+          ),
         ),
-        textAlign: TextAlign.right,
+        title: TextField(
+          decoration: InputDecoration(
+            labelText: '金額',
+          ),
+          textAlign: TextAlign.right,
+        ),
       ),
     );
   }
@@ -57,13 +68,21 @@ class _Category extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ListTile(
-      leading: Icon(Icons.dining, color: Colors.grey),
-      title: TextField(
-        decoration: InputDecoration(
-          labelText: 'カテゴリ',
+    return const Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: 20,
+      ),
+      child: ListTile(
+        leading: SizedBox(
+          height: double.infinity,
+          child: Icon(Icons.dining, color: Colors.grey),
         ),
-        textAlign: TextAlign.left,
+        title: TextField(
+          decoration: InputDecoration(
+            labelText: 'カテゴリ',
+          ),
+          textAlign: TextAlign.left,
+        ),
       ),
     );
   }
@@ -80,12 +99,20 @@ class _DateState extends State<_Date> {
   var _date = DateTime.now();
   @override
   Widget build(BuildContext context) {
-    return ListTile(
-      leading: const Icon(Icons.calendar_today, color: Colors.grey),
-      title: Text("${_date.year}年${_date.month}月${_date.day}日"),
-      onTap: () {
-        _selectDate(context);
-      },
+    return Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: 20,
+      ),
+      child: ListTile(
+        leading: SizedBox(
+          height: double.infinity,
+          child: Icon(Icons.calendar_today, color: Colors.grey),
+        ),
+        title: Text("${_date.year}年${_date.month}月${_date.day}日"),
+        onTap: () {
+          _selectDate(context);
+        },
+      ),
     );
   }
 
@@ -109,13 +136,21 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const ListTile(
-      leading: Icon(Icons.note_alt, color: Colors.grey),
-      title: TextField(
-        decoration: InputDecoration(
-          labelText: '内容',
+    return const Padding(
+      padding: EdgeInsets.symmetric(
+        vertical: 20,
+      ),
+      child: ListTile(
+        leading: SizedBox(
+          height: double.infinity,
+          child: Icon(Icons.note_alt, color: Colors.grey),
         ),
-        textAlign: TextAlign.left,
+        title: TextField(
+          decoration: InputDecoration(
+            labelText: '内容',
+          ),
+          textAlign: TextAlign.left,
+        ),
       ),
     );
   }
