@@ -1,3 +1,5 @@
+import 'package:copan_flutter/app/utility/expense_category.dart';
+import 'package:copan_flutter/main.dart';
 import 'package:flutter/material.dart';
 
 class InputExpense extends StatelessWidget {
@@ -68,21 +70,31 @@ class _Category extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(
+    final expenseCategoryList = ExpenseCategoryList().get();
+
+    final expenseCategoryMap = {
+      for (var expenseCategory in expenseCategoryList)
+        '${expenseCategory.id}': expenseCategory,
+    };
+
+    final selectedCategory = expenseCategoryMap['$selectedCategoryId'];
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(
         vertical: 20,
       ),
       child: ListTile(
         leading: SizedBox(
           height: double.infinity,
-          child: Icon(Icons.dining, color: Colors.grey),
+          child: Icon(selectedCategory.iconData, color: Colors.grey),
         ),
-        title: TextField(
-          decoration: InputDecoration(
-            labelText: 'カテゴリ',
-          ),
+        title: Text(
+          selectedCategory.name,
           textAlign: TextAlign.left,
         ),
+        onTap: () {
+          Navigator.pushNamed(context, '/selectCategory');
+        },
       ),
     );
   }
@@ -100,11 +112,11 @@ class _DateState extends State<_Date> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-      padding: EdgeInsets.symmetric(
+      padding: const EdgeInsets.symmetric(
         vertical: 20,
       ),
       child: ListTile(
-        leading: SizedBox(
+        leading: const SizedBox(
           height: double.infinity,
           child: Icon(Icons.calendar_today, color: Colors.grey),
         ),

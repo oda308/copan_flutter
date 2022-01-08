@@ -3,11 +3,16 @@ import 'package:flutter/material.dart';
 import 'app/page/date.dart';
 import 'app/page/input_expense.dart';
 import 'app/page/expenses.dart';
+import 'app/page/select_category.dart';
+import 'app/utility/expense_category.dart';
 
 final index = DateIndex();
 const appTitle = '家計簿アプリCopan';
+// TODO(odaki): 仮で何のカテゴリを選択しているかの状態を持つ変数を定義しておく
+var selectedCategoryId = 1;
 
 void main() {
+  initCategoryExpense(); // 費目カテゴリの取得
   runApp(const MyApp());
 }
 
@@ -26,6 +31,7 @@ class MyApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => const Expenses(),
           '/inputExpense': (BuildContext context) => const InputExpense(),
+          '/selectCategory': (BuildContext context) => const SelectCategory(),
         });
   }
 }
