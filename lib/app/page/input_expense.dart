@@ -184,7 +184,7 @@ class _RecordButton extends StatelessWidget {
           ),
           icon: const Icon(Icons.edit),
           onPressed: () {
-            // 計上する
+            Navigator.of(context).pop();
           },
           label: const Text('計上する'),
         ),
