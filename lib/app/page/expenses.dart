@@ -13,7 +13,7 @@ class Expenses extends StatelessWidget {
     return Scaffold(
       backgroundColor: const Color(0xffECECEC),
       appBar: AppBar(
-        title: const Text(appTitle),
+        title: const Text('今月の支出'),
       ),
       drawer: const AppDrawer(),
       body: SafeArea(

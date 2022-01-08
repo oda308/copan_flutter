@@ -8,11 +8,11 @@ import 'app/utility/expense_category.dart';
 
 final index = DateIndex();
 const appTitle = '家計簿アプリCopan';
-// TODO(odaki): 仮で何のカテゴリを選択しているかの状態を持つ変数を定義しておく
+// TODO(odaki): 仮で何の費目を選択しているかの状態を持つ変数を定義しておく
 var selectedCategoryId = 1;
 
 void main() {
-  initCategoryExpense(); // 費目カテゴリの取得
+  initCategoryExpense(); // 費目の取得
   runApp(const MyApp());
 }
 

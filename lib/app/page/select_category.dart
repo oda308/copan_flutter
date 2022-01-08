@@ -11,7 +11,7 @@ class SelectCategory extends StatelessWidget {
     final itemCount = expenseCategoryList.length;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('カテゴリの選択'),
+        title: const Text('費目の選択'),
       ),
       body: SafeArea(
         bottom: false,

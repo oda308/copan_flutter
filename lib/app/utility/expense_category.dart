@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ExpenseCategory {
   int id; // ユニークID(インクリメントで管理)
-  String name; // カテゴリ名
+  String name; // 費目名
   IconData iconData; // アイコン
 
   ExpenseCategory(
@@ -24,7 +24,7 @@ class ExpenseCategoryList {
 }
 
 void initCategoryExpense() {
-  // アプリ内で使用する費目カテゴリを初期化する
+  // アプリ内で使用する費目を初期化する
   final expenseCategoryList = ExpenseCategoryList();
 
   expenseCategoryList.set(ExpenseCategory(

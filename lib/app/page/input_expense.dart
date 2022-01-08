@@ -9,7 +9,7 @@ class InputExpense extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('費目の追加'),
+        title: const Text('支出の入力'),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
