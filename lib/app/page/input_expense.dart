@@ -12,25 +12,17 @@ class InputExpense extends StatelessWidget {
         title: const Text('費目の追加'),
       ),
       body: SafeArea(
-        child: Column(
-          children: [
-            Expanded(
-              flex: 8,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
-                  _Price(),
-                  _Category(),
-                  _Date(),
-                  _Content(),
-                ],
-              ),
-            ),
-            const Expanded(
-              flex: 2,
-              child: _RecordButton(),
-            ),
-          ],
+        child: SingleChildScrollView(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: const [
+              _Price(),
+              _Category(),
+              _Date(),
+              _Content(),
+              _RecordButton(),
+            ],
+          ),
         ),
       ),
     );
@@ -173,24 +165,29 @@ class _RecordButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Center(
-      child: ElevatedButton.icon(
-        style: ElevatedButton.styleFrom(
-          elevation: 6.0,
-          padding: const EdgeInsets.only(
-            top: 10,
-            right: 20,
-            bottom: 10,
-            left: 20,
+    return Padding(
+      padding: const EdgeInsets.symmetric(
+        vertical: 20,
+      ),
+      child: Center(
+        child: ElevatedButton.icon(
+          style: ElevatedButton.styleFrom(
+            elevation: 6.0,
+            padding: const EdgeInsets.only(
+              top: 10,
+              right: 20,
+              bottom: 10,
+              left: 20,
+            ),
+            shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30.0)),
           ),
-          shape:
-              RoundedRectangleBorder(borderRadius: BorderRadius.circular(30.0)),
+          icon: const Icon(Icons.edit),
+          onPressed: () {
+            // 計上する
+          },
+          label: const Text('計上する'),
         ),
-        icon: const Icon(Icons.edit),
-        onPressed: () {
-          // 計上する
-        },
-        label: const Text('計上する'),
       ),
     );
   }
