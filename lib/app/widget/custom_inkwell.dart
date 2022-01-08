@@ -12,21 +12,22 @@ class CustomInkWell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Material(
-      child: InkWell(
-        borderRadius: BorderRadius.circular(30),
-        child: SizedBox(
-          width: 50,
-          height: 50,
+    return SizedBox(
+      width: 50,
+      height: 50,
+      child: Material(
+        color: Colors.transparent,
+        child: InkWell(
+          borderRadius: BorderRadius.circular(30),
           child: Icon(
             icon,
-            color: Colors.blue,
+            color: Colors.green,
             size: 32,
           ),
+          onTap: () {
+            onTap();
+          },
         ),
-        onTap: () {
-          onTap();
-        },
       ),
     );
   }

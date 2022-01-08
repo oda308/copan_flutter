@@ -74,17 +74,14 @@ class _MonthSelectorState extends State<MonthSelector> {
         builder: (context, constraints) {
           return CustomCard(
             widget: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8),
+              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   CustomInkWell(icon: Icons.arrow_left, onTap: showPrevMonth),
-                  FittedBox(
-                    fit: BoxFit.fitHeight,
-                    child: Text(
-                      showDateString,
-                      style: const TextStyle(fontSize: 18),
-                    ),
+                  Text(
+                    showDateString,
+                    style: const TextStyle(fontSize: 18),
                   ),
                   CustomInkWell(icon: Icons.arrow_right, onTap: showNextMonth),
                 ],
