@@ -8,6 +8,7 @@ import 'app/page/select_category.dart';
 import 'app/utility/expense_category.dart';
 
 import 'package:copan_flutter/theme/app_theme.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final index = DateIndex();
 const appTitle = '家計簿アプリCopan';
@@ -16,7 +17,7 @@ var selectedCategoryId = 1;
 
 void main() {
   initCategoryExpense(); // 費目の取得
-  runApp(const MyApp());
+  runApp(const ProviderScope(child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
