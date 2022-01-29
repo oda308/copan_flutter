@@ -1,5 +1,6 @@
 import 'package:copan_flutter/app/page/drawer.dart';
 import 'package:copan_flutter/app/widget/custom_inkwell.dart';
+import 'package:copan_flutter/mock/expenses_mock.dart';
 import 'package:copan_flutter/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
@@ -18,21 +19,23 @@ class Expenses extends StatelessWidget {
         title: const Text('今月の支出'),
       ),
       drawer: const AppDrawer(),
-      body: SafeArea(
+      body: const SafeArea(
         bottom: false,
-        child: SingleChildScrollView(
-          child: Container(
-            margin: const EdgeInsets.symmetric(vertical: 16),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: const [
-                MonthSelector(),
-                _PieChart(),
-                _Expenses(),
-              ],
-            ),
+        child: CustomScrollView(slivers: [
+          SliverToBoxAdapter(
+            child: MonthSelector(),
           ),
-        ),
+          SliverToBoxAdapter(
+            child: _PieChart(),
+          ),
+          SliverToBoxAdapter(
+            child: SizedBox(height: 64),
+          ),
+          _Expenses(),
+          SliverToBoxAdapter(
+            child: SizedBox(height: 64),
+          ),
+        ]),
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).pushNamed('/inputExpense'),
@@ -77,22 +80,19 @@ class _MonthSelectorState extends State<MonthSelector> {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return CustomCard(
-            widget: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CustomInkWell(icon: Icons.arrow_left, onTap: showPrevMonth),
-                  Text(
-                    showDateString,
-                    style: const TextStyle(fontSize: 16),
-                  ),
-                  CustomInkWell(icon: Icons.arrow_right, onTap: showNextMonth),
-                ],
-              ),
+          return Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                CustomInkWell(icon: Icons.arrow_left, onTap: showPrevMonth),
+                Text(
+                  showDateString,
+                  style: const TextStyle(fontSize: 16),
+                ),
+                CustomInkWell(icon: Icons.arrow_right, onTap: showNextMonth),
+              ],
             ),
-            maxWidth: constraints.maxWidth,
           );
         },
       ),
@@ -115,7 +115,6 @@ class _PieChart extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.only(top: 16),
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: LayoutBuilder(
         builder: (context, constraints) {
@@ -137,110 +136,26 @@ class _Expenses extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      margin: const EdgeInsets.only(top: 16),
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return CustomCard(
-            widget: Padding(
-              padding: const EdgeInsets.symmetric(vertical: 16),
-              child: Column(
-                children: const [
-                  ListTile(
-                    leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text(
-                      '米',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    trailing: Text(
-                      '\u00A5' '1980',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text(
-                      '牛乳',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    trailing: Text(
-                      '\u00A5' '148',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text(
-                      '卵',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    trailing: Text(
-                      '\u00A5' '167',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text(
-                      '鶏肉',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    trailing: Text(
-                      '\u00A5' '350',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text(
-                      'レタス',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    trailing: Text(
-                      '\u00A5' '198',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text(
-                      '歯ブラシ',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    trailing: Text(
-                      '\u00A5' '138',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text(
-                      '電池',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    trailing: Text(
-                      '\u00A5' '398',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
-                  ListTile(
-                    leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text(
-                      'トイレットペーパー',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    trailing: Text(
-                      '\u00A5' '468',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                  ),
-                ],
-              ),
+    var expenseExampleList = expenseExample.entries.toList();
+
+    return SliverList(
+      delegate: SliverChildBuilderDelegate(
+        (context, index) {
+          final expense = expenseExampleList[index].key;
+          final price = expenseExampleList[index].value;
+          return ListTile(
+            leading: const Icon(Icons.dining, color: Colors.grey),
+            title: Text(
+              expense,
+              style: const TextStyle(fontSize: 14),
             ),
-            maxWidth: constraints.maxWidth,
+            trailing: Text(
+              '\u00A5' + price.toString(),
+              style: const TextStyle(fontSize: 14),
+            ),
           );
         },
+        childCount: expenseExample.length,
       ),
     );
   }
