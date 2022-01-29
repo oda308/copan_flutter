@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_gen/gen_l10n/l10n.dart';
 
 import 'app/page/date.dart';
-import 'app/page/input_expense.dart';
 import 'app/page/expenses.dart';
+import 'app/page/input_expense.dart';
 import 'app/page/select_category.dart';
 import 'app/utility/expense_category.dart';
 
@@ -24,6 +25,8 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
         title: appTitle,
+        localizationsDelegates: L10n.localizationsDelegates,
+        supportedLocales: L10n.supportedLocales,
         theme: ThemeData(
           primarySwatch: Colors.green,
         ),
