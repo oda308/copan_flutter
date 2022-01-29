@@ -7,6 +7,8 @@ import 'app/page/input_expense.dart';
 import 'app/page/select_category.dart';
 import 'app/utility/expense_category.dart';
 
+import 'package:copan_flutter/theme/app_theme.dart';
+
 final index = DateIndex();
 const appTitle = '家計簿アプリCopan';
 // TODO(odaki): 仮で何の費目を選択しているかの状態を持つ変数を定義しておく
@@ -27,9 +29,8 @@ class MyApp extends StatelessWidget {
         title: appTitle,
         localizationsDelegates: L10n.localizationsDelegates,
         supportedLocales: L10n.supportedLocales,
-        theme: ThemeData(
-          primarySwatch: Colors.green,
-        ),
+        theme: AppTheme.light().themeData,
+        darkTheme: AppTheme.dark().themeData,
         home: const Expenses(),
         routes: <String, WidgetBuilder>{
           '/home': (BuildContext context) => const Expenses(),

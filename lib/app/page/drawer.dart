@@ -1,25 +1,27 @@
 import 'package:flutter/material.dart';
+import '../../theme/app_theme.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = getAppTheme(context);
     return Drawer(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           Container(
             width: double.infinity,
-            color: Colors.green,
+            color: appTheme.appColors.appBarBackground,
             //child: SafeArea(
             //  top: false,
             //  bottom: false,
-            child: const DrawerHeader(
-              margin: EdgeInsets.only(bottom: 0),
+            child: DrawerHeader(
+              margin: const EdgeInsets.only(bottom: 0),
               child: Text(
                 '家計簿アプリCopan',
-                style: TextStyle(color: Colors.white),
+                style: TextStyle(color: appTheme.appColors.secondaryText),
               ),
             ),
             //   ),

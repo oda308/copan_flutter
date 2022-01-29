@@ -1,5 +1,6 @@
 import 'package:copan_flutter/app/page/drawer.dart';
 import 'package:copan_flutter/app/widget/custom_inkwell.dart';
+import 'package:copan_flutter/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 import '../../main.dart';
@@ -10,6 +11,7 @@ class Expenses extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = getAppTheme(context);
     return Scaffold(
       backgroundColor: const Color(0xffECECEC),
       appBar: AppBar(
@@ -35,7 +37,7 @@ class Expenses extends StatelessWidget {
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).pushNamed('/inputExpense'),
         child: const Icon(Icons.add),
-        backgroundColor: Theme.of(context).primaryColor,
+        backgroundColor: appTheme.appColors.accentColor,
       ),
     );
   }

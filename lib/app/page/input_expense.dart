@@ -1,5 +1,6 @@
 import 'package:copan_flutter/app/utility/expense_category.dart';
 import 'package:copan_flutter/main.dart';
+import 'package:copan_flutter/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class InputExpense extends StatelessWidget {
@@ -165,6 +166,7 @@ class _RecordButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = getAppTheme(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 20,
@@ -172,6 +174,7 @@ class _RecordButton extends StatelessWidget {
       child: Center(
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
+            primary: appTheme.appColors.accentColor,
             elevation: 6.0,
             padding: const EdgeInsets.only(
               top: 10,
@@ -186,7 +189,9 @@ class _RecordButton extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          label: const Text('計上する'),
+          label: const Text(
+            '計上する',
+          ),
         ),
       ),
     );

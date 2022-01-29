@@ -1,3 +1,4 @@
+import 'package:copan_flutter/theme/app_theme.dart';
 import 'package:flutter/material.dart';
 
 class CustomInkWell extends StatelessWidget {
@@ -12,6 +13,7 @@ class CustomInkWell extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final appTheme = getAppTheme(context);
     return SizedBox(
       width: 50,
       height: 50,
@@ -21,7 +23,7 @@ class CustomInkWell extends StatelessWidget {
           borderRadius: BorderRadius.circular(30),
           child: Icon(
             icon,
-            color: Colors.green,
+            color: appTheme.appColors.accentColor,
             size: 32,
           ),
           onTap: () {
