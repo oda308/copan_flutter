@@ -125,7 +125,7 @@ class _DateState extends State<_Date> {
     final picked = await showDatePicker(
         context: context,
         initialDate: _date,
-        firstDate: DateTime(2022),
+        firstDate: DateTime(2021),
         lastDate: DateTime(2032),
         helpText: '購入した日付を選択してください',
         cancelText: 'キャンセル',

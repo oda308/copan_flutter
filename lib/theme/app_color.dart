@@ -5,6 +5,7 @@ class AppColors {
     required this.primaryText,
     required this.secondaryText,
     required this.appBarBackground,
+    required this.drawerBackground,
     required this.primaryBackground,
     required this.accentColor,
   });
@@ -13,7 +14,8 @@ class AppColors {
     return AppColors(
       primaryText: Colors.black,
       secondaryText: Colors.white,
-      appBarBackground: Colors.green,
+      appBarBackground: Colors.white,
+      drawerBackground: Colors.green,
       primaryBackground: Colors.white,
       accentColor: Colors.green,
     );
@@ -23,7 +25,8 @@ class AppColors {
     return AppColors(
       primaryText: Colors.black,
       secondaryText: Colors.white,
-      appBarBackground: Colors.green,
+      appBarBackground: Colors.white,
+      drawerBackground: Colors.green,
       primaryBackground: Colors.white,
       accentColor: Colors.green,
     );
@@ -32,6 +35,7 @@ class AppColors {
   final Color primaryText;
   final Color secondaryText;
   final Color appBarBackground;
+  final Color drawerBackground;
   final Color primaryBackground;
   final Color accentColor;
 }

@@ -13,7 +13,7 @@ class AppDrawer extends StatelessWidget {
         children: [
           Container(
             width: double.infinity,
-            color: appTheme.appColors.appBarBackground,
+            color: appTheme.appColors.drawerBackground,
             //child: SafeArea(
             //  top: false,
             //  bottom: false,

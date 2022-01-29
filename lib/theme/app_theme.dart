@@ -21,11 +21,16 @@ class AppTheme {
     return AppTheme(
       mode: ThemeMode.light,
       themeData: ThemeData.light().copyWith(
-        appBarTheme: AppBarTheme(
-          backgroundColor: AppColors.light().appBarBackground,
-        ),
-        backgroundColor: AppColors.light().primaryBackground,
-      ),
+          appBarTheme: AppBarTheme(
+            titleTextStyle:
+                TextStyle(color: AppColors.light().accentColor, fontSize: 16),
+            backgroundColor: AppColors.light().appBarBackground,
+            iconTheme: const IconThemeData.fallback()
+                .copyWith(color: AppColors.light().accentColor),
+          ),
+          backgroundColor: AppColors.light().primaryBackground,
+          colorScheme: const ColorScheme.light()
+              .copyWith(primary: AppColors.light().accentColor)),
       appColors: AppColors.light(),
     );
   }
@@ -33,12 +38,17 @@ class AppTheme {
   factory AppTheme.dark() {
     return AppTheme(
       mode: ThemeMode.dark,
-      themeData: ThemeData.light().copyWith(
-        appBarTheme: AppBarTheme(
-          backgroundColor: AppColors.light().appBarBackground,
-        ),
-        backgroundColor: AppColors.light().primaryBackground,
-      ),
+      themeData: ThemeData.dark().copyWith(
+          appBarTheme: AppBarTheme(
+            titleTextStyle:
+                TextStyle(color: AppColors.light().accentColor, fontSize: 16),
+            backgroundColor: AppColors.dark().appBarBackground,
+            iconTheme: const IconThemeData.fallback()
+                .copyWith(color: AppColors.dark().accentColor),
+          ),
+          backgroundColor: AppColors.dark().primaryBackground,
+          colorScheme: const ColorScheme.dark()
+              .copyWith(primary: AppColors.dark().accentColor)),
       appColors: AppColors.dark(),
     );
   }

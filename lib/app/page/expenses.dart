@@ -36,7 +36,10 @@ class Expenses extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).pushNamed('/inputExpense'),
-        child: const Icon(Icons.add),
+        child: Icon(
+          Icons.add,
+          color: appTheme.appColors.secondaryText,
+        ),
         backgroundColor: appTheme.appColors.accentColor,
       ),
     );
@@ -83,7 +86,7 @@ class _MonthSelectorState extends State<MonthSelector> {
                   CustomInkWell(icon: Icons.arrow_left, onTap: showPrevMonth),
                   Text(
                     showDateString,
-                    style: const TextStyle(fontSize: 18),
+                    style: const TextStyle(fontSize: 16),
                   ),
                   CustomInkWell(icon: Icons.arrow_right, onTap: showNextMonth),
                 ],
@@ -146,43 +149,91 @@ class _Expenses extends StatelessWidget {
                 children: const [
                   ListTile(
                     leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text('米'),
-                    trailing: Text('\u00A5' '1980'),
+                    title: Text(
+                      '米',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text(
+                      '\u00A5' '1980',
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ),
                   ListTile(
                     leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text('牛乳'),
-                    trailing: Text('\u00A5' '148'),
+                    title: Text(
+                      '牛乳',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text(
+                      '\u00A5' '148',
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ),
                   ListTile(
                     leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text('卵'),
-                    trailing: Text('\u00A5' '167'),
+                    title: Text(
+                      '卵',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text(
+                      '\u00A5' '167',
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ),
                   ListTile(
                     leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text('鶏肉'),
-                    trailing: Text('\u00A5' '350'),
+                    title: Text(
+                      '鶏肉',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text(
+                      '\u00A5' '350',
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ),
                   ListTile(
                     leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text('レタス'),
-                    trailing: Text('\u00A5' '198'),
+                    title: Text(
+                      'レタス',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text(
+                      '\u00A5' '198',
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ),
                   ListTile(
                     leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text('歯ブラシ'),
-                    trailing: Text('\u00A5' '138'),
+                    title: Text(
+                      '歯ブラシ',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text(
+                      '\u00A5' '138',
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ),
                   ListTile(
                     leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text('電池'),
-                    trailing: Text('\u00A5' '398'),
+                    title: Text(
+                      '電池',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text(
+                      '\u00A5' '398',
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ),
                   ListTile(
                     leading: Icon(Icons.dining, color: Colors.grey),
-                    title: Text('トイレットペーパー'),
-                    trailing: Text('\u00A5' '468'),
+                    title: Text(
+                      'トイレットペーパー',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    trailing: Text(
+                      '\u00A5' '468',
+                      style: const TextStyle(fontSize: 14),
+                    ),
                   ),
                 ],
               ),

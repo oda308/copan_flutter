@@ -22,7 +22,10 @@ class SelectCategory extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   leading: Icon(expenseCategoryList[index].iconData),
-                  title: Text(expenseCategoryList[index].name),
+                  title: Text(
+                    expenseCategoryList[index].name,
+                    style: const TextStyle(fontSize: 14),
+                  ),
                   onTap: () {
                     selectedCategoryId = expenseCategoryList[index].id;
                     Navigator.of(context).pop();
