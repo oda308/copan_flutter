@@ -1,13 +1,25 @@
-import 'package:copan_flutter/app/utility/expense_category.dart';
-import 'package:copan_flutter/main.dart';
-import 'package:copan_flutter/theme/app_theme.dart';
+import 'package:copan_flutter/notifier/notifier.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../theme/app_theme.dart';
+import '../../utility/categoryId.dart';
+import '../../utility/expense.dart';
+import '../../utility/expense_category.dart';
 
 class InputExpense extends StatelessWidget {
   const InputExpense({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    final inputted = Expense(
+      price: 0,
+      categoryId: CategoryId.food,
+      createDate: DateTime.now(),
+      description: '',
+    );
+
     return Scaffold(
       appBar: AppBar(
         title: const Text('支出の入力'),
@@ -16,12 +28,12 @@ class InputExpense extends StatelessWidget {
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
-            children: const [
-              _Price(),
-              _Category(),
-              _Date(),
-              _Content(),
-              _RecordButton(),
+            children: [
+              _Price(inputted: inputted),
+              _Category(inputted: inputted),
+              _Date(inputted: inputted),
+              _Content(inputted: inputted),
+              _RecordButton(inputted: inputted),
             ],
           ),
         ),
@@ -31,16 +43,21 @@ class InputExpense extends StatelessWidget {
 }
 
 class _Price extends StatelessWidget {
-  const _Price({Key? key}) : super(key: key);
+  const _Price({
+    required this.inputted,
+    Key? key,
+  }) : super(key: key);
+
+  final Expense inputted;
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(
+    return Padding(
+      padding: const EdgeInsets.symmetric(
         vertical: 20,
       ),
       child: ListTile(
-        leading: SizedBox(
+        leading: const SizedBox(
           height: double.infinity,
           child: Icon(
             Icons.price_change,
@@ -48,19 +65,37 @@ class _Price extends StatelessWidget {
           ),
         ),
         title: TextField(
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: '金額',
           ),
           textAlign: TextAlign.right,
+          keyboardType: TextInputType.number,
+          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          onChanged: (value) {
+            // 数字以外が入力された場合に取得する空文字は無視する
+            if (value != '') {
+              inputted.price = int.parse(value);
+            }
+          },
         ),
       ),
     );
   }
 }
 
-class _Category extends StatelessWidget {
-  const _Category({Key? key}) : super(key: key);
+class _Category extends StatefulWidget {
+  const _Category({
+    required this.inputted,
+    Key? key,
+  }) : super(key: key);
 
+  final Expense inputted;
+
+  @override
+  State<_Category> createState() => _CategoryState();
+}
+
+class _CategoryState extends State<_Category> {
   @override
   Widget build(BuildContext context) {
     final expenseCategoryList = ExpenseCategoryList().get();
@@ -70,7 +105,8 @@ class _Category extends StatelessWidget {
         '${expenseCategory.id}': expenseCategory,
     };
 
-    final selectedCategory = expenseCategoryMap['$selectedCategoryId'];
+    final selectedCategory =
+        expenseCategoryMap['${widget.inputted.categoryId}'];
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -85,8 +121,11 @@ class _Category extends StatelessWidget {
           selectedCategory.name,
           textAlign: TextAlign.left,
         ),
-        onTap: () {
-          Navigator.pushNamed(context, '/selectCategory');
+        onTap: () async {
+          widget.inputted.categoryId =
+              await Navigator.pushNamed(context, '/selectCategory')
+                  as CategoryId;
+          setState(() {});
         },
       ),
     );
@@ -94,14 +133,18 @@ class _Category extends StatelessWidget {
 }
 
 class _Date extends StatefulWidget {
-  const _Date({Key? key}) : super(key: key);
+  const _Date({
+    required this.inputted,
+    Key? key,
+  }) : super(key: key);
+
+  final Expense inputted;
 
   @override
   State<_Date> createState() => _DateState();
 }
 
 class _DateState extends State<_Date> {
-  var _date = DateTime.now();
   @override
   Widget build(BuildContext context) {
     return Padding(
@@ -113,7 +156,8 @@ class _DateState extends State<_Date> {
           height: double.infinity,
           child: Icon(Icons.calendar_today, color: Colors.grey),
         ),
-        title: Text("${_date.year}年${_date.month}月${_date.day}日"),
+        title: Text(
+            "${widget.inputted.createDate.year}年${widget.inputted.createDate.month}月${widget.inputted.createDate.day}日"),
         onTap: () {
           _selectDate(context);
         },
@@ -124,48 +168,61 @@ class _DateState extends State<_Date> {
   Future _selectDate(BuildContext context) async {
     final picked = await showDatePicker(
         context: context,
-        initialDate: _date,
+        initialDate: widget.inputted.createDate,
         firstDate: DateTime(2021),
         lastDate: DateTime(2032),
         helpText: '購入した日付を選択してください',
         cancelText: 'キャンセル',
         errorFormatText: 'その日付は指定できません');
     if (picked != null) {
-      setState(() => _date = picked);
+      setState(() => widget.inputted.createDate = picked);
     }
   }
 }
 
 class _Content extends StatelessWidget {
-  const _Content({Key? key}) : super(key: key);
+  const _Content({
+    required this.inputted,
+    Key? key,
+  }) : super(key: key);
+
+  final Expense inputted;
 
   @override
   Widget build(BuildContext context) {
-    return const Padding(
-      padding: EdgeInsets.symmetric(
+    return Padding(
+      padding: const EdgeInsets.symmetric(
         vertical: 20,
       ),
       child: ListTile(
-        leading: SizedBox(
+        leading: const SizedBox(
           height: double.infinity,
           child: Icon(Icons.note_alt, color: Colors.grey),
         ),
         title: TextField(
-          decoration: InputDecoration(
+          decoration: const InputDecoration(
             labelText: '内容',
           ),
           textAlign: TextAlign.left,
+          onChanged: (value) {
+            inputted.description = value;
+          },
         ),
       ),
     );
   }
 }
 
-class _RecordButton extends StatelessWidget {
-  const _RecordButton({Key? key}) : super(key: key);
+class _RecordButton extends ConsumerWidget {
+  const _RecordButton({
+    required this.inputted,
+    Key? key,
+  }) : super(key: key);
+
+  final Expense inputted;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = getAppTheme(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -188,6 +245,7 @@ class _RecordButton extends StatelessWidget {
           icon: const Icon(Icons.edit),
           onPressed: () {
             Navigator.of(context).pop();
+            ref.read(expensesProvider.notifier).addExpense(inputted);
           },
           label: const Text(
             '計上する',

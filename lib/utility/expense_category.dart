@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
+import 'categoryId.dart';
 
 class ExpenseCategory {
-  int id; // ユニークID(インクリメントで管理)
+  CategoryId id; // ユニークID(インクリメントで管理)
   String name; // 費目名
   IconData iconData; // アイコン
 
@@ -28,47 +29,47 @@ void initCategoryExpense() {
   final expenseCategoryList = ExpenseCategoryList();
 
   expenseCategoryList.set(ExpenseCategory(
-    id: 1,
+    id: CategoryId.food,
     name: '食費',
     iconData: Icons.fastfood_outlined,
   ));
   expenseCategoryList.set(ExpenseCategory(
-    id: 2,
+    id: CategoryId.dailyNecessities,
     name: '日用品',
     iconData: Icons.cleaning_services_outlined,
   ));
   expenseCategoryList.set(ExpenseCategory(
-    id: 3,
+    id: CategoryId.electricity,
     name: '電気代',
     iconData: Icons.tungsten_outlined,
   ));
   expenseCategoryList.set(ExpenseCategory(
-    id: 4,
+    id: CategoryId.gas,
     name: 'ガス代',
     iconData: Icons.local_gas_station_outlined,
   ));
   expenseCategoryList.set(ExpenseCategory(
-    id: 5,
+    id: CategoryId.waterSupply,
     name: '水道代',
     iconData: Icons.local_drink_outlined,
   ));
   expenseCategoryList.set(ExpenseCategory(
-    id: 6,
+    id: CategoryId.communication,
     name: '通信費',
     iconData: Icons.phone_iphone_outlined,
   ));
   expenseCategoryList.set(ExpenseCategory(
-    id: 7,
+    id: CategoryId.transportation,
     name: '交通費',
     iconData: Icons.train_outlined,
   ));
   expenseCategoryList.set(ExpenseCategory(
-    id: 8,
+    id: CategoryId.medicalCare,
     name: '医療費',
     iconData: Icons.medication_outlined,
   ));
   expenseCategoryList.set(ExpenseCategory(
-    id: 99999,
+    id: CategoryId.others,
     name: 'その他',
     //pending
     iconData: Icons.pending_outlined,

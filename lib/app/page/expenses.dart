@@ -1,8 +1,9 @@
 import 'package:copan_flutter/app/page/drawer.dart';
 import 'package:copan_flutter/app/widget/custom_inkwell.dart';
-import 'package:copan_flutter/mock/expenses_mock.dart';
 import 'package:copan_flutter/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import '../../notifier/notifier.dart';
 
 import '../../main.dart';
 import '../widget/custom_card.dart';
@@ -131,31 +132,32 @@ class _PieChart extends StatelessWidget {
   }
 }
 
-class _Expenses extends StatelessWidget {
+class _Expenses extends ConsumerWidget {
   const _Expenses({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
-    var expenseExampleList = expenseExample.entries.toList();
-
+  Widget build(BuildContext context, WidgetRef ref) {
+    final expensesList = ref.watch(expensesProvider);
     return SliverList(
       delegate: SliverChildBuilderDelegate(
         (context, index) {
-          final expense = expenseExampleList[index].key;
-          final price = expenseExampleList[index].value;
-          return ListTile(
-            leading: const Icon(Icons.dining, color: Colors.grey),
-            title: Text(
-              expense,
-              style: const TextStyle(fontSize: 14),
-            ),
-            trailing: Text(
-              '\u00A5' + price.toString(),
-              style: const TextStyle(fontSize: 14),
-            ),
-          );
+          if (expensesList.isNotEmpty) {
+            final expense = expensesList[index].description;
+            final price = expensesList[index].price;
+            return ListTile(
+              leading: const Icon(Icons.dining, color: Colors.grey),
+              title: Text(
+                expense,
+                style: const TextStyle(fontSize: 14),
+              ),
+              trailing: Text(
+                '\u00A5' + price.toString(),
+                style: const TextStyle(fontSize: 14),
+              ),
+            );
+          }
         },
-        childCount: expenseExample.length,
+        childCount: expensesList.length,
       ),
     );
   }

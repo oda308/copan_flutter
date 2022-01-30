@@ -1,6 +1,7 @@
 import 'package:copan_flutter/main.dart';
+import 'package:copan_flutter/utility/categoryId.dart';
 import 'package:flutter/material.dart';
-import '../utility/expense_category.dart';
+import '../../utility/expense_category.dart';
 
 class SelectCategory extends StatelessWidget {
   const SelectCategory({Key? key}) : super(key: key);
@@ -9,6 +10,7 @@ class SelectCategory extends StatelessWidget {
   Widget build(BuildContext context) {
     final expenseCategoryList = ExpenseCategoryList().get();
     final itemCount = expenseCategoryList.length;
+    late final CategoryId selectedCategoryId;
     return Scaffold(
       appBar: AppBar(
         title: const Text('費目の選択'),
@@ -28,7 +30,7 @@ class SelectCategory extends StatelessWidget {
                   ),
                   onTap: () {
                     selectedCategoryId = expenseCategoryList[index].id;
-                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(selectedCategoryId);
                   },
                 );
               }),

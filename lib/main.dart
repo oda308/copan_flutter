@@ -5,15 +5,13 @@ import 'app/page/date.dart';
 import 'app/page/expenses.dart';
 import 'app/page/input_expense.dart';
 import 'app/page/select_category.dart';
-import 'app/utility/expense_category.dart';
+import 'utility/expense_category.dart';
 
 import 'package:copan_flutter/theme/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 final index = DateIndex();
 const appTitle = '家計簿アプリCopan';
-// TODO(odaki): 仮で何の費目を選択しているかの状態を持つ変数を定義しておく
-var selectedCategoryId = 1;
 
 void main() {
   initCategoryExpense(); // 費目の取得
