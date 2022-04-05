@@ -23,7 +23,10 @@ class SelectCategory extends StatelessWidget {
               itemCount: itemCount,
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
-                  leading: Icon(expenseCategoryList[index].iconData),
+                  leading: Icon(
+                    expenseCategoryList[index].iconData,
+                    color: expenseCategoryList[index].iconColor,
+                  ),
                   title: Text(
                     expenseCategoryList[index].name,
                     style: const TextStyle(fontSize: 14),
