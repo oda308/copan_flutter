@@ -2,7 +2,12 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 
 class ExpensesChart extends StatefulWidget {
-  const ExpensesChart({Key? key}) : super(key: key);
+  const ExpensesChart({
+    required this.width,
+    Key? key,
+  }) : super(key: key);
+
+  final double width;
 
   @override
   State<ExpensesChart> createState() => _ExpensesChartState();
@@ -12,30 +17,34 @@ class _ExpensesChartState extends State<ExpensesChart> {
   int touchedIndex = -1;
   @override
   Widget build(BuildContext context) {
-    return PieChart(
-      PieChartData(
-          pieTouchData: PieTouchData(
-              touchCallback: (FlTouchEvent event, pieTouchResponse) {
-            setState(() {
-              if (!event.isInterestedForInteractions ||
-                  pieTouchResponse == null ||
-                  pieTouchResponse.touchedSection == null) {
-                touchedIndex = -1;
-                return;
-              }
-              touchedIndex =
-                  pieTouchResponse.touchedSection!.touchedSectionIndex;
-            });
-          }),
-          borderData: FlBorderData(
-            show: false,
-          ),
-          sectionsSpace: 0,
-          centerSpaceRadius: 60,
-          sections: showingSections()),
+    return SizedBox(
+      width: widget.width,
+      height: widget.width,
+      child: PieChart(
+        PieChartData(
+            pieTouchData: PieTouchData(
+                touchCallback: (FlTouchEvent event, pieTouchResponse) {
+              setState(() {
+                if (!event.isInterestedForInteractions ||
+                    pieTouchResponse == null ||
+                    pieTouchResponse.touchedSection == null) {
+                  touchedIndex = -1;
+                  return;
+                }
+                touchedIndex =
+                    pieTouchResponse.touchedSection!.touchedSectionIndex;
+              });
+            }),
+            borderData: FlBorderData(
+              show: false,
+            ),
+            sectionsSpace: 0,
+            centerSpaceRadius: widget.width / 5,
+            sections: showingSections()),
 
-      swapAnimationDuration: const Duration(milliseconds: 150), // Optional
-      swapAnimationCurve: Curves.linear, // Optional
+        swapAnimationDuration: const Duration(milliseconds: 150), // Optional
+        swapAnimationCurve: Curves.linear, // Optional
+      ),
     );
   }
 
@@ -43,7 +52,7 @@ class _ExpensesChartState extends State<ExpensesChart> {
     return List.generate(4, (i) {
       final isTouched = i == touchedIndex;
       final fontSize = isTouched ? 16.0 : 14.0;
-      final radius = isTouched ? 80.0 : 70.0;
+      final radius = isTouched ? widget.width / 3 : widget.width / 4;
       switch (i) {
         case 0:
           return PieChartSectionData(

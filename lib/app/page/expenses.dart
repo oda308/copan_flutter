@@ -1,3 +1,5 @@
+import 'dart:ffi';
+
 import 'package:copan_flutter/app/widget/custom_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -22,20 +24,52 @@ class Expenses extends StatelessWidget {
         title: const Text('今月の支出'),
       ),
       drawer: const AppDrawer(),
-      body: const SafeArea(
+      body: SafeArea(
         bottom: false,
         child: CustomScrollView(slivers: [
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: MonthSelector(),
           ),
           SliverToBoxAdapter(
-            child: _PieChart(),
+            child: LayoutBuilder(builder: (context, constraint) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8),
+                child: CustomCard(
+                  maxWidth: constraint.maxWidth,
+                  widget: Row(
+                    children: [
+                      ExpensesChart(width: constraint.maxWidth / 2),
+                      Align(
+                        alignment: Alignment.center,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: const [
+                              Text(
+                                '支出',
+                                style: TextStyle(fontSize: 18),
+                              ),
+                              Text(
+                                '\u00a5 123,123',
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold, fontSize: 18),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+              );
+            }),
           ),
-          SliverToBoxAdapter(
+          const SliverToBoxAdapter(
             child: SizedBox(height: 64),
           ),
-          _Expenses(),
-          SliverToBoxAdapter(
+          const _Expenses(),
+          const SliverToBoxAdapter(
             child: SizedBox(height: 64),
           ),
         ]),
@@ -109,29 +143,6 @@ class _MonthSelectorState extends State<MonthSelector> {
         targetDate.year.toString() + '年' + targetDate.month.toString() + '月~';
 
     return showDateString;
-  }
-}
-
-class _PieChart extends StatelessWidget {
-  const _PieChart({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
-      child: LayoutBuilder(
-        builder: (context, constraints) {
-          return SizedBox(
-            width: constraints.maxWidth,
-            height: constraints.maxWidth,
-            child: CustomCard(
-              maxWidth: constraints.maxWidth,
-              widget: const ExpensesChart(),
-            ),
-          );
-        },
-      ),
-    );
   }
 }
 
