@@ -1,6 +1,6 @@
-import 'package:copan_flutter/main.dart';
-import 'package:copan_flutter/utility/categoryId.dart';
 import 'package:flutter/material.dart';
+
+import '../../utility/category_id.dart';
 import '../../utility/expense_category.dart';
 
 class SelectCategory extends StatelessWidget {
@@ -24,7 +24,7 @@ class SelectCategory extends StatelessWidget {
               itemBuilder: (BuildContext context, int index) {
                 return ListTile(
                   leading: Icon(
-                    expenseCategoryList[index].iconData,
+                    expenseCategoryList[index].icon,
                     color: expenseCategoryList[index].iconColor,
                   ),
                   title: Text(

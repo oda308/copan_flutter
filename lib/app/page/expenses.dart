@@ -1,12 +1,14 @@
-import 'package:copan_flutter/app/page/drawer.dart';
-import 'package:copan_flutter/app/widget/custom_inkwell.dart';
-import 'package:copan_flutter/theme/app_theme.dart';
+import 'package:copan_flutter/app/widget/custom_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import '../../notifier/notifier.dart';
 
 import '../../main.dart';
-import '../widget/custom_card.dart';
+import '../../notifier/notifier.dart';
+import '../../theme/app_theme.dart';
+import '../../utility/expense_category.dart';
+import '../widget/custom_inkwell.dart';
+import '../widget/expenses_chart.dart';
+import 'drawer.dart';
 
 class Expenses extends StatelessWidget {
   const Expenses({Key? key}) : super(key: key);
@@ -119,12 +121,13 @@ class _PieChart extends StatelessWidget {
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: LayoutBuilder(
         builder: (context, constraints) {
-          return CustomCard(
-            widget: SizedBox(
-              height: constraints.maxWidth,
-              width: constraints.maxWidth,
+          return SizedBox(
+            width: constraints.maxWidth,
+            height: constraints.maxWidth,
+            child: CustomCard(
+              maxWidth: constraints.maxWidth,
+              widget: const ExpensesChart(),
             ),
-            maxWidth: constraints.maxWidth,
           );
         },
       ),
@@ -138,16 +141,33 @@ class _Expenses extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final expensesList = ref.watch(expensesProvider);
-    return SliverList(
-      delegate: SliverChildBuilderDelegate(
-        (context, index) {
-          if (expensesList.isNotEmpty) {
-            final expense = expensesList[index].description;
+
+    late final Widget widget;
+
+    if (expensesList.isNotEmpty) {
+      widget = SliverList(
+        delegate: SliverChildBuilderDelegate(
+          (context, index) {
+            final expense = expensesList[index];
             final price = expensesList[index].price;
+            final List<ExpenseCategory> expenseCategoryList =
+                ExpenseCategoryList().get();
+            late final IconData expenseCategoryIcon;
+            late final Color? expenseCategoryIconColor;
+
+            for (final expenseCategory in expenseCategoryList) {
+              if (expenseCategory.id == expense.categoryId) {
+                expenseCategoryIcon = expenseCategory.icon;
+                expenseCategoryIconColor = expenseCategory.iconColor;
+              }
+            }
             return ListTile(
-              leading: const Icon(Icons.dining, color: Colors.grey),
+              leading: Icon(
+                expenseCategoryIcon,
+                color: expenseCategoryIconColor,
+              ),
               title: Text(
-                expense,
+                expense.description,
                 style: const TextStyle(fontSize: 14),
               ),
               trailing: Text(
@@ -155,10 +175,20 @@ class _Expenses extends ConsumerWidget {
                 style: const TextStyle(fontSize: 14),
               ),
             );
-          }
-        },
-        childCount: expensesList.length,
-      ),
-    );
+          },
+          childCount: expensesList.length,
+        ),
+      );
+    } else {
+      widget = const SliverToBoxAdapter(
+        child: Center(
+          child: Text(
+            '今月の支出はありません',
+            style: TextStyle(color: Colors.grey),
+          ),
+        ),
+      );
+    }
+    return widget;
   }
 }

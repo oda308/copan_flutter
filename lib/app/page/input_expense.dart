@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../theme/app_theme.dart';
-import '../../utility/categoryId.dart';
+import '../../utility/category_id.dart';
 import '../../utility/expense.dart';
 import '../../utility/expense_category.dart';
 
@@ -116,7 +116,7 @@ class _CategoryState extends State<_Category> {
         leading: SizedBox(
           height: double.infinity,
           child: Icon(
-            selectedCategory.iconData,
+            selectedCategory.icon,
             color: selectedCategory.iconColor,
           ),
         ),
