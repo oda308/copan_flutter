@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'category_id.dart';
+import '../../utility/category_id.dart';
 
 class ExpenseCategory {
   CategoryId id; // ユニークID(インクリメントで管理)

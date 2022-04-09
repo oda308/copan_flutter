@@ -7,5 +7,6 @@ enum CategoryId {
   communication,
   transportation,
   medicalCare,
+  rent,
   others,
 }

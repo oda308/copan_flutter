@@ -4,7 +4,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../theme/app_theme.dart';
-import '../../utility/categoryId.dart';
+import '../../utility/category_id.dart';
 import '../../utility/expense.dart';
 import '../../utility/expense_category.dart';
 
@@ -61,7 +61,7 @@ class _Price extends StatelessWidget {
           height: double.infinity,
           child: Icon(
             Icons.price_change,
-            color: Colors.grey,
+            color: Colors.green,
           ),
         ),
         title: TextField(
@@ -115,17 +115,24 @@ class _CategoryState extends State<_Category> {
       child: ListTile(
         leading: SizedBox(
           height: double.infinity,
-          child: Icon(selectedCategory.iconData, color: Colors.grey),
+          child: Icon(
+            selectedCategory.icon,
+            color: selectedCategory.iconColor,
+          ),
         ),
         title: Text(
           selectedCategory.name,
           textAlign: TextAlign.left,
         ),
         onTap: () async {
-          widget.inputted.categoryId =
+          final selectedCategoryId =
               await Navigator.pushNamed(context, '/selectCategory')
-                  as CategoryId;
-          setState(() {});
+                  as CategoryId?;
+          if (selectedCategoryId != null) {
+            setState(() {
+              widget.inputted.categoryId = selectedCategoryId;
+            });
+          }
         },
       ),
     );
@@ -154,7 +161,7 @@ class _DateState extends State<_Date> {
       child: ListTile(
         leading: const SizedBox(
           height: double.infinity,
-          child: Icon(Icons.calendar_today, color: Colors.grey),
+          child: Icon(Icons.calendar_today, color: Colors.green),
         ),
         title: Text(
             "${widget.inputted.createDate.year}年${widget.inputted.createDate.month}月${widget.inputted.createDate.day}日"),
@@ -197,7 +204,7 @@ class _Content extends StatelessWidget {
       child: ListTile(
         leading: const SizedBox(
           height: double.infinity,
-          child: Icon(Icons.note_alt, color: Colors.grey),
+          child: Icon(Icons.note_alt, color: Colors.green),
         ),
         title: TextField(
           decoration: const InputDecoration(
