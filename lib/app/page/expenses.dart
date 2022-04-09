@@ -1,3 +1,4 @@
+import 'package:copan_flutter/utility/format_price.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -146,7 +147,7 @@ class _Expenses extends ConsumerWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             final expense = expensesList[index];
-            final price = expensesList[index].price;
+            final formattedPrice = getFormattedPrice(expensesList[index].price);
             final List<ExpenseCategory> expenseCategoryList =
                 ExpenseCategoryList().get();
             late final IconData expenseCategoryIcon;
@@ -168,7 +169,7 @@ class _Expenses extends ConsumerWidget {
                 style: const TextStyle(fontSize: 14),
               ),
               trailing: Text(
-                '\u00A5' + price.toString(),
+                '\u00A5' + formattedPrice,
                 style: const TextStyle(fontSize: 14),
               ),
             );
