@@ -19,24 +19,27 @@ class SelectCategory extends StatelessWidget {
         bottom: false,
         child: Padding(
           padding: const EdgeInsets.only(top: 16),
-          child: ListView.builder(
-              itemCount: itemCount,
-              itemBuilder: (BuildContext context, int index) {
-                return ListTile(
-                  leading: Icon(
-                    expenseCategoryList[index].icon,
-                    color: expenseCategoryList[index].iconColor,
-                  ),
-                  title: Text(
-                    expenseCategoryList[index].name,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                  onTap: () {
-                    selectedCategoryId = expenseCategoryList[index].id;
-                    Navigator.of(context).pop(selectedCategoryId);
-                  },
-                );
-              }),
+          child: ListView.separated(
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                leading: Icon(
+                  expenseCategoryList[index].icon,
+                  color: expenseCategoryList[index].iconColor,
+                ),
+                title: Text(
+                  expenseCategoryList[index].name,
+                  style: const TextStyle(fontSize: 14),
+                ),
+                onTap: () {
+                  selectedCategoryId = expenseCategoryList[index].id;
+                  Navigator.of(context).pop(selectedCategoryId);
+                },
+              );
+            },
+            separatorBuilder: (BuildContext context, int index) =>
+                const Divider(),
+            itemCount: itemCount,
+          ),
         ),
       ),
     );
