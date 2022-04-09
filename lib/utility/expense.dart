@@ -1,4 +1,4 @@
-import 'package:copan_flutter/utility/category_id.dart';
+import 'category_id.dart';
 
 class Expense {
   Expense({

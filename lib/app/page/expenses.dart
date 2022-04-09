@@ -1,6 +1,3 @@
-import 'dart:ffi';
-
-import 'package:copan_flutter/app/widget/custom_card.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,8 +5,10 @@ import '../../main.dart';
 import '../../notifier/notifier.dart';
 import '../../theme/app_theme.dart';
 import '../../utility/expense_category.dart';
+import '../widget/custom_card.dart';
 import '../widget/custom_inkwell.dart';
 import '../widget/expenses_chart.dart';
+import '../widget/total_expense.dart';
 import 'drawer.dart';
 
 class Expenses extends StatelessWidget {
@@ -39,24 +38,11 @@ class Expenses extends StatelessWidget {
                   widget: Row(
                     children: [
                       ExpensesChart(width: constraint.maxWidth / 2),
-                      Align(
+                      const Align(
                         alignment: Alignment.center,
                         child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
-                              Text(
-                                '支出',
-                                style: TextStyle(fontSize: 18),
-                              ),
-                              Text(
-                                '\u00a5 123,123',
-                                style: TextStyle(
-                                    fontWeight: FontWeight.bold, fontSize: 18),
-                              ),
-                            ],
-                          ),
+                          padding: EdgeInsets.symmetric(horizontal: 12),
+                          child: TotalExpense(),
                         ),
                       ),
                     ],
