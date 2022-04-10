@@ -7,6 +7,7 @@ class AppColors {
     required this.appBarBackground,
     required this.drawerBackground,
     required this.primaryBackground,
+    required this.secondaryBackground,
     required this.accentColor,
   });
 
@@ -17,6 +18,7 @@ class AppColors {
       appBarBackground: Colors.white,
       drawerBackground: Colors.green,
       primaryBackground: Colors.white,
+      secondaryBackground: const Color(0xffECECEC),
       accentColor: Colors.green,
     );
   }
@@ -28,6 +30,7 @@ class AppColors {
       appBarBackground: Colors.white,
       drawerBackground: Colors.green,
       primaryBackground: Colors.white,
+      secondaryBackground: const Color(0xffECECEC),
       accentColor: Colors.green,
     );
   }
@@ -37,5 +40,6 @@ class AppColors {
   final Color appBarBackground;
   final Color drawerBackground;
   final Color primaryBackground;
+  final Color secondaryBackground;
   final Color accentColor;
 }

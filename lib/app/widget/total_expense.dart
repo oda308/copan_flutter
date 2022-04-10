@@ -6,7 +6,9 @@ import '../../utility/expense_list.dart';
 import '../../utility/format_price.dart';
 
 class TotalExpense extends ConsumerWidget {
-  const TotalExpense({Key? key}) : super(key: key);
+  const TotalExpense({required this.width, Key? key}) : super(key: key);
+
+  final double width;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -14,18 +16,28 @@ class TotalExpense extends ConsumerWidget {
     final totalExpense = getTotalExpense(expensesList);
     final totalExpenseString = getFormattedPrice(totalExpense);
 
-    return Column(
-      crossAxisAlignment: CrossAxisAlignment.start,
-      children: [
-        const Text(
-          '支出',
-          style: TextStyle(fontSize: 18),
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 8),
+      child: SizedBox(
+        width: width,
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            const Text(
+              '支出',
+              style: TextStyle(fontSize: 16),
+            ),
+            Align(
+              alignment: Alignment.bottomRight,
+              child: Text(
+                "\u00a5 $totalExpenseString",
+                style:
+                    const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
+              ),
+            ),
+          ],
         ),
-        Text(
-          "\u00a5 $totalExpenseString",
-          style: const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
-        ),
-      ],
+      ),
     );
   }
 }

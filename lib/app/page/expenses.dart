@@ -1,3 +1,5 @@
+import 'package:copan_flutter/app/widget/expenses_chart.dart';
+import 'package:copan_flutter/app/widget/total_expense.dart';
 import 'package:copan_flutter/utility/format_price.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -8,8 +10,6 @@ import '../../theme/app_theme.dart';
 import '../../utility/expense_category.dart';
 import '../widget/custom_card.dart';
 import '../widget/custom_inkwell.dart';
-import '../widget/expenses_chart.dart';
-import '../widget/total_expense.dart';
 import 'drawer.dart';
 
 class Expenses extends StatelessWidget {
@@ -19,7 +19,7 @@ class Expenses extends StatelessWidget {
   Widget build(BuildContext context) {
     final appTheme = getAppTheme(context);
     return Scaffold(
-      backgroundColor: const Color(0xffECECEC),
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: const Text('今月の支出'),
       ),
@@ -27,37 +27,49 @@ class Expenses extends StatelessWidget {
       body: SafeArea(
         bottom: false,
         child: CustomScrollView(slivers: [
-          const SliverToBoxAdapter(
-            child: MonthSelector(),
+          SliverToBoxAdapter(
+            child: Container(
+              color: appTheme.appColors.secondaryBackground,
+              height: 12,
+            ),
           ),
           SliverToBoxAdapter(
             child: LayoutBuilder(builder: (context, constraint) {
-              return Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 8),
+              return Container(
+                color: appTheme.appColors.secondaryBackground,
                 child: CustomCard(
-                  maxWidth: constraint.maxWidth,
-                  widget: Row(
-                    children: [
-                      ExpensesChart(width: constraint.maxWidth / 2),
-                      const Align(
-                        alignment: Alignment.center,
-                        child: Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 12),
-                          child: TotalExpense(),
+                  child: Column(children: [
+                    const MonthSelector(),
+                    Row(
+                      children: [
+                        const Expanded(
+                          child: ExpensesChart(),
                         ),
-                      ),
-                    ],
-                  ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: TotalExpense(
+                              width: constraint.maxWidth / 2,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 16),
+                  ]),
                 ),
               );
             }),
           ),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 64),
+          SliverToBoxAdapter(
+            child: Container(
+              color: appTheme.appColors.secondaryBackground,
+              height: 12,
+            ),
           ),
           const _Expenses(),
           const SliverToBoxAdapter(
-            child: SizedBox(height: 64),
+            child: SizedBox(height: 8),
           ),
         ]),
       ),
@@ -179,10 +191,13 @@ class _Expenses extends ConsumerWidget {
       );
     } else {
       widget = const SliverToBoxAdapter(
-        child: Center(
-          child: Text(
-            '今月の支出はありません',
-            style: TextStyle(color: Colors.grey),
+        child: Padding(
+          padding: EdgeInsets.symmetric(vertical: 32),
+          child: Center(
+            child: Text(
+              '今月の支出はありません',
+              style: TextStyle(color: Colors.grey),
+            ),
           ),
         ),
       );
