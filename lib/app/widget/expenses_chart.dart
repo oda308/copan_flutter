@@ -91,7 +91,7 @@ class _ExpensesChartState extends ConsumerState<ExpensesChart> {
     if (categoryTotalPriceList.isNotEmpty) {
       return List.generate(categoryTotalPriceList.length, (i) {
         final isTouched = i == touchedIndex;
-        final fontSize = isTouched ? 16.0 : 12.0;
+        const fontSize = 12.0;
         final radius = isTouched ? width / 3 : width / 4;
 
         final expenseCategory =
@@ -115,7 +115,7 @@ class _ExpensesChartState extends ConsumerState<ExpensesChart> {
           value: categoryTotalPriceList[i].categoryPrice.toDouble(),
           title: title,
           radius: radius,
-          titleStyle: TextStyle(
+          titleStyle: const TextStyle(
             fontSize: fontSize,
             fontWeight: FontWeight.bold,
             color: Colors.white,
