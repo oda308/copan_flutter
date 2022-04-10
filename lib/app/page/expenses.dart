@@ -41,6 +41,7 @@ class Expenses extends StatelessWidget {
                   child: Column(children: [
                     const MonthSelector(),
                     Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         const Expanded(
                           child: ExpensesChart(),

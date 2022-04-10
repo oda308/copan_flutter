@@ -17,15 +17,18 @@ class TotalExpense extends ConsumerWidget {
     final totalExpenseString = getFormattedPrice(totalExpense);
 
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
       child: SizedBox(
         width: width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            const Text(
-              '支出',
-              style: TextStyle(fontSize: 16),
+            const Padding(
+              padding: EdgeInsets.symmetric(vertical: 8),
+              child: Text(
+                '支出',
+                style: TextStyle(fontSize: 16),
+              ),
             ),
             Align(
               alignment: Alignment.bottomRight,
