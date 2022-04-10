@@ -8,8 +8,8 @@ class SelectCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final expenseCategoryList = ExpenseCategoryList().get();
-    final itemCount = expenseCategoryList.length;
+    final expenseCategoryList = expenseCategoryMap.values.toList();
+    final itemCount = expenseCategoryMap.length;
     late final CategoryId selectedCategoryId;
     return Scaffold(
       appBar: AppBar(

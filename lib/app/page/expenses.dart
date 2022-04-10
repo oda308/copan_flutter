@@ -1,5 +1,6 @@
 import 'package:copan_flutter/app/widget/expenses_chart.dart';
 import 'package:copan_flutter/app/widget/total_expense.dart';
+import 'package:copan_flutter/utility/expense_category.dart';
 import 'package:copan_flutter/utility/format_price.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,7 +8,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../main.dart';
 import '../../notifier/notifier.dart';
 import '../../theme/app_theme.dart';
-import '../../utility/expense_category.dart';
 import '../widget/custom_card.dart';
 import '../widget/custom_inkwell.dart';
 import 'drawer.dart';
@@ -160,17 +160,16 @@ class _Expenses extends ConsumerWidget {
           (context, index) {
             final expense = expensesList[index];
             final formattedPrice = getFormattedPrice(expensesList[index].price);
-            final List<ExpenseCategory> expenseCategoryList =
-                ExpenseCategoryList().get();
             late final IconData expenseCategoryIcon;
             late final Color? expenseCategoryIconColor;
 
-            for (final expenseCategory in expenseCategoryList) {
-              if (expenseCategory.id == expense.categoryId) {
-                expenseCategoryIcon = expenseCategory.icon;
-                expenseCategoryIconColor = expenseCategory.iconColor;
-              }
-            }
+            expenseCategoryIcon =
+                expenseCategoryMap[expense.categoryId]?.icon ??
+                    defaultExpenseCategory.icon;
+            expenseCategoryIconColor =
+                expenseCategoryMap[expense.categoryId]?.iconColor ??
+                    defaultExpenseCategory.iconColor;
+
             return ListTile(
               leading: Icon(
                 expenseCategoryIcon,

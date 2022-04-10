@@ -98,15 +98,9 @@ class _Category extends StatefulWidget {
 class _CategoryState extends State<_Category> {
   @override
   Widget build(BuildContext context) {
-    final expenseCategoryList = ExpenseCategoryList().get();
+    final categoryId = widget.inputted.categoryId;
 
-    final expenseCategoryMap = {
-      for (var expenseCategory in expenseCategoryList)
-        '${expenseCategory.id}': expenseCategory,
-    };
-
-    final selectedCategory =
-        expenseCategoryMap['${widget.inputted.categoryId}'];
+    expenseCategoryMap[categoryId];
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -116,12 +110,13 @@ class _CategoryState extends State<_Category> {
         leading: SizedBox(
           height: double.infinity,
           child: Icon(
-            selectedCategory.icon,
-            color: selectedCategory.iconColor,
+            expenseCategoryMap[categoryId]?.icon ?? defaultExpenseCategory.icon,
+            color: expenseCategoryMap[categoryId]?.iconColor ??
+                defaultExpenseCategory.iconColor,
           ),
         ),
         title: Text(
-          selectedCategory.name,
+          expenseCategoryMap[categoryId]!.name,
           textAlign: TextAlign.left,
         ),
         onTap: () async {
@@ -252,6 +247,13 @@ class _RecordButton extends ConsumerWidget {
           icon: const Icon(Icons.edit),
           onPressed: () {
             Navigator.of(context).pop();
+
+            // 空だった場合は内容の項目に費目を入れる
+            if (inputted.description == '') {
+              inputted.description =
+                  expenseCategoryMap[inputted.categoryId]?.name ??
+                      defaultExpenseCategory.name;
+            }
             ref.read(expensesProvider.notifier).addExpense(inputted);
           },
           label: const Text(
