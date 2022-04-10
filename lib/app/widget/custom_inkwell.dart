@@ -24,7 +24,7 @@ class CustomInkWell extends StatelessWidget {
           child: Icon(
             icon,
             color: appTheme.appColors.accentColor,
-            size: 32,
+            size: 42,
           ),
           onTap: () {
             onTap();

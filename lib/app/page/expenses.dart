@@ -125,7 +125,7 @@ class _MonthSelectorState extends State<MonthSelector> {
                 CustomInkWell(icon: Icons.arrow_left, onTap: showPrevMonth),
                 Text(
                   showDateString,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 18),
                 ),
                 CustomInkWell(icon: Icons.arrow_right, onTap: showNextMonth),
               ],

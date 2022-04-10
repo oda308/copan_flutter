@@ -103,7 +103,9 @@ class _ExpensesChartState extends ConsumerState<ExpensesChart> {
 
         late final String title;
         // 割合の少ないものは費目名を表示しない
-        if (categoryTotalPriceList[i].categoryPrice / totalPrice < 0.07) {
+        // タップした場合は表示する
+        if (categoryTotalPriceList[i].categoryPrice / totalPrice < 0.07 &&
+            !isTouched) {
           title = '';
         } else {
           title = expenseCategory.name;
