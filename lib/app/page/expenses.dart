@@ -1,5 +1,7 @@
 import 'package:copan_flutter/app/widget/expenses_chart.dart';
 import 'package:copan_flutter/app/widget/total_expense.dart';
+import 'package:copan_flutter/utility/category_id.dart';
+import 'package:copan_flutter/utility/expense.dart';
 import 'package:copan_flutter/utility/expense_category.dart';
 import 'package:copan_flutter/utility/format_price.dart';
 import 'package:flutter/material.dart';
@@ -152,41 +154,61 @@ class _Expenses extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final expensesList = ref.watch(expensesProvider);
+    final expensesByCategoryList =
+        getExpensesByCategory(expenses: expensesList);
 
     late final Widget widget;
 
-    if (expensesList.isNotEmpty) {
+    if (expensesByCategoryList.isNotEmpty) {
       widget = SliverList(
         delegate: SliverChildBuilderDelegate(
           (context, index) {
-            final expense = expensesList[index];
-            final formattedPrice = getFormattedPrice(expensesList[index].price);
+            final expensesByCategory = expensesByCategoryList[index];
+            late final String expenseName;
             late final IconData expenseCategoryIcon;
             late final Color? expenseCategoryIconColor;
 
+            expenseName =
+                expenseCategoryMap[expensesByCategory.categoryId]?.name ??
+                    defaultExpenseCategory.name;
             expenseCategoryIcon =
-                expenseCategoryMap[expense.categoryId]?.icon ??
+                expenseCategoryMap[expensesByCategory.categoryId]?.icon ??
                     defaultExpenseCategory.icon;
             expenseCategoryIconColor =
-                expenseCategoryMap[expense.categoryId]?.iconColor ??
+                expenseCategoryMap[expensesByCategory.categoryId]?.iconColor ??
                     defaultExpenseCategory.iconColor;
 
-            return ListTile(
+            final listTiles = <ListTile>[];
+            for (final expense in expensesByCategory.expenses) {
+              final formattedPrice = getFormattedPrice(expense.price);
+              listTiles.add(
+                ListTile(
+                  leading: Icon(
+                    expenseCategoryIcon,
+                    color: expenseCategoryIconColor,
+                  ),
+                  title: Text(
+                    expense.description,
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                  trailing: Text(
+                    '\u00A5' + formattedPrice,
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                ),
+              );
+            }
+
+            return ExpansionTile(
               leading: Icon(
                 expenseCategoryIcon,
                 color: expenseCategoryIconColor,
               ),
-              title: Text(
-                expense.description,
-                style: const TextStyle(fontSize: 14),
-              ),
-              trailing: Text(
-                '\u00A5' + formattedPrice,
-                style: const TextStyle(fontSize: 14),
-              ),
+              title: Text(expenseName),
+              children: listTiles,
             );
           },
-          childCount: expensesList.length,
+          childCount: expensesByCategoryList.length,
         ),
       );
     } else {
@@ -204,4 +226,40 @@ class _Expenses extends ConsumerWidget {
     }
     return widget;
   }
+}
+
+List<ExpensesByCategory> getExpensesByCategory(
+    {required List<Expense> expenses}) {
+  final expensesByCategoryList = <ExpensesByCategory>[];
+
+  for (final expense in expenses) {
+    bool containsCategory = false;
+    for (final expensesByCategory in expensesByCategoryList) {
+      if (expensesByCategory.categoryId == expense.categoryId) {
+        containsCategory = true;
+        expensesByCategory.expenses.add(expense);
+        expensesByCategory.totalPrice += expense.price;
+      }
+    }
+    // まだ追加していないカテゴリをリストに加える
+    if (!containsCategory) {
+      expensesByCategoryList.add(ExpensesByCategory(
+          categoryId: expense.categoryId,
+          expenses: [expense],
+          totalPrice: expense.price));
+    }
+  }
+  return expensesByCategoryList;
+}
+
+class ExpensesByCategory {
+  ExpensesByCategory({
+    required this.categoryId,
+    required this.expenses,
+    required this.totalPrice,
+  });
+
+  CategoryId categoryId;
+  List<Expense> expenses;
+  int totalPrice;
 }
