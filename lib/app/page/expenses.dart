@@ -183,18 +183,32 @@ class _Expenses extends ConsumerWidget {
               final formattedPrice = getFormattedPrice(expense.price);
               listTiles.add(
                 ListTile(
-                  leading: Icon(
-                    expenseCategoryIcon,
-                    color: expenseCategoryIconColor,
+                  // leadingで上下中央によせるため、
+                  // ColumnのmainAxisAlignmentで調整、回避している
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _getMonthAndDay(expense.createDate),
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
                   ),
                   title: Text(
                     expense.description,
                     style: const TextStyle(fontSize: 14),
+                    textHeightBehavior: const TextHeightBehavior(
+                      applyHeightToFirstAscent: false,
+                      applyHeightToLastDescent: false,
+                    ),
                   ),
                   trailing: Text(
                     '\u00A5' + formattedPrice,
                     style: const TextStyle(fontSize: 14),
                   ),
+                  onTap: () {
+                    // TODO(oda308): 各費目をタップしたときの処理
+                  },
                 ),
               );
             }
@@ -268,4 +282,8 @@ class ExpensesByCategory {
   CategoryId categoryId;
   List<Expense> expenses;
   int totalPrice;
+}
+
+String _getMonthAndDay(DateTime date) {
+  return date.month.toString() + "/" + date.day.toString();
 }
