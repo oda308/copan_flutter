@@ -204,7 +204,13 @@ class _Expenses extends ConsumerWidget {
                 expenseCategoryIcon,
                 color: expenseCategoryIconColor,
               ),
-              title: Text(expenseName),
+              title: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Text(expenseName),
+                    Text('\u00A5 ' +
+                        getFormattedPrice(expensesByCategory.totalPrice))
+                  ]),
               children: listTiles,
             );
           },
