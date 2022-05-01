@@ -1,4 +1,6 @@
+import 'package:copan_flutter/data/local/db/dao.dart' as db;
 import 'package:copan_flutter/notifier/notifier.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -254,6 +256,14 @@ class _RecordButton extends ConsumerWidget {
                   expenseCategoryMap[inputted.categoryId]?.name ??
                       defaultExpenseCategory.name;
             }
+
+            db.copanDB.addExpense(db.ExpensesTableCompanion(
+              price: drift.Value(inputted.price),
+              categoryId: drift.Value(inputted.categoryId.index),
+              description: drift.Value(inputted.description),
+              criateDate: drift.Value(inputted.createDate),
+            ));
+
             ref.read(expensesProvider.notifier).addExpense(inputted);
           },
           label: const Text(

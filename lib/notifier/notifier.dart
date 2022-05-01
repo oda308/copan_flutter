@@ -7,7 +7,9 @@ var expensesProvider =
         (ref) => ExpenseStateNotifier());
 
 class ExpenseStateNotifier extends StateNotifier<List<Expense>> {
-  ExpenseStateNotifier() : super([]);
+  ExpenseStateNotifier({
+    expenses,
+  }) : super(expenses);
 
   void addExpense(Expense expense) {
     state = [...state, expense];
