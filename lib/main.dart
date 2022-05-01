@@ -7,12 +7,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import 'app/page/date.dart';
 import 'app/page/input_expense.dart';
 import 'app/page/select_category.dart';
 import 'utility/expense_category.dart';
 
-final index = DateIndex();
 const appTitle = '家計簿アプリCopan';
 
 void main() async {
@@ -22,8 +20,14 @@ void main() async {
   final expenses =
       convertExpensesTableToExpenses(await db.copanDB.getAllExpenseEntries);
 
+  final now = DateTime.now();
+  final date = DateTime(now.year, now.month);
+
   runApp(ProviderScope(overrides: [
-    expensesProvider.overrideWithValue(ExpenseStateNotifier(expenses: expenses))
+    selectedMonthProvider
+        .overrideWithValue(SelectedMonthStateNotifier(date: date)),
+    expensesProvider
+        .overrideWithValue(ExpenseStateNotifier(expenses: expenses)),
   ], child: const MyApp()));
 }
 

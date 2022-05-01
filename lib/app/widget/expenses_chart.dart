@@ -21,14 +21,14 @@ class _ExpensesChartState extends ConsumerState<ExpensesChart> {
   @override
   void initState() {
     super.initState();
-    ref.read(expensesProvider);
+    ref.read(filteredExpensesProvider);
   }
 
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraint) {
       final width = constraint.maxWidth;
-      final expensesList = ref.watch(expensesProvider);
+      final expensesList = ref.watch(filteredExpensesProvider);
 
       return SizedBox(
         width: constraint.maxWidth,

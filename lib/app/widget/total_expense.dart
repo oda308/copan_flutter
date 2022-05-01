@@ -12,7 +12,7 @@ class TotalExpense extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final expensesList = ref.watch(expensesProvider);
+    final expensesList = ref.watch(filteredExpensesProvider);
     final totalExpense = getTotalExpense(expensesList);
     final totalExpenseString = getFormattedPrice(totalExpense);
 

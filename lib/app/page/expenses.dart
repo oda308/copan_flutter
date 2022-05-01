@@ -7,7 +7,6 @@ import 'package:copan_flutter/utility/format_price.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../../main.dart';
 import '../../notifier/notifier.dart';
 import '../../theme/app_theme.dart';
 import '../widget/custom_card.dart';
@@ -88,33 +87,38 @@ class Expenses extends StatelessWidget {
   }
 }
 
-class MonthSelector extends StatefulWidget {
+class MonthSelector extends ConsumerStatefulWidget {
   const MonthSelector({Key? key}) : super(key: key);
 
   @override
   _MonthSelectorState createState() => _MonthSelectorState();
 }
 
-class _MonthSelectorState extends State<MonthSelector> {
+class _MonthSelectorState extends ConsumerState<MonthSelector> {
   late String showDateString;
 
+  @override
+  void initState() {
+    super.initState();
+    ref.read(selectedMonthProvider);
+  }
+
   void showPrevMonth() {
-    setState(() {
-      index.decrementDateIndex();
-      showDateString = updateDateString(index: index.index);
-    });
+    var selectedMonth = ref.watch(selectedMonthProvider);
+    ref.read(selectedMonthProvider.notifier).state =
+        DateTime(selectedMonth.year, selectedMonth.month - 1);
   }
 
   void showNextMonth() {
-    setState(() {
-      index.incrementDateIndex();
-      showDateString = updateDateString(index: index.index);
-    });
+    var selectedMonth = ref.watch(selectedMonthProvider);
+    ref.read(selectedMonthProvider.notifier).state =
+        DateTime(selectedMonth.year, selectedMonth.month + 1);
   }
 
   @override
   Widget build(BuildContext context) {
-    showDateString = updateDateString(index: index.index);
+    final targetMonth = ref.watch(selectedMonthProvider);
+    final dateString = getDateString(targetMonth: targetMonth);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: LayoutBuilder(
@@ -126,7 +130,7 @@ class _MonthSelectorState extends State<MonthSelector> {
               children: [
                 CustomInkWell(icon: Icons.arrow_left, onTap: showPrevMonth),
                 Text(
-                  showDateString,
+                  dateString,
                   style: const TextStyle(fontSize: 18),
                 ),
                 CustomInkWell(icon: Icons.arrow_right, onTap: showNextMonth),
@@ -138,11 +142,9 @@ class _MonthSelectorState extends State<MonthSelector> {
     );
   }
 
-  String updateDateString({required int index}) {
-    DateTime now = DateTime.now();
-    DateTime targetDate = DateTime(now.year, now.month + index);
+  String getDateString({required DateTime targetMonth}) {
     String showDateString =
-        targetDate.year.toString() + '年' + targetDate.month.toString() + '月~';
+        targetMonth.year.toString() + '年' + targetMonth.month.toString() + '月~';
 
     return showDateString;
   }
@@ -153,7 +155,7 @@ class _Expenses extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final expensesList = ref.watch(expensesProvider);
+    final expensesList = ref.watch(filteredExpensesProvider);
     final expensesByCategoryList =
         getExpensesByCategory(expenses: expensesList);
 
