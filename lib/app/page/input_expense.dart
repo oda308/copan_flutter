@@ -1,10 +1,13 @@
-import 'package:copan_flutter/data/local/db/dao.dart' as db;
-import 'package:copan_flutter/notifier/notifier.dart';
+import 'dart:convert';
+
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 
+import '../../data/local/db/dao.dart' as db;
+import '../../notifier/notifier.dart';
 import '../../theme/app_theme.dart';
 import '../../utility/category_id.dart';
 import '../../utility/expense.dart';
@@ -257,6 +260,14 @@ class _RecordButton extends ConsumerWidget {
                       defaultExpenseCategory.name;
             }
 
+            // requestを送信, DBに保存
+            _request(
+              price: inputted.price,
+              categoryId: inputted.categoryId.index,
+              description: inputted.description,
+              date: inputted.createDate,
+            );
+
             db.copanDB.addExpense(db.ExpensesTableCompanion(
               price: drift.Value(inputted.price),
               categoryId: drift.Value(inputted.categoryId.index),
@@ -273,4 +284,32 @@ class _RecordButton extends ConsumerWidget {
       ),
     );
   }
+}
+
+void _request({
+  required int price,
+  required int categoryId,
+  required String description,
+  required DateTime date,
+}) async {
+  final expense = <String, dynamic>{
+    "action": "insertExpense",
+    "price": price,
+    "categoryId": categoryId,
+    "description": description,
+    "date": date.toString(),
+    "inputUserId": 1,
+  };
+  String url = "http://10.0.2.2:5500";
+  Map<String, String> headers = {'content-type': 'application/json'};
+  String body = json.encode(expense);
+
+  http.Response resp =
+      await http.post(Uri.parse(url), headers: headers, body: body);
+
+  if (resp.statusCode != 200) {
+    throw AssertionError("Failed get response");
+  }
+
+  print(resp);
 }
