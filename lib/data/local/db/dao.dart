@@ -16,12 +16,20 @@ class ExpensesTable extends Table {
   IntColumn get price => integer()();
   IntColumn get categoryId => integer()();
   TextColumn get description => text().withLength(max: 200)();
-  DateTimeColumn get criateDate => dateTime()();
+  DateTimeColumn get createDate => dateTime()();
   TextColumn get expenseUuid => text().withLength()();
 }
 
+@DataClassName('UserTable')
+class UsersTable extends Table {
+  TextColumn get userId => text()();
+  TextColumn get password => text()();
+  TextColumn get name => text().nullable()();
+  DateTimeColumn get createDate => dateTime()();
+}
+
 @DriftDatabase(
-  tables: [ExpensesTable],
+  tables: [ExpensesTable, UsersTable],
 )
 class CopanDB extends _$CopanDB {
   CopanDB() : super(_openConnection());
@@ -41,6 +49,12 @@ class CopanDB extends _$CopanDB {
           ..where((table) => table.expenseUuid.equals(expenseUuid)))
         .go();
   }
+
+  Future<int> addUser(UsersTableCompanion entry) {
+    return into(usersTable).insert(entry);
+  }
+
+  Future<List<UserTable>> get getUser => select(usersTable).get();
 }
 
 LazyDatabase _openConnection() {

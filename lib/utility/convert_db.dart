@@ -10,7 +10,7 @@ List<Expense> convertExpensesTableToExpenses(
     final expense = Expense(
       price: entry.price,
       categoryId: CategoryId.values[entry.categoryId],
-      createDate: entry.criateDate,
+      createDate: entry.createDate,
       description: entry.description,
       expenseUuid: entry.expenseUuid,
     );

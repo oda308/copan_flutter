@@ -12,14 +12,14 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
   final int price;
   final int categoryId;
   final String description;
-  final DateTime criateDate;
+  final DateTime createDate;
   final String expenseUuid;
   ExpenseTable(
       {required this.id,
       required this.price,
       required this.categoryId,
       required this.description,
-      required this.criateDate,
+      required this.createDate,
       required this.expenseUuid});
   factory ExpenseTable.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
@@ -32,8 +32,8 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}category_id'])!,
       description: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
-      criateDate: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}criate_date'])!,
+      createDate: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}create_date'])!,
       expenseUuid: const StringType()
           .mapFromDatabaseResponse(data['${effectivePrefix}expense_uuid'])!,
     );
@@ -45,7 +45,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
     map['price'] = Variable<int>(price);
     map['category_id'] = Variable<int>(categoryId);
     map['description'] = Variable<String>(description);
-    map['criate_date'] = Variable<DateTime>(criateDate);
+    map['create_date'] = Variable<DateTime>(createDate);
     map['expense_uuid'] = Variable<String>(expenseUuid);
     return map;
   }
@@ -56,7 +56,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
       price: Value(price),
       categoryId: Value(categoryId),
       description: Value(description),
-      criateDate: Value(criateDate),
+      createDate: Value(createDate),
       expenseUuid: Value(expenseUuid),
     );
   }
@@ -69,7 +69,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
       price: serializer.fromJson<int>(json['price']),
       categoryId: serializer.fromJson<int>(json['categoryId']),
       description: serializer.fromJson<String>(json['description']),
-      criateDate: serializer.fromJson<DateTime>(json['criateDate']),
+      createDate: serializer.fromJson<DateTime>(json['createDate']),
       expenseUuid: serializer.fromJson<String>(json['expenseUuid']),
     );
   }
@@ -81,7 +81,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
       'price': serializer.toJson<int>(price),
       'categoryId': serializer.toJson<int>(categoryId),
       'description': serializer.toJson<String>(description),
-      'criateDate': serializer.toJson<DateTime>(criateDate),
+      'createDate': serializer.toJson<DateTime>(createDate),
       'expenseUuid': serializer.toJson<String>(expenseUuid),
     };
   }
@@ -91,14 +91,14 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
           int? price,
           int? categoryId,
           String? description,
-          DateTime? criateDate,
+          DateTime? createDate,
           String? expenseUuid}) =>
       ExpenseTable(
         id: id ?? this.id,
         price: price ?? this.price,
         categoryId: categoryId ?? this.categoryId,
         description: description ?? this.description,
-        criateDate: criateDate ?? this.criateDate,
+        createDate: createDate ?? this.createDate,
         expenseUuid: expenseUuid ?? this.expenseUuid,
       );
   @override
@@ -108,7 +108,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
           ..write('price: $price, ')
           ..write('categoryId: $categoryId, ')
           ..write('description: $description, ')
-          ..write('criateDate: $criateDate, ')
+          ..write('createDate: $createDate, ')
           ..write('expenseUuid: $expenseUuid')
           ..write(')'))
         .toString();
@@ -116,7 +116,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
 
   @override
   int get hashCode =>
-      Object.hash(id, price, categoryId, description, criateDate, expenseUuid);
+      Object.hash(id, price, categoryId, description, createDate, expenseUuid);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -125,7 +125,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
           other.price == this.price &&
           other.categoryId == this.categoryId &&
           other.description == this.description &&
-          other.criateDate == this.criateDate &&
+          other.createDate == this.createDate &&
           other.expenseUuid == this.expenseUuid);
 }
 
@@ -134,14 +134,14 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
   final Value<int> price;
   final Value<int> categoryId;
   final Value<String> description;
-  final Value<DateTime> criateDate;
+  final Value<DateTime> createDate;
   final Value<String> expenseUuid;
   const ExpensesTableCompanion({
     this.id = const Value.absent(),
     this.price = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.description = const Value.absent(),
-    this.criateDate = const Value.absent(),
+    this.createDate = const Value.absent(),
     this.expenseUuid = const Value.absent(),
   });
   ExpensesTableCompanion.insert({
@@ -149,19 +149,19 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
     required int price,
     required int categoryId,
     required String description,
-    required DateTime criateDate,
+    required DateTime createDate,
     required String expenseUuid,
   })  : price = Value(price),
         categoryId = Value(categoryId),
         description = Value(description),
-        criateDate = Value(criateDate),
+        createDate = Value(createDate),
         expenseUuid = Value(expenseUuid);
   static Insertable<ExpenseTable> custom({
     Expression<int>? id,
     Expression<int>? price,
     Expression<int>? categoryId,
     Expression<String>? description,
-    Expression<DateTime>? criateDate,
+    Expression<DateTime>? createDate,
     Expression<String>? expenseUuid,
   }) {
     return RawValuesInsertable({
@@ -169,7 +169,7 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
       if (price != null) 'price': price,
       if (categoryId != null) 'category_id': categoryId,
       if (description != null) 'description': description,
-      if (criateDate != null) 'criate_date': criateDate,
+      if (createDate != null) 'create_date': createDate,
       if (expenseUuid != null) 'expense_uuid': expenseUuid,
     });
   }
@@ -179,14 +179,14 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
       Value<int>? price,
       Value<int>? categoryId,
       Value<String>? description,
-      Value<DateTime>? criateDate,
+      Value<DateTime>? createDate,
       Value<String>? expenseUuid}) {
     return ExpensesTableCompanion(
       id: id ?? this.id,
       price: price ?? this.price,
       categoryId: categoryId ?? this.categoryId,
       description: description ?? this.description,
-      criateDate: criateDate ?? this.criateDate,
+      createDate: createDate ?? this.createDate,
       expenseUuid: expenseUuid ?? this.expenseUuid,
     );
   }
@@ -206,8 +206,8 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
     if (description.present) {
       map['description'] = Variable<String>(description.value);
     }
-    if (criateDate.present) {
-      map['criate_date'] = Variable<DateTime>(criateDate.value);
+    if (createDate.present) {
+      map['create_date'] = Variable<DateTime>(createDate.value);
     }
     if (expenseUuid.present) {
       map['expense_uuid'] = Variable<String>(expenseUuid.value);
@@ -222,7 +222,7 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
           ..write('price: $price, ')
           ..write('categoryId: $categoryId, ')
           ..write('description: $description, ')
-          ..write('criateDate: $criateDate, ')
+          ..write('createDate: $createDate, ')
           ..write('expenseUuid: $expenseUuid')
           ..write(')'))
         .toString();
@@ -260,10 +260,10 @@ class $ExpensesTableTable extends ExpensesTable
       additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 200),
       type: const StringType(),
       requiredDuringInsert: true);
-  final VerificationMeta _criateDateMeta = const VerificationMeta('criateDate');
+  final VerificationMeta _createDateMeta = const VerificationMeta('createDate');
   @override
-  late final GeneratedColumn<DateTime?> criateDate = GeneratedColumn<DateTime?>(
-      'criate_date', aliasedName, false,
+  late final GeneratedColumn<DateTime?> createDate = GeneratedColumn<DateTime?>(
+      'create_date', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
   final VerificationMeta _expenseUuidMeta =
       const VerificationMeta('expenseUuid');
@@ -275,7 +275,7 @@ class $ExpensesTableTable extends ExpensesTable
       requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, price, categoryId, description, criateDate, expenseUuid];
+      [id, price, categoryId, description, createDate, expenseUuid];
   @override
   String get aliasedName => _alias ?? 'expenses_table';
   @override
@@ -310,13 +310,13 @@ class $ExpensesTableTable extends ExpensesTable
     } else if (isInserting) {
       context.missing(_descriptionMeta);
     }
-    if (data.containsKey('criate_date')) {
+    if (data.containsKey('create_date')) {
       context.handle(
-          _criateDateMeta,
-          criateDate.isAcceptableOrUnknown(
-              data['criate_date']!, _criateDateMeta));
+          _createDateMeta,
+          createDate.isAcceptableOrUnknown(
+              data['create_date']!, _createDateMeta));
     } else if (isInserting) {
-      context.missing(_criateDateMeta);
+      context.missing(_createDateMeta);
     }
     if (data.containsKey('expense_uuid')) {
       context.handle(
@@ -343,11 +343,266 @@ class $ExpensesTableTable extends ExpensesTable
   }
 }
 
+class UserTable extends DataClass implements Insertable<UserTable> {
+  final String userId;
+  final String password;
+  final String? name;
+  final DateTime createDate;
+  UserTable(
+      {required this.userId,
+      required this.password,
+      this.name,
+      required this.createDate});
+  factory UserTable.fromData(Map<String, dynamic> data, {String? prefix}) {
+    final effectivePrefix = prefix ?? '';
+    return UserTable(
+      userId: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
+      password: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}password'])!,
+      name: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
+      createDate: const DateTimeType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}create_date'])!,
+    );
+  }
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    map['user_id'] = Variable<String>(userId);
+    map['password'] = Variable<String>(password);
+    if (!nullToAbsent || name != null) {
+      map['name'] = Variable<String?>(name);
+    }
+    map['create_date'] = Variable<DateTime>(createDate);
+    return map;
+  }
+
+  UsersTableCompanion toCompanion(bool nullToAbsent) {
+    return UsersTableCompanion(
+      userId: Value(userId),
+      password: Value(password),
+      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
+      createDate: Value(createDate),
+    );
+  }
+
+  factory UserTable.fromJson(Map<String, dynamic> json,
+      {ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return UserTable(
+      userId: serializer.fromJson<String>(json['userId']),
+      password: serializer.fromJson<String>(json['password']),
+      name: serializer.fromJson<String?>(json['name']),
+      createDate: serializer.fromJson<DateTime>(json['createDate']),
+    );
+  }
+  @override
+  Map<String, dynamic> toJson({ValueSerializer? serializer}) {
+    serializer ??= driftRuntimeOptions.defaultSerializer;
+    return <String, dynamic>{
+      'userId': serializer.toJson<String>(userId),
+      'password': serializer.toJson<String>(password),
+      'name': serializer.toJson<String?>(name),
+      'createDate': serializer.toJson<DateTime>(createDate),
+    };
+  }
+
+  UserTable copyWith(
+          {String? userId,
+          String? password,
+          String? name,
+          DateTime? createDate}) =>
+      UserTable(
+        userId: userId ?? this.userId,
+        password: password ?? this.password,
+        name: name ?? this.name,
+        createDate: createDate ?? this.createDate,
+      );
+  @override
+  String toString() {
+    return (StringBuffer('UserTable(')
+          ..write('userId: $userId, ')
+          ..write('password: $password, ')
+          ..write('name: $name, ')
+          ..write('createDate: $createDate')
+          ..write(')'))
+        .toString();
+  }
+
+  @override
+  int get hashCode => Object.hash(userId, password, name, createDate);
+  @override
+  bool operator ==(Object other) =>
+      identical(this, other) ||
+      (other is UserTable &&
+          other.userId == this.userId &&
+          other.password == this.password &&
+          other.name == this.name &&
+          other.createDate == this.createDate);
+}
+
+class UsersTableCompanion extends UpdateCompanion<UserTable> {
+  final Value<String> userId;
+  final Value<String> password;
+  final Value<String?> name;
+  final Value<DateTime> createDate;
+  const UsersTableCompanion({
+    this.userId = const Value.absent(),
+    this.password = const Value.absent(),
+    this.name = const Value.absent(),
+    this.createDate = const Value.absent(),
+  });
+  UsersTableCompanion.insert({
+    required String userId,
+    required String password,
+    this.name = const Value.absent(),
+    required DateTime createDate,
+  })  : userId = Value(userId),
+        password = Value(password),
+        createDate = Value(createDate);
+  static Insertable<UserTable> custom({
+    Expression<String>? userId,
+    Expression<String>? password,
+    Expression<String?>? name,
+    Expression<DateTime>? createDate,
+  }) {
+    return RawValuesInsertable({
+      if (userId != null) 'user_id': userId,
+      if (password != null) 'password': password,
+      if (name != null) 'name': name,
+      if (createDate != null) 'create_date': createDate,
+    });
+  }
+
+  UsersTableCompanion copyWith(
+      {Value<String>? userId,
+      Value<String>? password,
+      Value<String?>? name,
+      Value<DateTime>? createDate}) {
+    return UsersTableCompanion(
+      userId: userId ?? this.userId,
+      password: password ?? this.password,
+      name: name ?? this.name,
+      createDate: createDate ?? this.createDate,
+    );
+  }
+
+  @override
+  Map<String, Expression> toColumns(bool nullToAbsent) {
+    final map = <String, Expression>{};
+    if (userId.present) {
+      map['user_id'] = Variable<String>(userId.value);
+    }
+    if (password.present) {
+      map['password'] = Variable<String>(password.value);
+    }
+    if (name.present) {
+      map['name'] = Variable<String?>(name.value);
+    }
+    if (createDate.present) {
+      map['create_date'] = Variable<DateTime>(createDate.value);
+    }
+    return map;
+  }
+
+  @override
+  String toString() {
+    return (StringBuffer('UsersTableCompanion(')
+          ..write('userId: $userId, ')
+          ..write('password: $password, ')
+          ..write('name: $name, ')
+          ..write('createDate: $createDate')
+          ..write(')'))
+        .toString();
+  }
+}
+
+class $UsersTableTable extends UsersTable
+    with TableInfo<$UsersTableTable, UserTable> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $UsersTableTable(this.attachedDatabase, [this._alias]);
+  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  @override
+  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+      'user_id', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _passwordMeta = const VerificationMeta('password');
+  @override
+  late final GeneratedColumn<String?> password = GeneratedColumn<String?>(
+      'password', aliasedName, false,
+      type: const StringType(), requiredDuringInsert: true);
+  final VerificationMeta _nameMeta = const VerificationMeta('name');
+  @override
+  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+      'name', aliasedName, true,
+      type: const StringType(), requiredDuringInsert: false);
+  final VerificationMeta _createDateMeta = const VerificationMeta('createDate');
+  @override
+  late final GeneratedColumn<DateTime?> createDate = GeneratedColumn<DateTime?>(
+      'create_date', aliasedName, false,
+      type: const IntType(), requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns => [userId, password, name, createDate];
+  @override
+  String get aliasedName => _alias ?? 'users_table';
+  @override
+  String get actualTableName => 'users_table';
+  @override
+  VerificationContext validateIntegrity(Insertable<UserTable> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('user_id')) {
+      context.handle(_userIdMeta,
+          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
+    } else if (isInserting) {
+      context.missing(_userIdMeta);
+    }
+    if (data.containsKey('password')) {
+      context.handle(_passwordMeta,
+          password.isAcceptableOrUnknown(data['password']!, _passwordMeta));
+    } else if (isInserting) {
+      context.missing(_passwordMeta);
+    }
+    if (data.containsKey('name')) {
+      context.handle(
+          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+    }
+    if (data.containsKey('create_date')) {
+      context.handle(
+          _createDateMeta,
+          createDate.isAcceptableOrUnknown(
+              data['create_date']!, _createDateMeta));
+    } else if (isInserting) {
+      context.missing(_createDateMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  @override
+  UserTable map(Map<String, dynamic> data, {String? tablePrefix}) {
+    return UserTable.fromData(data,
+        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+  }
+
+  @override
+  $UsersTableTable createAlias(String alias) {
+    return $UsersTableTable(attachedDatabase, alias);
+  }
+}
+
 abstract class _$CopanDB extends GeneratedDatabase {
   _$CopanDB(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
   late final $ExpensesTableTable expensesTable = $ExpensesTableTable(this);
+  late final $UsersTableTable usersTable = $UsersTableTable(this);
   @override
   Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
   @override
-  List<DatabaseSchemaEntity> get allSchemaEntities => [expensesTable];
+  List<DatabaseSchemaEntity> get allSchemaEntities =>
+      [expensesTable, usersTable];
 }

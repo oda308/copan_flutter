@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import '../../theme/app_theme.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -36,7 +37,7 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text('ログアウト'),
-            onTap: () {},
+            onTap: () => Navigator.of(context).pushReplacementNamed('/login'),
           ),
         ],
       ),

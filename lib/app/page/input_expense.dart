@@ -275,7 +275,7 @@ class _RecordButton extends ConsumerWidget {
               price: drift.Value(inputted.price),
               categoryId: drift.Value(inputted.categoryId.index),
               description: drift.Value(inputted.description),
-              criateDate: drift.Value(inputted.createDate),
+              createDate: drift.Value(inputted.createDate),
               expenseUuid: drift.Value(inputted.expenseUuid),
             ));
 

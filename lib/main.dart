@@ -1,5 +1,7 @@
 import 'dart:convert';
 
+import 'package:copan_flutter/app/page/login.dart';
+import 'package:copan_flutter/app/page/sign_up.dart';
 import 'package:copan_flutter/utility/category_id.dart';
 import 'package:copan_flutter/utility/expense.dart';
 import 'package:flutter/material.dart';
@@ -8,6 +10,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
+import '../../data/local/db/dao.dart' as db;
 import 'app/page/expenses.dart';
 import 'app/page/input_expense.dart';
 import 'app/page/select_category.dart';
@@ -19,6 +22,9 @@ const appTitle = '家計簿アプリCopan';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  var userTable = await db.copanDB.getUser;
+  int? user;
 
   initCategoryExpense(); // 費目の取得
 
@@ -45,12 +51,17 @@ void main() async {
           .overrideWithValue(SelectedMonthStateNotifier(date: date)),
       expensesProvider
           .overrideWithValue(ExpenseStateNotifier(expenses: expenses)),
-    ], child: const MyApp()));
+    ], child: MyApp(user: user)));
   }
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({
+    required this.user,
+    Key? key,
+  }) : super(key: key);
+
+  final dynamic user;
 
   // This widget is the root of your application.
   @override
@@ -61,8 +72,10 @@ class MyApp extends StatelessWidget {
         supportedLocales: L10n.supportedLocales,
         theme: AppTheme.light().themeData,
         darkTheme: AppTheme.dark().themeData,
-        home: const Expenses(),
+        home: user != null ? const Expenses() : const Login(),
         routes: <String, WidgetBuilder>{
+          '/login': (BuildContext context) => const Login(),
+          '/signUp': (BuildContext context) => const SignUp(),
           '/home': (BuildContext context) => const Expenses(),
           '/inputExpense': (BuildContext context) => const InputExpense(),
           '/selectCategory': (BuildContext context) => const SelectCategory(),
