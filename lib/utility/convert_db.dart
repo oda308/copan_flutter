@@ -12,6 +12,7 @@ List<Expense> convertExpensesTableToExpenses(
       categoryId: CategoryId.values[entry.categoryId],
       createDate: entry.criateDate,
       description: entry.description,
+      expenseUuid: entry.expenseUuid,
     );
     expenses.add(expense);
   }

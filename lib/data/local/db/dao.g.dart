@@ -6,19 +6,21 @@ part of 'dao.dart';
 // MoorGenerator
 // **************************************************************************
 
-// ignore_for_file: unnecessary_brace_in_string_interps, unnecessary_this
+// ignore_for_file: type=lint
 class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
   final int id;
   final int price;
   final int categoryId;
   final String description;
   final DateTime criateDate;
+  final String expenseUuid;
   ExpenseTable(
       {required this.id,
       required this.price,
       required this.categoryId,
       required this.description,
-      required this.criateDate});
+      required this.criateDate,
+      required this.expenseUuid});
   factory ExpenseTable.fromData(Map<String, dynamic> data, {String? prefix}) {
     final effectivePrefix = prefix ?? '';
     return ExpenseTable(
@@ -32,6 +34,8 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
           .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
       criateDate: const DateTimeType()
           .mapFromDatabaseResponse(data['${effectivePrefix}criate_date'])!,
+      expenseUuid: const StringType()
+          .mapFromDatabaseResponse(data['${effectivePrefix}expense_uuid'])!,
     );
   }
   @override
@@ -42,6 +46,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
     map['category_id'] = Variable<int>(categoryId);
     map['description'] = Variable<String>(description);
     map['criate_date'] = Variable<DateTime>(criateDate);
+    map['expense_uuid'] = Variable<String>(expenseUuid);
     return map;
   }
 
@@ -52,6 +57,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
       categoryId: Value(categoryId),
       description: Value(description),
       criateDate: Value(criateDate),
+      expenseUuid: Value(expenseUuid),
     );
   }
 
@@ -64,6 +70,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
       categoryId: serializer.fromJson<int>(json['categoryId']),
       description: serializer.fromJson<String>(json['description']),
       criateDate: serializer.fromJson<DateTime>(json['criateDate']),
+      expenseUuid: serializer.fromJson<String>(json['expenseUuid']),
     );
   }
   @override
@@ -75,6 +82,7 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
       'categoryId': serializer.toJson<int>(categoryId),
       'description': serializer.toJson<String>(description),
       'criateDate': serializer.toJson<DateTime>(criateDate),
+      'expenseUuid': serializer.toJson<String>(expenseUuid),
     };
   }
 
@@ -83,13 +91,15 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
           int? price,
           int? categoryId,
           String? description,
-          DateTime? criateDate}) =>
+          DateTime? criateDate,
+          String? expenseUuid}) =>
       ExpenseTable(
         id: id ?? this.id,
         price: price ?? this.price,
         categoryId: categoryId ?? this.categoryId,
         description: description ?? this.description,
         criateDate: criateDate ?? this.criateDate,
+        expenseUuid: expenseUuid ?? this.expenseUuid,
       );
   @override
   String toString() {
@@ -98,14 +108,15 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
           ..write('price: $price, ')
           ..write('categoryId: $categoryId, ')
           ..write('description: $description, ')
-          ..write('criateDate: $criateDate')
+          ..write('criateDate: $criateDate, ')
+          ..write('expenseUuid: $expenseUuid')
           ..write(')'))
         .toString();
   }
 
   @override
   int get hashCode =>
-      Object.hash(id, price, categoryId, description, criateDate);
+      Object.hash(id, price, categoryId, description, criateDate, expenseUuid);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
@@ -114,7 +125,8 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
           other.price == this.price &&
           other.categoryId == this.categoryId &&
           other.description == this.description &&
-          other.criateDate == this.criateDate);
+          other.criateDate == this.criateDate &&
+          other.expenseUuid == this.expenseUuid);
 }
 
 class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
@@ -123,12 +135,14 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
   final Value<int> categoryId;
   final Value<String> description;
   final Value<DateTime> criateDate;
+  final Value<String> expenseUuid;
   const ExpensesTableCompanion({
     this.id = const Value.absent(),
     this.price = const Value.absent(),
     this.categoryId = const Value.absent(),
     this.description = const Value.absent(),
     this.criateDate = const Value.absent(),
+    this.expenseUuid = const Value.absent(),
   });
   ExpensesTableCompanion.insert({
     this.id = const Value.absent(),
@@ -136,16 +150,19 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
     required int categoryId,
     required String description,
     required DateTime criateDate,
+    required String expenseUuid,
   })  : price = Value(price),
         categoryId = Value(categoryId),
         description = Value(description),
-        criateDate = Value(criateDate);
+        criateDate = Value(criateDate),
+        expenseUuid = Value(expenseUuid);
   static Insertable<ExpenseTable> custom({
     Expression<int>? id,
     Expression<int>? price,
     Expression<int>? categoryId,
     Expression<String>? description,
     Expression<DateTime>? criateDate,
+    Expression<String>? expenseUuid,
   }) {
     return RawValuesInsertable({
       if (id != null) 'id': id,
@@ -153,6 +170,7 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
       if (categoryId != null) 'category_id': categoryId,
       if (description != null) 'description': description,
       if (criateDate != null) 'criate_date': criateDate,
+      if (expenseUuid != null) 'expense_uuid': expenseUuid,
     });
   }
 
@@ -161,13 +179,15 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
       Value<int>? price,
       Value<int>? categoryId,
       Value<String>? description,
-      Value<DateTime>? criateDate}) {
+      Value<DateTime>? criateDate,
+      Value<String>? expenseUuid}) {
     return ExpensesTableCompanion(
       id: id ?? this.id,
       price: price ?? this.price,
       categoryId: categoryId ?? this.categoryId,
       description: description ?? this.description,
       criateDate: criateDate ?? this.criateDate,
+      expenseUuid: expenseUuid ?? this.expenseUuid,
     );
   }
 
@@ -189,6 +209,9 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
     if (criateDate.present) {
       map['criate_date'] = Variable<DateTime>(criateDate.value);
     }
+    if (expenseUuid.present) {
+      map['expense_uuid'] = Variable<String>(expenseUuid.value);
+    }
     return map;
   }
 
@@ -199,7 +222,8 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
           ..write('price: $price, ')
           ..write('categoryId: $categoryId, ')
           ..write('description: $description, ')
-          ..write('criateDate: $criateDate')
+          ..write('criateDate: $criateDate, ')
+          ..write('expenseUuid: $expenseUuid')
           ..write(')'))
         .toString();
   }
@@ -241,9 +265,17 @@ class $ExpensesTableTable extends ExpensesTable
   late final GeneratedColumn<DateTime?> criateDate = GeneratedColumn<DateTime?>(
       'criate_date', aliasedName, false,
       type: const IntType(), requiredDuringInsert: true);
+  final VerificationMeta _expenseUuidMeta =
+      const VerificationMeta('expenseUuid');
+  @override
+  late final GeneratedColumn<String?> expenseUuid = GeneratedColumn<String?>(
+      'expense_uuid', aliasedName, false,
+      additionalChecks: GeneratedColumn.checkTextLength(),
+      type: const StringType(),
+      requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
-      [id, price, categoryId, description, criateDate];
+      [id, price, categoryId, description, criateDate, expenseUuid];
   @override
   String get aliasedName => _alias ?? 'expenses_table';
   @override
@@ -285,6 +317,14 @@ class $ExpensesTableTable extends ExpensesTable
               data['criate_date']!, _criateDateMeta));
     } else if (isInserting) {
       context.missing(_criateDateMeta);
+    }
+    if (data.containsKey('expense_uuid')) {
+      context.handle(
+          _expenseUuidMeta,
+          expenseUuid.isAcceptableOrUnknown(
+              data['expense_uuid']!, _expenseUuidMeta));
+    } else if (isInserting) {
+      context.missing(_expenseUuidMeta);
     }
     return context;
   }

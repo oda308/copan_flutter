@@ -6,10 +6,12 @@ class Expense {
     required this.categoryId,
     required this.createDate,
     required this.description,
+    required this.expenseUuid,
   });
 
   int price;
   CategoryId categoryId;
   DateTime createDate;
   String description;
+  String expenseUuid;
 }

@@ -17,6 +17,7 @@ class ExpensesTable extends Table {
   IntColumn get categoryId => integer()();
   TextColumn get description => text().withLength(max: 200)();
   DateTimeColumn get criateDate => dateTime()();
+  TextColumn get expenseUuid => text().withLength()();
 }
 
 @DriftDatabase(
@@ -33,6 +34,12 @@ class CopanDB extends _$CopanDB {
 
   Future<int> addExpense(ExpensesTableCompanion entry) {
     return into(expensesTable).insert(entry);
+  }
+
+  Future<void> deleteExpense({required String expenseUuid}) {
+    return (delete(expensesTable)
+          ..where((table) => table.expenseUuid.equals(expenseUuid)))
+        .go();
   }
 }
 

@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
+import 'package:uuid/uuid.dart';
 
 import '../../data/local/db/dao.dart' as db;
 import '../../notifier/notifier.dart';
@@ -23,6 +24,7 @@ class InputExpense extends StatelessWidget {
       categoryId: CategoryId.food,
       createDate: DateTime.now(),
       description: '',
+      expenseUuid: const Uuid().v4(),
     );
 
     return Scaffold(
@@ -266,6 +268,7 @@ class _RecordButton extends ConsumerWidget {
               categoryId: inputted.categoryId.index,
               description: inputted.description,
               date: inputted.createDate,
+              expenseUuid: inputted.expenseUuid,
             );
 
             db.copanDB.addExpense(db.ExpensesTableCompanion(
@@ -273,6 +276,7 @@ class _RecordButton extends ConsumerWidget {
               categoryId: drift.Value(inputted.categoryId.index),
               description: drift.Value(inputted.description),
               criateDate: drift.Value(inputted.createDate),
+              expenseUuid: drift.Value(inputted.expenseUuid),
             ));
 
             ref.read(expensesProvider.notifier).addExpense(inputted);
@@ -291,6 +295,7 @@ void _request({
   required int categoryId,
   required String description,
   required DateTime date,
+  required String expenseUuid,
 }) async {
   final expense = <String, dynamic>{
     "action": "insertExpense",
@@ -299,6 +304,7 @@ void _request({
     "description": description,
     "date": date.toString(),
     "inputUserId": 1,
+    "expenseUuid": expenseUuid,
   };
   String url = "http://10.0.2.2:5500";
   Map<String, String> headers = {'content-type': 'application/json'};

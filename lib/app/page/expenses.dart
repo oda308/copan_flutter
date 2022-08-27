@@ -1,16 +1,20 @@
-import 'package:copan_flutter/app/widget/expenses_chart.dart';
-import 'package:copan_flutter/app/widget/total_expense.dart';
-import 'package:copan_flutter/utility/category_id.dart';
-import 'package:copan_flutter/utility/expense.dart';
-import 'package:copan_flutter/utility/expense_category.dart';
-import 'package:copan_flutter/utility/format_price.dart';
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:http/http.dart' as http;
 
+import '../../data/local/db/dao.dart' as db;
 import '../../notifier/notifier.dart';
 import '../../theme/app_theme.dart';
+import '../../utility/category_id.dart';
+import '../../utility/expense.dart';
+import '../../utility/expense_category.dart';
+import '../../utility/format_price.dart';
 import '../widget/custom_card.dart';
 import '../widget/custom_inkwell.dart';
+import '../widget/expenses_chart.dart';
+import '../widget/total_expense.dart';
 import 'drawer.dart';
 
 class Expenses extends StatelessWidget {
@@ -77,11 +81,11 @@ class Expenses extends StatelessWidget {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () => Navigator.of(context).pushNamed('/inputExpense'),
+        backgroundColor: appTheme.appColors.accentColor,
         child: Icon(
           Icons.add,
           color: appTheme.appColors.secondaryText,
         ),
-        backgroundColor: appTheme.appColors.accentColor,
       ),
     );
   }
@@ -143,8 +147,7 @@ class _MonthSelectorState extends ConsumerState<MonthSelector> {
   }
 
   String getDateString({required DateTime targetMonth}) {
-    String showDateString =
-        targetMonth.year.toString() + '年' + targetMonth.month.toString() + '月~';
+    String showDateString = '${targetMonth.year}年${targetMonth.month}月~';
 
     return showDateString;
   }
@@ -180,36 +183,73 @@ class _Expenses extends ConsumerWidget {
                 expenseCategoryMap[expensesByCategory.categoryId]?.iconColor ??
                     defaultExpenseCategory.iconColor;
 
-            final listTiles = <ListTile>[];
+            final listTiles = <Dismissible>[];
             for (final expense in expensesByCategory.expenses) {
               final formattedPrice = getFormattedPrice(expense.price);
               listTiles.add(
-                ListTile(
-                  // leadingで上下中央によせるため、
-                  // ColumnのmainAxisAlignmentで調整、回避している
-                  leading: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        _getMonthAndDay(expense.createDate),
-                        style: const TextStyle(fontSize: 14),
-                      ),
-                    ],
+                Dismissible(
+                  key: UniqueKey(),
+                  background: Container(
+                    color: Colors.red,
+                    child: Align(
+                        alignment: Alignment.centerLeft,
+                        child: Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          child: Row(
+                            children: const [
+                              Icon(
+                                Icons.delete,
+                                color: Colors.white,
+                              ),
+                              Icon(
+                                Icons.navigate_next,
+                                color: Colors.white,
+                              ),
+                            ],
+                          ),
+                        )),
                   ),
-                  title: Text(
-                    expense.description,
-                    style: const TextStyle(fontSize: 14),
-                    textHeightBehavior: const TextHeightBehavior(
-                      applyHeightToFirstAscent: false,
-                      applyHeightToLastDescent: false,
+                  direction: DismissDirection.startToEnd,
+                  child: ListTile(
+                    // leadingで上下中央によせるため、
+                    // ColumnのmainAxisAlignmentで調整、回避している
+                    leading: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Text(
+                          _getMonthAndDay(expense.createDate),
+                          style: const TextStyle(fontSize: 14),
+                        ),
+                      ],
                     ),
+                    title: Text(
+                      expense.description,
+                      style: const TextStyle(fontSize: 14),
+                      textHeightBehavior: const TextHeightBehavior(
+                        applyHeightToFirstAscent: false,
+                        applyHeightToLastDescent: false,
+                      ),
+                    ),
+                    trailing: Text(
+                      '\u00A5$formattedPrice',
+                      style: const TextStyle(fontSize: 14),
+                    ),
+                    onTap: () {
+                      // TODO(oda308): 各費目をタップしたときの処理
+                    },
                   ),
-                  trailing: Text(
-                    '\u00A5' + formattedPrice,
-                    style: const TextStyle(fontSize: 14),
-                  ),
-                  onTap: () {
-                    // TODO(oda308): 各費目をタップしたときの処理
+                  onDismissed: (_) {
+                    _request(
+                      expenseUuid: expense.expenseUuid,
+                    );
+
+                    db.copanDB.deleteExpense(
+                      expenseUuid: expense.expenseUuid,
+                    );
+
+                    ref
+                        .read(expensesProvider.notifier)
+                        .deleteExpense(expense.expenseUuid);
                   },
                 ),
               );
@@ -224,8 +264,8 @@ class _Expenses extends ConsumerWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(expenseName),
-                    Text('\u00A5 ' +
-                        getFormattedPrice(expensesByCategory.totalPrice))
+                    Text(
+                        '\u00A5 ${getFormattedPrice(expensesByCategory.totalPrice)}')
                   ]),
               children: listTiles,
             );
@@ -287,5 +327,27 @@ class ExpensesByCategory {
 }
 
 String _getMonthAndDay(DateTime date) {
-  return date.month.toString() + "/" + date.day.toString();
+  return "${date.month}/${date.day}";
+}
+
+Future<void> _request({
+  required String expenseUuid,
+}) async {
+  final req = <String, dynamic>{
+    "action": "deleteExpense",
+    "expenseUuid": expenseUuid,
+  };
+  String url = "http://10.0.2.2:5500";
+  Map<String, String> headers = {'content-type': 'application/json'};
+  String body = json.encode(req);
+  try {
+    http.Response resp =
+        await http.post(Uri.parse(url), headers: headers, body: body);
+
+    if (resp.statusCode != 200) {
+      throw AssertionError("Failed get response");
+    }
+  } catch (e) {
+    rethrow;
+  }
 }

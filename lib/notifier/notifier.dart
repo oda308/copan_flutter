@@ -14,6 +14,10 @@ class ExpenseStateNotifier extends StateNotifier<List<Expense>> {
   void addExpense(Expense expense) {
     state = [...state, expense];
   }
+
+  void deleteExpense(String expenseUuid) {
+    state.removeWhere((Expense expense) => expense.expenseUuid == expenseUuid);
+  }
 }
 
 final selectedMonthProvider =

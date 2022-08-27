@@ -22,24 +22,31 @@ void main() async {
 
   initCategoryExpense(); // 費目の取得
 
-  // webサーバから取得
-  final expensesFromWeb = await _request(userId: 1);
+  late List<Expense> expenses;
 
-  final expenses = convertWebAPIToExpenses(expensesFromWeb);
+  try {
+    // webサーバから取得
+    final expensesFromWeb = await _request(userId: 1);
 
-  // ToDo: 同期で持ってきたデータとローカルDBのデータの取り扱い
-  //final expenses =
-  //    convertExpensesTableToExpenses(await db.copanDB.getAllExpenseEntries);
+    expenses = convertWebAPIToExpenses(expensesFromWeb);
 
-  final now = DateTime.now();
-  final date = DateTime(now.year, now.month);
+    // ToDo: 同期で持ってきたデータとローカルDBのデータの取り扱い
+    //final expenses =
+    //    convertExpensesTableToExpenses(await db.copanDB.getAllExpenseEntries);
+  } catch (e) {
+    expenses = [];
+    rethrow;
+  } finally {
+    final now = DateTime.now();
+    final date = DateTime(now.year, now.month);
 
-  runApp(ProviderScope(overrides: [
-    selectedMonthProvider
-        .overrideWithValue(SelectedMonthStateNotifier(date: date)),
-    expensesProvider
-        .overrideWithValue(ExpenseStateNotifier(expenses: expenses)),
-  ], child: const MyApp()));
+    runApp(ProviderScope(overrides: [
+      selectedMonthProvider
+          .overrideWithValue(SelectedMonthStateNotifier(date: date)),
+      expensesProvider
+          .overrideWithValue(ExpenseStateNotifier(expenses: expenses)),
+    ], child: const MyApp()));
+  }
 }
 
 class MyApp extends StatelessWidget {
@@ -73,15 +80,21 @@ Future<List<dynamic>> _request({
   String url = "http://10.0.2.2:5500";
   Map<String, String> headers = {'content-type': 'application/json'};
   String body = json.encode(req);
+  late List<dynamic> expenses;
 
-  http.Response resp =
-      await http.post(Uri.parse(url), headers: headers, body: body);
+  try {
+    http.Response resp =
+        await http.post(Uri.parse(url), headers: headers, body: body);
 
-  if (resp.statusCode != 200) {
-    throw AssertionError("Failed get response");
+    if (resp.statusCode != 200) {
+      throw AssertionError("Failed get response");
+    }
+
+    expenses = jsonDecode(resp.body) as List<dynamic>;
+  } catch (e) {
+    expenses = [];
+    rethrow;
   }
-
-  final expenses = jsonDecode(resp.body) as List<dynamic>;
   return expenses;
 }
 
@@ -98,6 +111,7 @@ List<Expense> convertWebAPIToExpenses(expensesFromWeb) {
       categoryId: CategoryId.values[entry['category']],
       createDate: formatted,
       description: entry['content'],
+      expenseUuid: entry['expense_uuid'],
     );
     expenses.add(expense);
   }
