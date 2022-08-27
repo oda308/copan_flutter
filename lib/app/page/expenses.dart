@@ -75,7 +75,7 @@ class Expenses extends StatelessWidget {
           ),
           const _Expenses(),
           const SliverToBoxAdapter(
-            child: SizedBox(height: 8),
+            child: SizedBox(height: 96),
           ),
         ]),
       ),
