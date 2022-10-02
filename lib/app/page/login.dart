@@ -56,11 +56,20 @@ class _Title extends StatelessWidget {
   }
 }
 
-class _LoginForm extends StatelessWidget {
+class _LoginForm extends StatefulWidget {
   const _LoginForm({Key? key}) : super(key: key);
 
   @override
+  State<_LoginForm> createState() => _LoginFormState();
+}
+
+class _LoginFormState extends State<_LoginForm> {
+  bool failedLogin = false;
+
+  @override
   Widget build(BuildContext context) {
+    String inputId = "";
+    String inputPassword = "";
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 16.0),
       child: Column(
@@ -69,6 +78,14 @@ class _LoginForm extends StatelessWidget {
             decoration: BoxDecoration(color: Colors.white.withOpacity(0.5)),
             child: Column(
               children: [
+                failedLogin
+                    ? const Text(
+                        "ログイン情報に誤りがあります",
+                        style: TextStyle(
+                          color: Colors.red,
+                        ),
+                      )
+                    : const SizedBox.shrink(),
                 TextFormField(
                   keyboardType: TextInputType.emailAddress,
                   style: const TextStyle(
@@ -82,6 +99,9 @@ class _LoginForm extends StatelessWidget {
                       hintStyle: TextStyle(
                         color: Color.fromARGB(255, 110, 110, 110),
                       )),
+                  onChanged: (value) {
+                    inputId = value;
+                  },
                 ),
                 TextFormField(
                   obscureText: true,
@@ -96,6 +116,9 @@ class _LoginForm extends StatelessWidget {
                       hintStyle: TextStyle(
                         color: Color.fromARGB(255, 110, 110, 110),
                       )),
+                  onChanged: (value) {
+                    inputPassword = value;
+                  },
                 ),
               ],
             ),
@@ -106,8 +129,18 @@ class _LoginForm extends StatelessWidget {
               style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   fixedSize: const Size.fromWidth(double.maxFinite)),
-              onPressed: () =>
-                  Navigator.of(context).pushReplacementNamed('/home'),
+              onPressed: () {
+                var id = inputId;
+                var password = inputPassword;
+
+                if (id == "test" && password == "test") {
+                  Navigator.of(context).pushReplacementNamed('/home');
+                } else {
+                  setState(() {
+                    failedLogin = true;
+                  });
+                }
+              },
               child: const Text('ログイン'),
             ),
           ),
