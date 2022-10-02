@@ -20,31 +20,8 @@ class Login extends StatelessWidget {
         child: Center(
           child: Column(
             mainAxisSize: MainAxisSize.max,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const _Title(),
-              const _LoginForm(),
-              Container(
-                color: Colors.blue,
-                child: ElevatedButton(
-                  onPressed: () => Navigator.of(context).pushNamed('/signUp'),
-                  style: ElevatedButton.styleFrom(
-                      primary: Colors.blue,
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      fixedSize: const Size.fromWidth(double.maxFinite),
-                      elevation: 0,
-                      shape: const RoundedRectangleBorder(
-                          borderRadius: BorderRadius.all(Radius.zero))),
-                  child: const Text(
-                    'アカウント登録',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontWeight: FontWeight.w600),
-                  ),
-                ),
-              ),
-            ],
+            mainAxisAlignment: MainAxisAlignment.spaceAround,
+            children: const [_Title(), _LoginForm(), SizedBox.shrink()],
           ),
         ),
       ),
@@ -132,6 +109,18 @@ class _LoginForm extends StatelessWidget {
               onPressed: () =>
                   Navigator.of(context).pushReplacementNamed('/home'),
               child: const Text('ログイン'),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.symmetric(vertical: 8.0),
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                  primary: Colors.blue,
+                  padding: const EdgeInsets.symmetric(vertical: 12),
+                  fixedSize: const Size.fromWidth(double.maxFinite)),
+              onPressed: () =>
+                  Navigator.of(context).pushReplacementNamed('/signUp'),
+              child: const Text('アカウント登録'),
             ),
           ),
         ],
