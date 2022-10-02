@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:convert';
 
 import 'package:copan_flutter/app/page/login.dart';
@@ -96,14 +97,17 @@ Future<List<dynamic>> _request({
   late List<dynamic> expenses;
 
   try {
-    http.Response resp =
-        await http.post(Uri.parse(url), headers: headers, body: body);
+    http.Response resp = await http
+        .post(Uri.parse(url), headers: headers, body: body)
+        .timeout(const Duration(seconds: 5));
 
     if (resp.statusCode != 200) {
       throw AssertionError("Failed get response");
     }
 
     expenses = jsonDecode(resp.body) as List<dynamic>;
+  } on TimeoutException catch (_) {
+    throw AssertionError("A timeout occured.");
   } catch (e) {
     expenses = [];
     rethrow;
