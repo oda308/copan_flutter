@@ -1,7 +1,7 @@
+import 'package:copan_flutter/data/expense/expense.dart';
+import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/notifier/notifier.dart';
-import 'package:copan_flutter/utility/category_id.dart';
-import 'package:copan_flutter/utility/expense.dart';
-import 'package:copan_flutter/utility/expense_category.dart';
+import 'package:copan_flutter/resources/expense_category.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';

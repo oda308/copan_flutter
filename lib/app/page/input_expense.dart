@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -7,12 +8,11 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 
+import '../../data/expense/expense.dart';
 import '../../data/local/db/dao.dart' as db;
 import '../../notifier/notifier.dart';
+import '../../resources/expense_category.dart';
 import '../../theme/app_theme.dart';
-import '../../utility/category_id.dart';
-import '../../utility/expense.dart';
-import '../../utility/expense_category.dart';
 
 class InputExpense extends StatelessWidget {
   const InputExpense({Key? key}) : super(key: key);

@@ -3,8 +3,8 @@ import 'dart:convert';
 
 import 'package:copan_flutter/app/page/login.dart';
 import 'package:copan_flutter/app/page/sign_up.dart';
-import 'package:copan_flutter/utility/category_id.dart';
-import 'package:copan_flutter/utility/expense.dart';
+import 'package:copan_flutter/data/expense/expense.dart';
+import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -17,9 +17,9 @@ import 'app/page/input_expense.dart';
 import 'app/page/select_category.dart';
 import 'notifier/notifier.dart';
 import 'theme/app_theme.dart';
-import 'utility/expense_category.dart';
 
 const appTitle = '家計簿アプリCopan';
+var token = "";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -27,33 +27,31 @@ void main() async {
   var userTable = await db.copanDB.getUser;
   int? user;
 
-  initCategoryExpense(); // 費目の取得
+  List<Expense> expenses = [];
 
-  late List<Expense> expenses;
+  if (token.isNotEmpty) {
+    try {
+      // webサーバから取得
+      final expensesFromWeb = await _request(userId: 1);
 
-  try {
-    // webサーバから取得
-    final expensesFromWeb = await _request(userId: 1);
+      expenses = convertWebAPIToExpenses(expensesFromWeb);
 
-    expenses = convertWebAPIToExpenses(expensesFromWeb);
-
-    // ToDo: 同期で持ってきたデータとローカルDBのデータの取り扱い
-    //final expenses =
-    //    convertExpensesTableToExpenses(await db.copanDB.getAllExpenseEntries);
-  } catch (e) {
-    expenses = [];
-    rethrow;
-  } finally {
-    final now = DateTime.now();
-    final date = DateTime(now.year, now.month);
-
-    runApp(ProviderScope(overrides: [
-      selectedMonthProvider
-          .overrideWithValue(SelectedMonthStateNotifier(date: date)),
-      expensesProvider
-          .overrideWithValue(ExpenseStateNotifier(expenses: expenses)),
-    ], child: MyApp(user: user)));
+      // ToDo: 同期で持ってきたデータとローカルDBのデータの取り扱い
+      //final expenses =
+      //    convertExpensesTableToExpenses(await db.copanDB.getAllExpenseEntries);
+    } catch (e) {
+      rethrow;
+    }
   }
+  final now = DateTime.now();
+  final date = DateTime(now.year, now.month);
+
+  runApp(ProviderScope(overrides: [
+    selectedMonthProvider
+        .overrideWithValue(SelectedMonthStateNotifier(date: date)),
+    expensesProvider
+        .overrideWithValue(ExpenseStateNotifier(expenses: expenses)),
+  ], child: MyApp(user: user)));
 }
 
 class MyApp extends StatelessWidget {

@@ -1,4 +1,4 @@
-import 'package:copan_flutter/utility/expense.dart';
+import 'package:copan_flutter/data/expense/expense.dart';
 
 int getTotalExpense(List<Expense> expensesList) {
   int totalExpense = 0;

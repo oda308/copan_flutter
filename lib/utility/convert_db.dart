@@ -1,6 +1,6 @@
+import 'package:copan_flutter/data/expense/expense.dart';
+import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/data/local/db/dao.dart';
-import 'package:copan_flutter/utility/category_id.dart';
-import 'package:copan_flutter/utility/expense.dart';
 
 List<Expense> convertExpensesTableToExpenses(
     List<ExpenseTable> expenseTableEntries) {

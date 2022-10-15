@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-import '../utility/expense.dart';
+import '../data/expense/expense.dart';
 
 final expensesProvider =
     StateNotifierProvider<ExpenseStateNotifier, List<Expense>>(

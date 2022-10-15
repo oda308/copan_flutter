@@ -37,7 +37,9 @@ class AppDrawer extends StatelessWidget {
           ),
           ListTile(
             title: const Text('ログアウト'),
-            onTap: () => Navigator.of(context).pushReplacementNamed('/login'),
+            onTap: () async {
+              await Navigator.of(context).pushReplacementNamed('/login');
+            },
           ),
         ],
       ),

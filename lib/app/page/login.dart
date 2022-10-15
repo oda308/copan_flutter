@@ -1,3 +1,4 @@
+import 'package:copan_flutter/requester/requester.dart';
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
@@ -129,12 +130,16 @@ class _LoginFormState extends State<_LoginForm> {
               style: ElevatedButton.styleFrom(
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   fixedSize: const Size.fromWidth(double.maxFinite)),
-              onPressed: () {
-                var id = inputId;
-                var password = inputPassword;
+              onPressed: () async {
+                final email = inputId;
+                final password = inputPassword;
 
-                if (id == "test" && password == "test") {
-                  Navigator.of(context).pushReplacementNamed('/home');
+                final isLoginSuccess =
+                    await Requester().loginRequester(email, password);
+
+                if (isLoginSuccess) {
+                  if (!mounted) return;
+                  await Navigator.of(context).pushReplacementNamed('/home');
                 } else {
                   setState(() {
                     failedLogin = true;

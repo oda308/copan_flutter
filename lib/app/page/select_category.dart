@@ -1,7 +1,7 @@
+import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:flutter/material.dart';
 
-import '../../utility/category_id.dart';
-import '../../utility/expense_category.dart';
+import '../../resources/expense_category.dart';
 
 class SelectCategory extends StatelessWidget {
   const SelectCategory({Key? key}) : super(key: key);
