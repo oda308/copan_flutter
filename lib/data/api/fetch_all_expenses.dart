@@ -44,7 +44,7 @@ Future<List<dynamic>> _request({
     }
     // TODO: jsonDecodeを2回使用しないとlistではなくstringが返ってくる
     // https://stackoverflow.com/questions/73511236/flutter-jsondecode-returns-string-instead-of-list
-    expenses = jsonDecode(jsonDecode(resp.body)) as List<dynamic>;
+    expenses = jsonDecode(jsonDecode(resp.body) as String) as List<dynamic>;
   } on TimeoutException catch (_) {
     throw AssertionError("A timeout occured.");
   } catch (e) {

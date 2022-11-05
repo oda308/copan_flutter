@@ -5,7 +5,7 @@ import '../data/expense/expense.dart';
 
 class ExpenseStateNotifier extends StateNotifier<List<Expense>> {
   ExpenseStateNotifier({
-    expenses,
+    required List<Expense> expenses,
   }) : super(expenses);
 
   void initExpenses(List<Expense> expenses) {
@@ -23,7 +23,7 @@ class ExpenseStateNotifier extends StateNotifier<List<Expense>> {
 
 class SelectedMonthStateNotifier extends StateNotifier<DateTime> {
   SelectedMonthStateNotifier({
-    date,
+    required DateTime date,
   }) : super(date);
 
   void changeMonth(DateTime date) {

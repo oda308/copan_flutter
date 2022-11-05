@@ -19,7 +19,8 @@ class Requester {
 
     if (response.statusCode == 200) {
       // レスポンスで取得したjsonをmapに格納
-      Map<String, dynamic> decoded = json.decode(response.body);
+      Map<String, dynamic> decoded =
+          json.decode(response.body) as Map<String, dynamic>;
       final loginResponse = AuthResponse.fromJson(decoded);
       debugPrint(loginResponse.accessToken);
       // TODO: どこかにトークンを保存する処理
@@ -63,5 +64,5 @@ class AuthResponse {
 
   // リダイレクトコンストラクタ。あらかじめ定義したコンストラクタを使用できる
   AuthResponse.fromJson(Map<String, dynamic> json)
-      : accessToken = json['accessToken'];
+      : accessToken = json['accessToken'] as String;
 }

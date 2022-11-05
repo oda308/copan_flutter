@@ -2,11 +2,11 @@ import 'package:flutter/material.dart';
 
 import 'app_color.dart';
 
-AppTheme getAppTheme(context) {
+AppTheme getAppTheme(BuildContext context) {
   return _isDarkMode(context) ? AppTheme.dark() : AppTheme.light();
 }
 
-bool _isDarkMode(context) {
+bool _isDarkMode(BuildContext context) {
   return MediaQuery.platformBrightnessOf(context) == Brightness.dark;
 }
 

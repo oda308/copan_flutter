@@ -12,10 +12,10 @@ class ExpensesChart extends ConsumerStatefulWidget {
   }) : super(key: key);
 
   @override
-  _ExpensesChartState createState() => _ExpensesChartState();
+  ExpensesChartState createState() => ExpensesChartState();
 }
 
-class _ExpensesChartState extends ConsumerState<ExpensesChart> {
+class ExpensesChartState extends ConsumerState<ExpensesChart> {
   int touchedIndex = -1;
 
   @override

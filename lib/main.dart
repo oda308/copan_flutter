@@ -79,20 +79,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
-List<Expense> convertWebAPIToExpenses(expensesFromWeb) {
+List<Expense> convertWebAPIToExpenses(List<dynamic> expensesFromWeb) {
   final expenses = <Expense>[];
 
   for (final entry in expensesFromWeb) {
     final dateTime = entry['date'].substring(0, 10);
     final formatter = DateFormat('yyyy-MM-dd');
-    final formatted = formatter.parseStrict(dateTime);
+    final formatted = formatter.parseStrict(dateTime as String);
 
     final expense = Expense(
-      price: entry['price'],
-      categoryId: CategoryId.values[entry['category']],
+      price: entry['price'] as int,
+      categoryId: CategoryId.values[entry['category'] as int],
       createDate: formatted,
-      description: entry['content'],
-      expenseUuid: entry['expense_uuid'],
+      description: entry['content'] as String,
+      expenseUuid: entry['expense_uuid'] as String,
     );
     expenses.add(expense);
   }

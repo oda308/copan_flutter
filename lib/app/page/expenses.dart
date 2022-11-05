@@ -96,10 +96,10 @@ class MonthSelector extends ConsumerStatefulWidget {
   const MonthSelector({Key? key}) : super(key: key);
 
   @override
-  _MonthSelectorState createState() => _MonthSelectorState();
+  MonthSelectorState createState() => MonthSelectorState();
 }
 
-class _MonthSelectorState extends ConsumerState<MonthSelector> {
+class MonthSelectorState extends ConsumerState<MonthSelector> {
   late String showDateString;
 
   @override
@@ -236,7 +236,7 @@ class _Expenses extends ConsumerWidget {
                       style: const TextStyle(fontSize: 14),
                     ),
                     onTap: () {
-                      // TODO(oda308): 各費目をタップしたときの処理
+                      // TODO: 各費目をタップしたときの処理
                     },
                   ),
                   onDismissed: (_) {

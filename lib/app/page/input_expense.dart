@@ -174,7 +174,7 @@ class _DateState extends State<_Date> {
     );
   }
 
-  Future _selectDate(BuildContext context) async {
+  Future<void> _selectDate(BuildContext context) async {
     final picked = await showDatePicker(
         context: context,
         initialDate: widget.inputted.createDate,
