@@ -1,14 +1,13 @@
-import 'dart:async';
-import 'dart:convert';
+import 'dart:io';
 
 import 'package:copan_flutter/app/page/login.dart';
 import 'package:copan_flutter/app/page/sign_up.dart';
+import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/data/expense/expense.dart';
 import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
 
 import '../../data/local/db/dao.dart' as db;
@@ -20,6 +19,8 @@ import 'theme/app_theme.dart';
 
 const appTitle = '家計簿アプリCopan';
 var token = "";
+String uri =
+    Platform.isAndroid ? "http://10.0.2.2:5500" : "http://127.0.0.1:5500";
 late final StateNotifierProvider<SelectedMonthStateNotifier, DateTime>
     selectedMonthProvider;
 late final StateNotifierProvider<ExpenseStateNotifier, List<Expense>>
@@ -34,19 +35,9 @@ void main() async {
   List<Expense> expenses = [];
 
   if (token.isNotEmpty) {
-    try {
-      // webサーバから取得
-      final expensesFromWeb = await _request(userId: 1);
-
-      expenses = convertWebAPIToExpenses(expensesFromWeb);
-
-      // ToDo: 同期で持ってきたデータとローカルDBのデータの取り扱い
-      //final expenses =
-      //    convertExpensesTableToExpenses(await db.copanDB.getAllExpenseEntries);
-    } catch (e) {
-      rethrow;
-    }
+    expenses = await fetchAllExpenses();
   }
+
   final now = DateTime.now();
   final date = DateTime(now.year, now.month);
   selectedMonthProvider =
@@ -86,37 +77,6 @@ class MyApp extends StatelessWidget {
           '/selectCategory': (BuildContext context) => const SelectCategory(),
         });
   }
-}
-
-Future<List<dynamic>> _request({
-  required int userId,
-}) async {
-  final req = <String, dynamic>{
-    "action": "getAllExpenses",
-    "userId": userId,
-  };
-  String url = "http://10.0.2.2:5500";
-  Map<String, String> headers = {'content-type': 'application/json'};
-  String body = json.encode(req);
-  late List<dynamic> expenses;
-
-  try {
-    http.Response resp = await http
-        .post(Uri.parse(url), headers: headers, body: body)
-        .timeout(const Duration(seconds: 5));
-
-    if (resp.statusCode != 200) {
-      throw AssertionError("Failed get response");
-    }
-
-    expenses = jsonDecode(resp.body) as List<dynamic>;
-  } on TimeoutException catch (_) {
-    throw AssertionError("A timeout occured.");
-  } catch (e) {
-    expenses = [];
-    rethrow;
-  }
-  return expenses;
 }
 
 List<Expense> convertWebAPIToExpenses(expensesFromWeb) {

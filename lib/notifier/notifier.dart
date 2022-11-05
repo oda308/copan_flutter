@@ -8,6 +8,10 @@ class ExpenseStateNotifier extends StateNotifier<List<Expense>> {
     expenses,
   }) : super(expenses);
 
+  void initExpenses(List<Expense> expenses) {
+    state = expenses;
+  }
+
   void addExpense(Expense expense) {
     state = [...state, expense];
   }

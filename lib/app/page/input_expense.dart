@@ -306,12 +306,11 @@ void _request({
     "inputUserId": 1,
     "expenseUuid": expenseUuid,
   };
-  String url = "http://10.0.2.2:5500";
   Map<String, String> headers = {'content-type': 'application/json'};
   String body = json.encode(expense);
 
   http.Response resp =
-      await http.post(Uri.parse(url), headers: headers, body: body);
+      await http.post(Uri.parse(uri), headers: headers, body: body);
 
   if (resp.statusCode != 200) {
     throw AssertionError("Failed get response");

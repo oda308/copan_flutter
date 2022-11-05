@@ -1,5 +1,8 @@
+import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
+import 'package:copan_flutter/main.dart';
 import 'package:copan_flutter/requester/requester.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -57,14 +60,14 @@ class _Title extends StatelessWidget {
   }
 }
 
-class _LoginForm extends StatefulWidget {
+class _LoginForm extends ConsumerStatefulWidget {
   const _LoginForm({Key? key}) : super(key: key);
 
   @override
-  State<_LoginForm> createState() => _LoginFormState();
+  _LoginFormState createState() => _LoginFormState();
 }
 
-class _LoginFormState extends State<_LoginForm> {
+class _LoginFormState extends ConsumerState<_LoginForm> {
   bool failedLogin = false;
 
   @override
@@ -138,6 +141,8 @@ class _LoginFormState extends State<_LoginForm> {
                     await Requester().loginRequester(email, password);
 
                 if (isLoginSuccess) {
+                  final expenses = await fetchAllExpenses();
+                  ref.read(expensesProvider.notifier).initExpenses(expenses);
                   if (!mounted) return;
                   await Navigator.of(context).pushReplacementNamed('/home');
                 } else {
@@ -153,7 +158,7 @@ class _LoginFormState extends State<_LoginForm> {
             padding: const EdgeInsets.symmetric(vertical: 8.0),
             child: ElevatedButton(
               style: ElevatedButton.styleFrom(
-                  primary: Colors.blue,
+                  backgroundColor: Colors.blue,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   fixedSize: const Size.fromWidth(double.maxFinite)),
               onPressed: () =>

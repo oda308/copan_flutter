@@ -1,13 +1,10 @@
 import 'dart:convert';
 
+import 'package:copan_flutter/main.dart';
 import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class Requester {
-  String uri = defaultTargetPlatform == TargetPlatform.android
-      ? "http://10.0.2.2:5500"
-      : "http://127.0.0.1:5500";
-
   Map<String, String> headers = {
     "Content-Type": "application/json",
   };
@@ -25,7 +22,7 @@ class Requester {
       Map<String, dynamic> decoded = json.decode(response.body);
       final loginResponse = AuthResponse.fromJson(decoded);
       debugPrint(loginResponse.accessToken);
-      // TODO: どこかに保存する処理
+      // TODO: どこかにトークンを保存する処理
       return true;
     } else {
       return false;
