@@ -20,6 +20,10 @@ import 'theme/app_theme.dart';
 
 const appTitle = '家計簿アプリCopan';
 var token = "";
+late final StateNotifierProvider<SelectedMonthStateNotifier, DateTime>
+    selectedMonthProvider;
+late final StateNotifierProvider<ExpenseStateNotifier, List<Expense>>
+    expensesProvider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -45,13 +49,15 @@ void main() async {
   }
   final now = DateTime.now();
   final date = DateTime(now.year, now.month);
+  selectedMonthProvider =
+      StateNotifierProvider<SelectedMonthStateNotifier, DateTime>(
+          (ref) => SelectedMonthStateNotifier(date: date));
+  expensesProvider = StateNotifierProvider<ExpenseStateNotifier, List<Expense>>(
+      (ref) => ExpenseStateNotifier(expenses: expenses));
 
-  runApp(ProviderScope(overrides: [
-    selectedMonthProvider
-        .overrideWithValue(SelectedMonthStateNotifier(date: date)),
-    expensesProvider
-        .overrideWithValue(ExpenseStateNotifier(expenses: expenses)),
-  ], child: MyApp(user: user)));
+  runApp(ProviderScope(
+      overrides: [selectedMonthProvider, expensesProvider],
+      child: MyApp(user: user)));
 }
 
 class MyApp extends StatelessWidget {

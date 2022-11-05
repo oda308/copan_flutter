@@ -1,6 +1,7 @@
 import 'dart:convert';
 
 import 'package:copan_flutter/data/expense/expense_category.dart';
+import 'package:copan_flutter/main.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -10,7 +11,6 @@ import 'package:uuid/uuid.dart';
 
 import '../../data/expense/expense.dart';
 import '../../data/local/db/dao.dart' as db;
-import '../../notifier/notifier.dart';
 import '../../resources/expense_category.dart';
 import '../../theme/app_theme.dart';
 
@@ -240,7 +240,7 @@ class _RecordButton extends ConsumerWidget {
       child: Center(
         child: ElevatedButton.icon(
           style: ElevatedButton.styleFrom(
-            primary: appTheme.appColors.accentColor,
+            backgroundColor: appTheme.appColors.accentColor,
             elevation: 6.0,
             padding: const EdgeInsets.only(
               top: 10,

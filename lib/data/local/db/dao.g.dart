@@ -3,7 +3,7 @@
 part of 'dao.dart';
 
 // **************************************************************************
-// MoorGenerator
+// DriftDatabaseGenerator
 // **************************************************************************
 
 // ignore_for_file: type=lint
@@ -14,30 +14,13 @@ class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
   final String description;
   final DateTime createDate;
   final String expenseUuid;
-  ExpenseTable(
+  const ExpenseTable(
       {required this.id,
       required this.price,
       required this.categoryId,
       required this.description,
       required this.createDate,
       required this.expenseUuid});
-  factory ExpenseTable.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return ExpenseTable(
-      id: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}id'])!,
-      price: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}price'])!,
-      categoryId: const IntType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}category_id'])!,
-      description: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}description'])!,
-      createDate: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}create_date'])!,
-      expenseUuid: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}expense_uuid'])!,
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
@@ -237,41 +220,41 @@ class $ExpensesTableTable extends ExpensesTable
   $ExpensesTableTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _idMeta = const VerificationMeta('id');
   @override
-  late final GeneratedColumn<int?> id = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
       'id', aliasedName, false,
-      type: const IntType(),
+      type: DriftSqlType.int,
       requiredDuringInsert: false,
       defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
   final VerificationMeta _priceMeta = const VerificationMeta('price');
   @override
-  late final GeneratedColumn<int?> price = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> price = GeneratedColumn<int>(
       'price', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: true);
   final VerificationMeta _categoryIdMeta = const VerificationMeta('categoryId');
   @override
-  late final GeneratedColumn<int?> categoryId = GeneratedColumn<int?>(
+  late final GeneratedColumn<int> categoryId = GeneratedColumn<int>(
       'category_id', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
+      type: DriftSqlType.int, requiredDuringInsert: true);
   final VerificationMeta _descriptionMeta =
       const VerificationMeta('description');
   @override
-  late final GeneratedColumn<String?> description = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
       'description', aliasedName, false,
       additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 200),
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true);
   final VerificationMeta _createDateMeta = const VerificationMeta('createDate');
   @override
-  late final GeneratedColumn<DateTime?> createDate = GeneratedColumn<DateTime?>(
+  late final GeneratedColumn<DateTime> createDate = GeneratedColumn<DateTime>(
       'create_date', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
   final VerificationMeta _expenseUuidMeta =
       const VerificationMeta('expenseUuid');
   @override
-  late final GeneratedColumn<String?> expenseUuid = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> expenseUuid = GeneratedColumn<String>(
       'expense_uuid', aliasedName, false,
       additionalChecks: GeneratedColumn.checkTextLength(),
-      type: const StringType(),
+      type: DriftSqlType.string,
       requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns =>
@@ -333,8 +316,21 @@ class $ExpensesTableTable extends ExpensesTable
   Set<GeneratedColumn> get $primaryKey => {id};
   @override
   ExpenseTable map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return ExpenseTable.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ExpenseTable(
+      id: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      price: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}price'])!,
+      categoryId: attachedDatabase.options.types
+          .read(DriftSqlType.int, data['${effectivePrefix}category_id'])!,
+      description: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
+      createDate: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}create_date'])!,
+      expenseUuid: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}expense_uuid'])!,
+    );
   }
 
   @override
@@ -348,31 +344,18 @@ class UserTable extends DataClass implements Insertable<UserTable> {
   final String password;
   final String? name;
   final DateTime createDate;
-  UserTable(
+  const UserTable(
       {required this.userId,
       required this.password,
       this.name,
       required this.createDate});
-  factory UserTable.fromData(Map<String, dynamic> data, {String? prefix}) {
-    final effectivePrefix = prefix ?? '';
-    return UserTable(
-      userId: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}user_id'])!,
-      password: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}password'])!,
-      name: const StringType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}name']),
-      createDate: const DateTimeType()
-          .mapFromDatabaseResponse(data['${effectivePrefix}create_date'])!,
-    );
-  }
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
     map['user_id'] = Variable<String>(userId);
     map['password'] = Variable<String>(password);
     if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String?>(name);
+      map['name'] = Variable<String>(name);
     }
     map['create_date'] = Variable<DateTime>(createDate);
     return map;
@@ -411,12 +394,12 @@ class UserTable extends DataClass implements Insertable<UserTable> {
   UserTable copyWith(
           {String? userId,
           String? password,
-          String? name,
+          Value<String?> name = const Value.absent(),
           DateTime? createDate}) =>
       UserTable(
         userId: userId ?? this.userId,
         password: password ?? this.password,
-        name: name ?? this.name,
+        name: name.present ? name.value : this.name,
         createDate: createDate ?? this.createDate,
       );
   @override
@@ -464,7 +447,7 @@ class UsersTableCompanion extends UpdateCompanion<UserTable> {
   static Insertable<UserTable> custom({
     Expression<String>? userId,
     Expression<String>? password,
-    Expression<String?>? name,
+    Expression<String>? name,
     Expression<DateTime>? createDate,
   }) {
     return RawValuesInsertable({
@@ -498,7 +481,7 @@ class UsersTableCompanion extends UpdateCompanion<UserTable> {
       map['password'] = Variable<String>(password.value);
     }
     if (name.present) {
-      map['name'] = Variable<String?>(name.value);
+      map['name'] = Variable<String>(name.value);
     }
     if (createDate.present) {
       map['create_date'] = Variable<DateTime>(createDate.value);
@@ -526,24 +509,24 @@ class $UsersTableTable extends UsersTable
   $UsersTableTable(this.attachedDatabase, [this._alias]);
   final VerificationMeta _userIdMeta = const VerificationMeta('userId');
   @override
-  late final GeneratedColumn<String?> userId = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
       'user_id', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _passwordMeta = const VerificationMeta('password');
   @override
-  late final GeneratedColumn<String?> password = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> password = GeneratedColumn<String>(
       'password', aliasedName, false,
-      type: const StringType(), requiredDuringInsert: true);
+      type: DriftSqlType.string, requiredDuringInsert: true);
   final VerificationMeta _nameMeta = const VerificationMeta('name');
   @override
-  late final GeneratedColumn<String?> name = GeneratedColumn<String?>(
+  late final GeneratedColumn<String> name = GeneratedColumn<String>(
       'name', aliasedName, true,
-      type: const StringType(), requiredDuringInsert: false);
+      type: DriftSqlType.string, requiredDuringInsert: false);
   final VerificationMeta _createDateMeta = const VerificationMeta('createDate');
   @override
-  late final GeneratedColumn<DateTime?> createDate = GeneratedColumn<DateTime?>(
+  late final GeneratedColumn<DateTime> createDate = GeneratedColumn<DateTime>(
       'create_date', aliasedName, false,
-      type: const IntType(), requiredDuringInsert: true);
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [userId, password, name, createDate];
   @override
@@ -586,8 +569,17 @@ class $UsersTableTable extends UsersTable
   Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
   @override
   UserTable map(Map<String, dynamic> data, {String? tablePrefix}) {
-    return UserTable.fromData(data,
-        prefix: tablePrefix != null ? '$tablePrefix.' : null);
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return UserTable(
+      userId: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
+      password: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}password'])!,
+      name: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}name']),
+      createDate: attachedDatabase.options.types
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}create_date'])!,
+    );
   }
 
   @override
@@ -597,11 +589,12 @@ class $UsersTableTable extends UsersTable
 }
 
 abstract class _$CopanDB extends GeneratedDatabase {
-  _$CopanDB(QueryExecutor e) : super(SqlTypeSystem.defaultInstance, e);
+  _$CopanDB(QueryExecutor e) : super(e);
   late final $ExpensesTableTable expensesTable = $ExpensesTableTable(this);
   late final $UsersTableTable usersTable = $UsersTableTable(this);
   @override
-  Iterable<TableInfo> get allTables => allSchemaEntities.whereType<TableInfo>();
+  Iterable<TableInfo<Table, dynamic>> get allTables =>
+      allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
       [expensesTable, usersTable];

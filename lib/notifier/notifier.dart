@@ -1,10 +1,7 @@
+import 'package:copan_flutter/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../data/expense/expense.dart';
-
-final expensesProvider =
-    StateNotifierProvider<ExpenseStateNotifier, List<Expense>>(
-        (ref) => ExpenseStateNotifier());
 
 class ExpenseStateNotifier extends StateNotifier<List<Expense>> {
   ExpenseStateNotifier({
@@ -19,10 +16,6 @@ class ExpenseStateNotifier extends StateNotifier<List<Expense>> {
     state.removeWhere((Expense expense) => expense.expenseUuid == expenseUuid);
   }
 }
-
-final selectedMonthProvider =
-    StateNotifierProvider<SelectedMonthStateNotifier, DateTime>(
-        (ref) => SelectedMonthStateNotifier());
 
 class SelectedMonthStateNotifier extends StateNotifier<DateTime> {
   SelectedMonthStateNotifier({
