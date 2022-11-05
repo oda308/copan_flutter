@@ -5,6 +5,7 @@ import 'package:copan_flutter/app/page/sign_up.dart';
 import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/data/expense/expense.dart';
 import 'package:copan_flutter/data/expense/expense_category.dart';
+import 'package:copan_flutter/data/user.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -18,7 +19,7 @@ import 'notifier/notifier.dart';
 import 'theme/app_theme.dart';
 
 const appTitle = '家計簿アプリCopan';
-var token = "";
+User? user;
 String uri =
     Platform.isAndroid ? "http://10.0.2.2:5500" : "http://127.0.0.1:5500";
 late final StateNotifierProvider<SelectedMonthStateNotifier, DateTime>
@@ -29,12 +30,14 @@ late final StateNotifierProvider<ExpenseStateNotifier, List<Expense>>
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  var userTable = await db.copanDB.getUser;
-  int? user;
+  final userTable = await db.copanDB.getUser;
+  if (userTable.first.email != null && userTable.first.accessToken != null) {
+    user = User(userTable.first.email, userTable.first.accessToken);
+  }
 
   List<Expense> expenses = [];
 
-  if (token.isNotEmpty) {
+  if (user != null) {
     expenses = await fetchAllExpenses();
   }
 

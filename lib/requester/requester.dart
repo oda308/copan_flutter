@@ -11,7 +11,7 @@ class Requester {
 
   Requester();
 
-  Future<bool> loginRequester(String email, String password) async {
+  Future<String?> loginRequester(String email, String password) async {
     final loginUri = "$uri/auth/login";
     final request = AuthRequest(email: email, password: password);
     final response = await http.post(Uri.parse(loginUri),
@@ -23,10 +23,9 @@ class Requester {
           json.decode(response.body) as Map<String, dynamic>;
       final loginResponse = AuthResponse.fromJson(decoded);
       debugPrint(loginResponse.accessToken);
-      // TODO: どこかにトークンを保存する処理
-      return true;
+      return loginResponse.accessToken;
     } else {
-      return false;
+      return null;
     }
   }
 

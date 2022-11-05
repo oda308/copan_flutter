@@ -7,7 +7,7 @@ import 'package:path_provider/path_provider.dart';
 
 part 'dao.g.dart';
 
-// TODO(odaki): DBの呼び出し検討
+// TODO: DBの呼び出し検討
 final copanDB = CopanDB();
 
 @DataClassName('ExpenseTable')
@@ -22,10 +22,11 @@ class ExpensesTable extends Table {
 
 @DataClassName('UserTable')
 class UsersTable extends Table {
-  TextColumn get userId => text()();
-  TextColumn get password => text()();
-  TextColumn get name => text().nullable()();
-  DateTimeColumn get createDate => dateTime()();
+  TextColumn get email => text().nullable()();
+  TextColumn get accessToken => text().nullable()();
+
+  @override
+  Set<Column> get primaryKey => {email};
 }
 
 @DriftDatabase(
@@ -35,7 +36,7 @@ class CopanDB extends _$CopanDB {
   CopanDB() : super(_openConnection());
 
   @override
-  int get schemaVersion => 1;
+  int get schemaVersion => 2;
 
   Future<List<ExpenseTable>> get getAllExpenseEntries =>
       select(expensesTable).get();
@@ -51,7 +52,11 @@ class CopanDB extends _$CopanDB {
   }
 
   Future<int> addUser(UsersTableCompanion entry) {
-    return into(usersTable).insert(entry);
+    return into(usersTable).insertOnConflictUpdate(entry);
+  }
+
+  Future<int> deleteUser() {
+    return delete(usersTable).go();
   }
 
   Future<List<UserTable>> get getUser => select(usersTable).get();

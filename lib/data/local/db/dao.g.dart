@@ -340,33 +340,28 @@ class $ExpensesTableTable extends ExpensesTable
 }
 
 class UserTable extends DataClass implements Insertable<UserTable> {
-  final String userId;
-  final String password;
-  final String? name;
-  final DateTime createDate;
-  const UserTable(
-      {required this.userId,
-      required this.password,
-      this.name,
-      required this.createDate});
+  final String? email;
+  final String? accessToken;
+  const UserTable({this.email, this.accessToken});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    map['user_id'] = Variable<String>(userId);
-    map['password'] = Variable<String>(password);
-    if (!nullToAbsent || name != null) {
-      map['name'] = Variable<String>(name);
+    if (!nullToAbsent || email != null) {
+      map['email'] = Variable<String>(email);
     }
-    map['create_date'] = Variable<DateTime>(createDate);
+    if (!nullToAbsent || accessToken != null) {
+      map['access_token'] = Variable<String>(accessToken);
+    }
     return map;
   }
 
   UsersTableCompanion toCompanion(bool nullToAbsent) {
     return UsersTableCompanion(
-      userId: Value(userId),
-      password: Value(password),
-      name: name == null && nullToAbsent ? const Value.absent() : Value(name),
-      createDate: Value(createDate),
+      email:
+          email == null && nullToAbsent ? const Value.absent() : Value(email),
+      accessToken: accessToken == null && nullToAbsent
+          ? const Value.absent()
+          : Value(accessToken),
     );
   }
 
@@ -374,117 +369,82 @@ class UserTable extends DataClass implements Insertable<UserTable> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UserTable(
-      userId: serializer.fromJson<String>(json['userId']),
-      password: serializer.fromJson<String>(json['password']),
-      name: serializer.fromJson<String?>(json['name']),
-      createDate: serializer.fromJson<DateTime>(json['createDate']),
+      email: serializer.fromJson<String?>(json['email']),
+      accessToken: serializer.fromJson<String?>(json['accessToken']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'userId': serializer.toJson<String>(userId),
-      'password': serializer.toJson<String>(password),
-      'name': serializer.toJson<String?>(name),
-      'createDate': serializer.toJson<DateTime>(createDate),
+      'email': serializer.toJson<String?>(email),
+      'accessToken': serializer.toJson<String?>(accessToken),
     };
   }
 
   UserTable copyWith(
-          {String? userId,
-          String? password,
-          Value<String?> name = const Value.absent(),
-          DateTime? createDate}) =>
+          {Value<String?> email = const Value.absent(),
+          Value<String?> accessToken = const Value.absent()}) =>
       UserTable(
-        userId: userId ?? this.userId,
-        password: password ?? this.password,
-        name: name.present ? name.value : this.name,
-        createDate: createDate ?? this.createDate,
+        email: email.present ? email.value : this.email,
+        accessToken: accessToken.present ? accessToken.value : this.accessToken,
       );
   @override
   String toString() {
     return (StringBuffer('UserTable(')
-          ..write('userId: $userId, ')
-          ..write('password: $password, ')
-          ..write('name: $name, ')
-          ..write('createDate: $createDate')
+          ..write('email: $email, ')
+          ..write('accessToken: $accessToken')
           ..write(')'))
         .toString();
   }
 
   @override
-  int get hashCode => Object.hash(userId, password, name, createDate);
+  int get hashCode => Object.hash(email, accessToken);
   @override
   bool operator ==(Object other) =>
       identical(this, other) ||
       (other is UserTable &&
-          other.userId == this.userId &&
-          other.password == this.password &&
-          other.name == this.name &&
-          other.createDate == this.createDate);
+          other.email == this.email &&
+          other.accessToken == this.accessToken);
 }
 
 class UsersTableCompanion extends UpdateCompanion<UserTable> {
-  final Value<String> userId;
-  final Value<String> password;
-  final Value<String?> name;
-  final Value<DateTime> createDate;
+  final Value<String?> email;
+  final Value<String?> accessToken;
   const UsersTableCompanion({
-    this.userId = const Value.absent(),
-    this.password = const Value.absent(),
-    this.name = const Value.absent(),
-    this.createDate = const Value.absent(),
+    this.email = const Value.absent(),
+    this.accessToken = const Value.absent(),
   });
   UsersTableCompanion.insert({
-    required String userId,
-    required String password,
-    this.name = const Value.absent(),
-    required DateTime createDate,
-  })  : userId = Value(userId),
-        password = Value(password),
-        createDate = Value(createDate);
+    this.email = const Value.absent(),
+    this.accessToken = const Value.absent(),
+  });
   static Insertable<UserTable> custom({
-    Expression<String>? userId,
-    Expression<String>? password,
-    Expression<String>? name,
-    Expression<DateTime>? createDate,
+    Expression<String>? email,
+    Expression<String>? accessToken,
   }) {
     return RawValuesInsertable({
-      if (userId != null) 'user_id': userId,
-      if (password != null) 'password': password,
-      if (name != null) 'name': name,
-      if (createDate != null) 'create_date': createDate,
+      if (email != null) 'email': email,
+      if (accessToken != null) 'access_token': accessToken,
     });
   }
 
   UsersTableCompanion copyWith(
-      {Value<String>? userId,
-      Value<String>? password,
-      Value<String?>? name,
-      Value<DateTime>? createDate}) {
+      {Value<String?>? email, Value<String?>? accessToken}) {
     return UsersTableCompanion(
-      userId: userId ?? this.userId,
-      password: password ?? this.password,
-      name: name ?? this.name,
-      createDate: createDate ?? this.createDate,
+      email: email ?? this.email,
+      accessToken: accessToken ?? this.accessToken,
     );
   }
 
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (userId.present) {
-      map['user_id'] = Variable<String>(userId.value);
+    if (email.present) {
+      map['email'] = Variable<String>(email.value);
     }
-    if (password.present) {
-      map['password'] = Variable<String>(password.value);
-    }
-    if (name.present) {
-      map['name'] = Variable<String>(name.value);
-    }
-    if (createDate.present) {
-      map['create_date'] = Variable<DateTime>(createDate.value);
+    if (accessToken.present) {
+      map['access_token'] = Variable<String>(accessToken.value);
     }
     return map;
   }
@@ -492,10 +452,8 @@ class UsersTableCompanion extends UpdateCompanion<UserTable> {
   @override
   String toString() {
     return (StringBuffer('UsersTableCompanion(')
-          ..write('userId: $userId, ')
-          ..write('password: $password, ')
-          ..write('name: $name, ')
-          ..write('createDate: $createDate')
+          ..write('email: $email, ')
+          ..write('accessToken: $accessToken')
           ..write(')'))
         .toString();
   }
@@ -507,28 +465,19 @@ class $UsersTableTable extends UsersTable
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
   $UsersTableTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _userIdMeta = const VerificationMeta('userId');
+  final VerificationMeta _emailMeta = const VerificationMeta('email');
   @override
-  late final GeneratedColumn<String> userId = GeneratedColumn<String>(
-      'user_id', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _passwordMeta = const VerificationMeta('password');
-  @override
-  late final GeneratedColumn<String> password = GeneratedColumn<String>(
-      'password', aliasedName, false,
-      type: DriftSqlType.string, requiredDuringInsert: true);
-  final VerificationMeta _nameMeta = const VerificationMeta('name');
-  @override
-  late final GeneratedColumn<String> name = GeneratedColumn<String>(
-      'name', aliasedName, true,
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+      'email', aliasedName, true,
       type: DriftSqlType.string, requiredDuringInsert: false);
-  final VerificationMeta _createDateMeta = const VerificationMeta('createDate');
+  final VerificationMeta _accessTokenMeta =
+      const VerificationMeta('accessToken');
   @override
-  late final GeneratedColumn<DateTime> createDate = GeneratedColumn<DateTime>(
-      'create_date', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  late final GeneratedColumn<String> accessToken = GeneratedColumn<String>(
+      'access_token', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   @override
-  List<GeneratedColumn> get $columns => [userId, password, name, createDate];
+  List<GeneratedColumn> get $columns => [email, accessToken];
   @override
   String get aliasedName => _alias ?? 'users_table';
   @override
@@ -538,47 +487,29 @@ class $UsersTableTable extends UsersTable
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('user_id')) {
-      context.handle(_userIdMeta,
-          userId.isAcceptableOrUnknown(data['user_id']!, _userIdMeta));
-    } else if (isInserting) {
-      context.missing(_userIdMeta);
-    }
-    if (data.containsKey('password')) {
-      context.handle(_passwordMeta,
-          password.isAcceptableOrUnknown(data['password']!, _passwordMeta));
-    } else if (isInserting) {
-      context.missing(_passwordMeta);
-    }
-    if (data.containsKey('name')) {
+    if (data.containsKey('email')) {
       context.handle(
-          _nameMeta, name.isAcceptableOrUnknown(data['name']!, _nameMeta));
+          _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
     }
-    if (data.containsKey('create_date')) {
+    if (data.containsKey('access_token')) {
       context.handle(
-          _createDateMeta,
-          createDate.isAcceptableOrUnknown(
-              data['create_date']!, _createDateMeta));
-    } else if (isInserting) {
-      context.missing(_createDateMeta);
+          _accessTokenMeta,
+          accessToken.isAcceptableOrUnknown(
+              data['access_token']!, _accessTokenMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => <GeneratedColumn>{};
+  Set<GeneratedColumn> get $primaryKey => {email};
   @override
   UserTable map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return UserTable(
-      userId: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}user_id'])!,
-      password: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}password'])!,
-      name: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}name']),
-      createDate: attachedDatabase.options.types
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}create_date'])!,
+      email: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}email']),
+      accessToken: attachedDatabase.options.types
+          .read(DriftSqlType.string, data['${effectivePrefix}access_token']),
     );
   }
 

@@ -1,5 +1,7 @@
+import 'package:copan_flutter/main.dart';
 import 'package:flutter/material.dart';
 
+import '../../data/local/db/dao.dart' as db;
 import '../../theme/app_theme.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -15,14 +17,35 @@ class AppDrawer extends StatelessWidget {
           Container(
             width: double.infinity,
             color: appTheme.appColors.drawerBackground,
-            //child: SafeArea(
-            //  top: false,
-            //  bottom: false,
             child: DrawerHeader(
               margin: const EdgeInsets.only(bottom: 0),
-              child: Text(
-                '家計簿アプリCopan',
-                style: TextStyle(color: appTheme.appColors.secondaryText),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Text(
+                    '家計簿アプリCopan',
+                    style: TextStyle(color: appTheme.appColors.secondaryText),
+                  ),
+                  Spacer(),
+                  Row(
+                    children: [
+                      Icon(
+                        Icons.account_circle,
+                        size: 32,
+                        color: Colors.white,
+                      ),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        child: Text(
+                          user?.email ?? '',
+                          style: TextStyle(
+                              color: appTheme.appColors.secondaryText),
+                        ),
+                      ),
+                    ],
+                  ),
+                  Padding(padding: EdgeInsets.only(bottom: 10))
+                ],
               ),
             ),
             //   ),
@@ -38,6 +61,7 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             title: const Text('ログアウト'),
             onTap: () async {
+              db.copanDB.deleteUser();
               await Navigator.of(context).pushReplacementNamed('/login');
             },
           ),

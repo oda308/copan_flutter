@@ -1,8 +1,11 @@
 import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/main.dart';
 import 'package:copan_flutter/requester/requester.dart';
+import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+
+import '../../data/local/db/dao.dart' as db;
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -137,10 +140,14 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
                 final email = inputId;
                 final password = inputPassword;
 
-                final isLoginSuccess =
+                final accessToken =
                     await Requester().loginRequester(email, password);
 
-                if (isLoginSuccess) {
+                if (accessToken != null) {
+                  db.copanDB.addUser(db.UsersTableCompanion(
+                    email: drift.Value(email),
+                    accessToken: drift.Value(accessToken),
+                  ));
                   final expenses = await fetchAllExpenses();
                   ref.read(expensesProvider.notifier).initExpenses(expenses);
                   if (!mounted) return;
