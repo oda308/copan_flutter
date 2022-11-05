@@ -98,7 +98,7 @@ Future<List<dynamic>> _request({
   String url = "http://10.0.2.2:5500";
   Map<String, String> headers = {'content-type': 'application/json'};
   String body = json.encode(req);
-  late List<dynamic> expenses;
+  late List<Expense> expenses;
 
   try {
     http.Response resp = await http
@@ -109,7 +109,7 @@ Future<List<dynamic>> _request({
       throw AssertionError("Failed get response");
     }
 
-    expenses = jsonDecode(resp.body) as List<dynamic>;
+    expenses = jsonDecode(resp.body) as List<Expense>;
   } on TimeoutException catch (_) {
     throw AssertionError("A timeout occured.");
   } catch (e) {
@@ -119,7 +119,7 @@ Future<List<dynamic>> _request({
   return expenses;
 }
 
-List<Expense> convertWebAPIToExpenses(expensesFromWeb) {
+List<Expense> convertWebAPIToExpenses(List<String> expensesFromWeb) {
   final expenses = <Expense>[];
 
   for (final entry in expensesFromWeb) {
