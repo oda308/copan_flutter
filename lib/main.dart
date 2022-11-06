@@ -31,7 +31,9 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final userTable = await db.copanDB.getUser;
-  if (userTable.first.email != null && userTable.first.accessToken != null) {
+  if (userTable.isNotEmpty &&
+      userTable.first.email != null &&
+      userTable.first.accessToken != null) {
     user = User(userTable.first.email, userTable.first.accessToken);
   }
 
