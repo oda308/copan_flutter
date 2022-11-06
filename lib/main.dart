@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:copan_flutter/app/page/login.dart';
 import 'package:copan_flutter/app/page/sign_up.dart';
+import 'package:copan_flutter/app/page/sign_up_completed.dart';
 import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/data/expense/expense.dart';
 import 'package:copan_flutter/data/expense/expense_category.dart';
@@ -77,6 +78,7 @@ class MyApp extends StatelessWidget {
         routes: <String, WidgetBuilder>{
           '/login': (BuildContext context) => const Login(),
           '/signUp': (BuildContext context) => const SignUp(),
+          '/signUpCompleted': (BuildContext context) => const SignUpCompleted(),
           '/home': (BuildContext context) => const Expenses(),
           '/inputExpense': (BuildContext context) => const InputExpense(),
           '/selectCategory': (BuildContext context) => const SelectCategory(),

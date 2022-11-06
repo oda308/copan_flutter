@@ -1,4 +1,5 @@
 import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
+import 'package:copan_flutter/data/user.dart';
 import 'package:copan_flutter/main.dart';
 import 'package:copan_flutter/requester/requester.dart';
 import 'package:drift/drift.dart' as drift;
@@ -148,6 +149,9 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
                     email: drift.Value(email),
                     accessToken: drift.Value(accessToken),
                   ));
+
+                  user = User(email, accessToken);
+
                   final expenses = await fetchAllExpenses();
                   ref.read(expensesProvider.notifier).initExpenses(expenses);
                   if (!mounted) return;
@@ -168,8 +172,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
                   backgroundColor: Colors.blue,
                   padding: const EdgeInsets.symmetric(vertical: 12),
                   fixedSize: const Size.fromWidth(double.maxFinite)),
-              onPressed: () =>
-                  Navigator.of(context).pushReplacementNamed('/signUp'),
+              onPressed: () => Navigator.of(context).pushNamed('/signUp'),
               child: const Text('アカウント登録'),
             ),
           ),
