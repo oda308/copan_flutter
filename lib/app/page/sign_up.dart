@@ -110,13 +110,10 @@ class _SignUpState extends State<SignUp> {
   }
 
   bool _isCompletedForm(_InputFields inputFields) {
-    if (inputFields.name.isEmpty ||
+    return !(inputFields.name.isEmpty ||
         inputFields.email.isEmpty ||
         inputFields.password.isEmpty ||
-        inputFields.confirmPassword.isEmpty) {
-      return false;
-    }
-    return true;
+        inputFields.confirmPassword.isEmpty);
   }
 }
 
