@@ -1,3 +1,4 @@
+import 'package:copan_flutter/data/api/register_user.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 
@@ -81,13 +82,20 @@ class _SignUpState extends State<SignUp> {
               onPressed: _isCompletedForm(inputFields)
                   ? () async {
                       if (inputFields.password == inputFields.confirmPassword) {
-                        // userセット
+                        final token = await registerUser(
+                            name: inputFields.name,
+                            email: inputFields.email,
+                            password: inputFields.password);
+
+                        if (token == "") {
+                          print("アクセストークンの取得に失敗しました");
+                          return;
+                        }
+
                         db.copanDB.addUser(db.UsersTableCompanion(
-                          email: drift.Value("test"),
-                          accessToken: drift.Value("test"),
-                          // TODO: サーバから取得したアクセストークンを追加する
+                          email: drift.Value(inputFields.email),
+                          accessToken: drift.Value(token),
                         ));
-                        // TODO: アクセストークンを取得したらページ遷移
 
                         await Navigator.of(context)
                             .pushNamed('/signUpCompleted');
