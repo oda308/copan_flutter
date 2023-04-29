@@ -4,7 +4,7 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.17.6 <3.0.0"
+  sdk: ">=2.19.0 <3.0.0"
 
 dependencies:
   flutter:
@@ -18,11 +18,11 @@ dependencies:
   syncfusion_flutter_datepicker: ^20.3.52
   flutter_riverpod: ^2.1.1
   fl_chart: ^0.55.2
-  drift: ^2.2.0
+  drift: ^2.7.0
   sqlite3_flutter_libs: ^0.5.5
   path_provider: ^2.0.9
   path: ^1.8.0
-  drift_dev: ^2.2.0+1
+  drift_dev: ^2.7.0
   http: ^0.13.4
   uuid: ^3.0.6
 
@@ -30,7 +30,7 @@ dev_dependencies:
   flutter_test:
     sdk: flutter
   flutter_lints: ^2.0.0
-  build_runner: ^2.1.10
+  build_runner: ^2.3.3
 
 flutter:
   uses-material-design: true

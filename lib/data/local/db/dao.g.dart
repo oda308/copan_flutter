@@ -2,11 +2,138 @@
 
 part of 'dao.dart';
 
-// **************************************************************************
-// DriftDatabaseGenerator
-// **************************************************************************
-
 // ignore_for_file: type=lint
+class $ExpensesTableTable extends ExpensesTable
+    with TableInfo<$ExpensesTableTable, ExpenseTable> {
+  @override
+  final GeneratedDatabase attachedDatabase;
+  final String? _alias;
+  $ExpensesTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _idMeta = const VerificationMeta('id');
+  @override
+  late final GeneratedColumn<int> id = GeneratedColumn<int>(
+      'id', aliasedName, false,
+      hasAutoIncrement: true,
+      type: DriftSqlType.int,
+      requiredDuringInsert: false,
+      defaultConstraints:
+          GeneratedColumn.constraintIsAlways('PRIMARY KEY AUTOINCREMENT'));
+  static const VerificationMeta _priceMeta = const VerificationMeta('price');
+  @override
+  late final GeneratedColumn<int> price = GeneratedColumn<int>(
+      'price', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _categoryIdMeta =
+      const VerificationMeta('categoryId');
+  @override
+  late final GeneratedColumn<int> categoryId = GeneratedColumn<int>(
+      'category_id', aliasedName, false,
+      type: DriftSqlType.int, requiredDuringInsert: true);
+  static const VerificationMeta _descriptionMeta =
+      const VerificationMeta('description');
+  @override
+  late final GeneratedColumn<String> description = GeneratedColumn<String>(
+      'description', aliasedName, false,
+      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 200),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  static const VerificationMeta _createDateMeta =
+      const VerificationMeta('createDate');
+  @override
+  late final GeneratedColumn<DateTime> createDate = GeneratedColumn<DateTime>(
+      'create_date', aliasedName, false,
+      type: DriftSqlType.dateTime, requiredDuringInsert: true);
+  static const VerificationMeta _expenseUuidMeta =
+      const VerificationMeta('expenseUuid');
+  @override
+  late final GeneratedColumn<String> expenseUuid = GeneratedColumn<String>(
+      'expense_uuid', aliasedName, false,
+      additionalChecks: GeneratedColumn.checkTextLength(),
+      type: DriftSqlType.string,
+      requiredDuringInsert: true);
+  @override
+  List<GeneratedColumn> get $columns =>
+      [id, price, categoryId, description, createDate, expenseUuid];
+  @override
+  String get aliasedName => _alias ?? 'expenses_table';
+  @override
+  String get actualTableName => 'expenses_table';
+  @override
+  VerificationContext validateIntegrity(Insertable<ExpenseTable> instance,
+      {bool isInserting = false}) {
+    final context = VerificationContext();
+    final data = instance.toColumns(true);
+    if (data.containsKey('id')) {
+      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
+    }
+    if (data.containsKey('price')) {
+      context.handle(
+          _priceMeta, price.isAcceptableOrUnknown(data['price']!, _priceMeta));
+    } else if (isInserting) {
+      context.missing(_priceMeta);
+    }
+    if (data.containsKey('category_id')) {
+      context.handle(
+          _categoryIdMeta,
+          categoryId.isAcceptableOrUnknown(
+              data['category_id']!, _categoryIdMeta));
+    } else if (isInserting) {
+      context.missing(_categoryIdMeta);
+    }
+    if (data.containsKey('description')) {
+      context.handle(
+          _descriptionMeta,
+          description.isAcceptableOrUnknown(
+              data['description']!, _descriptionMeta));
+    } else if (isInserting) {
+      context.missing(_descriptionMeta);
+    }
+    if (data.containsKey('create_date')) {
+      context.handle(
+          _createDateMeta,
+          createDate.isAcceptableOrUnknown(
+              data['create_date']!, _createDateMeta));
+    } else if (isInserting) {
+      context.missing(_createDateMeta);
+    }
+    if (data.containsKey('expense_uuid')) {
+      context.handle(
+          _expenseUuidMeta,
+          expenseUuid.isAcceptableOrUnknown(
+              data['expense_uuid']!, _expenseUuidMeta));
+    } else if (isInserting) {
+      context.missing(_expenseUuidMeta);
+    }
+    return context;
+  }
+
+  @override
+  Set<GeneratedColumn> get $primaryKey => {id};
+  @override
+  ExpenseTable map(Map<String, dynamic> data, {String? tablePrefix}) {
+    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
+    return ExpenseTable(
+      id: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
+      price: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}price'])!,
+      categoryId: attachedDatabase.typeMapping
+          .read(DriftSqlType.int, data['${effectivePrefix}category_id'])!,
+      description: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
+      createDate: attachedDatabase.typeMapping
+          .read(DriftSqlType.dateTime, data['${effectivePrefix}create_date'])!,
+      expenseUuid: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}expense_uuid'])!,
+    );
+  }
+
+  @override
+  $ExpensesTableTable createAlias(String alias) {
+    return $ExpensesTableTable(attachedDatabase, alias);
+  }
+}
+
 class ExpenseTable extends DataClass implements Insertable<ExpenseTable> {
   final int id;
   final int price;
@@ -212,130 +339,63 @@ class ExpensesTableCompanion extends UpdateCompanion<ExpenseTable> {
   }
 }
 
-class $ExpensesTableTable extends ExpensesTable
-    with TableInfo<$ExpensesTableTable, ExpenseTable> {
+class $UsersTableTable extends UsersTable
+    with TableInfo<$UsersTableTable, UserTable> {
   @override
   final GeneratedDatabase attachedDatabase;
   final String? _alias;
-  $ExpensesTableTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _idMeta = const VerificationMeta('id');
+  $UsersTableTable(this.attachedDatabase, [this._alias]);
+  static const VerificationMeta _emailMeta = const VerificationMeta('email');
   @override
-  late final GeneratedColumn<int> id = GeneratedColumn<int>(
-      'id', aliasedName, false,
-      type: DriftSqlType.int,
-      requiredDuringInsert: false,
-      defaultConstraints: 'PRIMARY KEY AUTOINCREMENT');
-  final VerificationMeta _priceMeta = const VerificationMeta('price');
+  late final GeneratedColumn<String> email = GeneratedColumn<String>(
+      'email', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
+  static const VerificationMeta _accessTokenMeta =
+      const VerificationMeta('accessToken');
   @override
-  late final GeneratedColumn<int> price = GeneratedColumn<int>(
-      'price', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  final VerificationMeta _categoryIdMeta = const VerificationMeta('categoryId');
+  late final GeneratedColumn<String> accessToken = GeneratedColumn<String>(
+      'access_token', aliasedName, true,
+      type: DriftSqlType.string, requiredDuringInsert: false);
   @override
-  late final GeneratedColumn<int> categoryId = GeneratedColumn<int>(
-      'category_id', aliasedName, false,
-      type: DriftSqlType.int, requiredDuringInsert: true);
-  final VerificationMeta _descriptionMeta =
-      const VerificationMeta('description');
+  List<GeneratedColumn> get $columns => [email, accessToken];
   @override
-  late final GeneratedColumn<String> description = GeneratedColumn<String>(
-      'description', aliasedName, false,
-      additionalChecks: GeneratedColumn.checkTextLength(maxTextLength: 200),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
-  final VerificationMeta _createDateMeta = const VerificationMeta('createDate');
+  String get aliasedName => _alias ?? 'users_table';
   @override
-  late final GeneratedColumn<DateTime> createDate = GeneratedColumn<DateTime>(
-      'create_date', aliasedName, false,
-      type: DriftSqlType.dateTime, requiredDuringInsert: true);
-  final VerificationMeta _expenseUuidMeta =
-      const VerificationMeta('expenseUuid');
+  String get actualTableName => 'users_table';
   @override
-  late final GeneratedColumn<String> expenseUuid = GeneratedColumn<String>(
-      'expense_uuid', aliasedName, false,
-      additionalChecks: GeneratedColumn.checkTextLength(),
-      type: DriftSqlType.string,
-      requiredDuringInsert: true);
-  @override
-  List<GeneratedColumn> get $columns =>
-      [id, price, categoryId, description, createDate, expenseUuid];
-  @override
-  String get aliasedName => _alias ?? 'expenses_table';
-  @override
-  String get actualTableName => 'expenses_table';
-  @override
-  VerificationContext validateIntegrity(Insertable<ExpenseTable> instance,
+  VerificationContext validateIntegrity(Insertable<UserTable> instance,
       {bool isInserting = false}) {
     final context = VerificationContext();
     final data = instance.toColumns(true);
-    if (data.containsKey('id')) {
-      context.handle(_idMeta, id.isAcceptableOrUnknown(data['id']!, _idMeta));
-    }
-    if (data.containsKey('price')) {
+    if (data.containsKey('email')) {
       context.handle(
-          _priceMeta, price.isAcceptableOrUnknown(data['price']!, _priceMeta));
-    } else if (isInserting) {
-      context.missing(_priceMeta);
+          _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
     }
-    if (data.containsKey('category_id')) {
+    if (data.containsKey('access_token')) {
       context.handle(
-          _categoryIdMeta,
-          categoryId.isAcceptableOrUnknown(
-              data['category_id']!, _categoryIdMeta));
-    } else if (isInserting) {
-      context.missing(_categoryIdMeta);
-    }
-    if (data.containsKey('description')) {
-      context.handle(
-          _descriptionMeta,
-          description.isAcceptableOrUnknown(
-              data['description']!, _descriptionMeta));
-    } else if (isInserting) {
-      context.missing(_descriptionMeta);
-    }
-    if (data.containsKey('create_date')) {
-      context.handle(
-          _createDateMeta,
-          createDate.isAcceptableOrUnknown(
-              data['create_date']!, _createDateMeta));
-    } else if (isInserting) {
-      context.missing(_createDateMeta);
-    }
-    if (data.containsKey('expense_uuid')) {
-      context.handle(
-          _expenseUuidMeta,
-          expenseUuid.isAcceptableOrUnknown(
-              data['expense_uuid']!, _expenseUuidMeta));
-    } else if (isInserting) {
-      context.missing(_expenseUuidMeta);
+          _accessTokenMeta,
+          accessToken.isAcceptableOrUnknown(
+              data['access_token']!, _accessTokenMeta));
     }
     return context;
   }
 
   @override
-  Set<GeneratedColumn> get $primaryKey => {id};
+  Set<GeneratedColumn> get $primaryKey => {email};
   @override
-  ExpenseTable map(Map<String, dynamic> data, {String? tablePrefix}) {
+  UserTable map(Map<String, dynamic> data, {String? tablePrefix}) {
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return ExpenseTable(
-      id: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}id'])!,
-      price: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}price'])!,
-      categoryId: attachedDatabase.options.types
-          .read(DriftSqlType.int, data['${effectivePrefix}category_id'])!,
-      description: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}description'])!,
-      createDate: attachedDatabase.options.types
-          .read(DriftSqlType.dateTime, data['${effectivePrefix}create_date'])!,
-      expenseUuid: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}expense_uuid'])!,
+    return UserTable(
+      email: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}email']),
+      accessToken: attachedDatabase.typeMapping
+          .read(DriftSqlType.string, data['${effectivePrefix}access_token']),
     );
   }
 
   @override
-  $ExpensesTableTable createAlias(String alias) {
-    return $ExpensesTableTable(attachedDatabase, alias);
+  $UsersTableTable createAlias(String alias) {
+    return $UsersTableTable(attachedDatabase, alias);
   }
 }
 
@@ -411,29 +471,35 @@ class UserTable extends DataClass implements Insertable<UserTable> {
 class UsersTableCompanion extends UpdateCompanion<UserTable> {
   final Value<String?> email;
   final Value<String?> accessToken;
+  final Value<int> rowid;
   const UsersTableCompanion({
     this.email = const Value.absent(),
     this.accessToken = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   UsersTableCompanion.insert({
     this.email = const Value.absent(),
     this.accessToken = const Value.absent(),
+    this.rowid = const Value.absent(),
   });
   static Insertable<UserTable> custom({
     Expression<String>? email,
     Expression<String>? accessToken,
+    Expression<int>? rowid,
   }) {
     return RawValuesInsertable({
       if (email != null) 'email': email,
       if (accessToken != null) 'access_token': accessToken,
+      if (rowid != null) 'rowid': rowid,
     });
   }
 
   UsersTableCompanion copyWith(
-      {Value<String?>? email, Value<String?>? accessToken}) {
+      {Value<String?>? email, Value<String?>? accessToken, Value<int>? rowid}) {
     return UsersTableCompanion(
       email: email ?? this.email,
       accessToken: accessToken ?? this.accessToken,
+      rowid: rowid ?? this.rowid,
     );
   }
 
@@ -446,6 +512,9 @@ class UsersTableCompanion extends UpdateCompanion<UserTable> {
     if (accessToken.present) {
       map['access_token'] = Variable<String>(accessToken.value);
     }
+    if (rowid.present) {
+      map['rowid'] = Variable<int>(rowid.value);
+    }
     return map;
   }
 
@@ -453,69 +522,10 @@ class UsersTableCompanion extends UpdateCompanion<UserTable> {
   String toString() {
     return (StringBuffer('UsersTableCompanion(')
           ..write('email: $email, ')
-          ..write('accessToken: $accessToken')
+          ..write('accessToken: $accessToken, ')
+          ..write('rowid: $rowid')
           ..write(')'))
         .toString();
-  }
-}
-
-class $UsersTableTable extends UsersTable
-    with TableInfo<$UsersTableTable, UserTable> {
-  @override
-  final GeneratedDatabase attachedDatabase;
-  final String? _alias;
-  $UsersTableTable(this.attachedDatabase, [this._alias]);
-  final VerificationMeta _emailMeta = const VerificationMeta('email');
-  @override
-  late final GeneratedColumn<String> email = GeneratedColumn<String>(
-      'email', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  final VerificationMeta _accessTokenMeta =
-      const VerificationMeta('accessToken');
-  @override
-  late final GeneratedColumn<String> accessToken = GeneratedColumn<String>(
-      'access_token', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
-  @override
-  List<GeneratedColumn> get $columns => [email, accessToken];
-  @override
-  String get aliasedName => _alias ?? 'users_table';
-  @override
-  String get actualTableName => 'users_table';
-  @override
-  VerificationContext validateIntegrity(Insertable<UserTable> instance,
-      {bool isInserting = false}) {
-    final context = VerificationContext();
-    final data = instance.toColumns(true);
-    if (data.containsKey('email')) {
-      context.handle(
-          _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
-    }
-    if (data.containsKey('access_token')) {
-      context.handle(
-          _accessTokenMeta,
-          accessToken.isAcceptableOrUnknown(
-              data['access_token']!, _accessTokenMeta));
-    }
-    return context;
-  }
-
-  @override
-  Set<GeneratedColumn> get $primaryKey => {email};
-  @override
-  UserTable map(Map<String, dynamic> data, {String? tablePrefix}) {
-    final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
-    return UserTable(
-      email: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}email']),
-      accessToken: attachedDatabase.options.types
-          .read(DriftSqlType.string, data['${effectivePrefix}access_token']),
-    );
-  }
-
-  @override
-  $UsersTableTable createAlias(String alias) {
-    return $UsersTableTable(attachedDatabase, alias);
   }
 }
 
@@ -524,7 +534,7 @@ abstract class _$CopanDB extends GeneratedDatabase {
   late final $ExpensesTableTable expensesTable = $ExpensesTableTable(this);
   late final $UsersTableTable usersTable = $UsersTableTable(this);
   @override
-  Iterable<TableInfo<Table, dynamic>> get allTables =>
+  Iterable<TableInfo<Table, Object?>> get allTables =>
       allSchemaEntities.whereType<TableInfo<Table, Object?>>();
   @override
   List<DatabaseSchemaEntity> get allSchemaEntities =>
