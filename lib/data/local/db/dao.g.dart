@@ -348,14 +348,14 @@ class $UsersTableTable extends UsersTable
   static const VerificationMeta _emailMeta = const VerificationMeta('email');
   @override
   late final GeneratedColumn<String> email = GeneratedColumn<String>(
-      'email', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+      'email', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   static const VerificationMeta _accessTokenMeta =
       const VerificationMeta('accessToken');
   @override
   late final GeneratedColumn<String> accessToken = GeneratedColumn<String>(
-      'access_token', aliasedName, true,
-      type: DriftSqlType.string, requiredDuringInsert: false);
+      'access_token', aliasedName, false,
+      type: DriftSqlType.string, requiredDuringInsert: true);
   @override
   List<GeneratedColumn> get $columns => [email, accessToken];
   @override
@@ -370,12 +370,16 @@ class $UsersTableTable extends UsersTable
     if (data.containsKey('email')) {
       context.handle(
           _emailMeta, email.isAcceptableOrUnknown(data['email']!, _emailMeta));
+    } else if (isInserting) {
+      context.missing(_emailMeta);
     }
     if (data.containsKey('access_token')) {
       context.handle(
           _accessTokenMeta,
           accessToken.isAcceptableOrUnknown(
               data['access_token']!, _accessTokenMeta));
+    } else if (isInserting) {
+      context.missing(_accessTokenMeta);
     }
     return context;
   }
@@ -387,9 +391,9 @@ class $UsersTableTable extends UsersTable
     final effectivePrefix = tablePrefix != null ? '$tablePrefix.' : '';
     return UserTable(
       email: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}email']),
+          .read(DriftSqlType.string, data['${effectivePrefix}email'])!,
       accessToken: attachedDatabase.typeMapping
-          .read(DriftSqlType.string, data['${effectivePrefix}access_token']),
+          .read(DriftSqlType.string, data['${effectivePrefix}access_token'])!,
     );
   }
 
@@ -400,28 +404,21 @@ class $UsersTableTable extends UsersTable
 }
 
 class UserTable extends DataClass implements Insertable<UserTable> {
-  final String? email;
-  final String? accessToken;
-  const UserTable({this.email, this.accessToken});
+  final String email;
+  final String accessToken;
+  const UserTable({required this.email, required this.accessToken});
   @override
   Map<String, Expression> toColumns(bool nullToAbsent) {
     final map = <String, Expression>{};
-    if (!nullToAbsent || email != null) {
-      map['email'] = Variable<String>(email);
-    }
-    if (!nullToAbsent || accessToken != null) {
-      map['access_token'] = Variable<String>(accessToken);
-    }
+    map['email'] = Variable<String>(email);
+    map['access_token'] = Variable<String>(accessToken);
     return map;
   }
 
   UsersTableCompanion toCompanion(bool nullToAbsent) {
     return UsersTableCompanion(
-      email:
-          email == null && nullToAbsent ? const Value.absent() : Value(email),
-      accessToken: accessToken == null && nullToAbsent
-          ? const Value.absent()
-          : Value(accessToken),
+      email: Value(email),
+      accessToken: Value(accessToken),
     );
   }
 
@@ -429,25 +426,22 @@ class UserTable extends DataClass implements Insertable<UserTable> {
       {ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return UserTable(
-      email: serializer.fromJson<String?>(json['email']),
-      accessToken: serializer.fromJson<String?>(json['accessToken']),
+      email: serializer.fromJson<String>(json['email']),
+      accessToken: serializer.fromJson<String>(json['accessToken']),
     );
   }
   @override
   Map<String, dynamic> toJson({ValueSerializer? serializer}) {
     serializer ??= driftRuntimeOptions.defaultSerializer;
     return <String, dynamic>{
-      'email': serializer.toJson<String?>(email),
-      'accessToken': serializer.toJson<String?>(accessToken),
+      'email': serializer.toJson<String>(email),
+      'accessToken': serializer.toJson<String>(accessToken),
     };
   }
 
-  UserTable copyWith(
-          {Value<String?> email = const Value.absent(),
-          Value<String?> accessToken = const Value.absent()}) =>
-      UserTable(
-        email: email.present ? email.value : this.email,
-        accessToken: accessToken.present ? accessToken.value : this.accessToken,
+  UserTable copyWith({String? email, String? accessToken}) => UserTable(
+        email: email ?? this.email,
+        accessToken: accessToken ?? this.accessToken,
       );
   @override
   String toString() {
@@ -469,8 +463,8 @@ class UserTable extends DataClass implements Insertable<UserTable> {
 }
 
 class UsersTableCompanion extends UpdateCompanion<UserTable> {
-  final Value<String?> email;
-  final Value<String?> accessToken;
+  final Value<String> email;
+  final Value<String> accessToken;
   final Value<int> rowid;
   const UsersTableCompanion({
     this.email = const Value.absent(),
@@ -478,10 +472,11 @@ class UsersTableCompanion extends UpdateCompanion<UserTable> {
     this.rowid = const Value.absent(),
   });
   UsersTableCompanion.insert({
-    this.email = const Value.absent(),
-    this.accessToken = const Value.absent(),
+    required String email,
+    required String accessToken,
     this.rowid = const Value.absent(),
-  });
+  })  : email = Value(email),
+        accessToken = Value(accessToken);
   static Insertable<UserTable> custom({
     Expression<String>? email,
     Expression<String>? accessToken,
@@ -495,7 +490,7 @@ class UsersTableCompanion extends UpdateCompanion<UserTable> {
   }
 
   UsersTableCompanion copyWith(
-      {Value<String?>? email, Value<String?>? accessToken, Value<int>? rowid}) {
+      {Value<String>? email, Value<String>? accessToken, Value<int>? rowid}) {
     return UsersTableCompanion(
       email: email ?? this.email,
       accessToken: accessToken ?? this.accessToken,

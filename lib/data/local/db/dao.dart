@@ -22,8 +22,8 @@ class ExpensesTable extends Table {
 
 @DataClassName('UserTable')
 class UsersTable extends Table {
-  TextColumn get email => text().nullable()();
-  TextColumn get accessToken => text().nullable()();
+  TextColumn get email => text()();
+  TextColumn get accessToken => text()();
 
   @override
   Set<Column> get primaryKey => {email};

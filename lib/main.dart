@@ -32,9 +32,7 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final userTable = await db.copanDB.getUser;
-  if (userTable.isNotEmpty &&
-      userTable.first.email != null &&
-      userTable.first.accessToken != null) {
+  if (userTable.isNotEmpty) {
     user = User(userTable.first.email, userTable.first.accessToken);
   }
 
@@ -44,11 +42,9 @@ void main() async {
     expenses = await fetchAllExpenses();
   }
 
-  final now = DateTime.now();
-  final date = DateTime(now.year, now.month);
   selectedMonthProvider =
       StateNotifierProvider<SelectedMonthStateNotifier, DateTime>(
-          (ref) => SelectedMonthStateNotifier(date: date));
+          (ref) => SelectedMonthStateNotifier(date: DateTime.now()));
   expensesProvider = StateNotifierProvider<ExpenseStateNotifier, List<Expense>>(
       (ref) => ExpenseStateNotifier(expenses: expenses));
 
