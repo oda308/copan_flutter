@@ -303,7 +303,6 @@ void _request({
     "categoryId": categoryId,
     "description": description,
     "date": date.toString(),
-    "inputUserId": 1,
     "expenseUuid": expenseUuid,
   };
   Map<String, String> headers = {'content-type': 'application/json'};
