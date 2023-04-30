@@ -28,9 +28,9 @@ class AppTheme {
             iconTheme: const IconThemeData.fallback()
                 .copyWith(color: AppColors.light().accentColor),
           ),
-          backgroundColor: AppColors.light().primaryBackground,
-          colorScheme: const ColorScheme.light()
-              .copyWith(primary: AppColors.light().accentColor)),
+          colorScheme: const ColorScheme.light().copyWith(
+              primary: AppColors.light().accentColor,
+              background: AppColors.light().primaryBackground)),
       appColors: AppColors.light(),
     );
   }
@@ -46,9 +46,9 @@ class AppTheme {
             iconTheme: const IconThemeData.fallback()
                 .copyWith(color: AppColors.dark().accentColor),
           ),
-          backgroundColor: AppColors.dark().primaryBackground,
-          colorScheme: const ColorScheme.dark()
-              .copyWith(primary: AppColors.dark().accentColor)),
+          colorScheme: const ColorScheme.dark().copyWith(
+              primary: AppColors.dark().accentColor,
+              background: AppColors.dark().primaryBackground)),
       appColors: AppColors.dark(),
     );
   }

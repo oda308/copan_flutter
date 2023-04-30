@@ -142,7 +142,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
                 final password = inputPassword;
 
                 final accessToken =
-                    await Requester().loginRequester(email, password);
+                    await Requester.instance.loginRequester(email, password);
 
                 if (accessToken != null) {
                   db.copanDB.addUser(db.UsersTableCompanion(
@@ -150,9 +150,11 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
                     accessToken: drift.Value(accessToken),
                   ));
 
-                  user = User(email, accessToken);
+                  var user = User(email: email, accessToken: accessToken);
+                  print(user.accessToken);
+                  print(user.email);
 
-                  final expenses = await fetchAllExpenses();
+                  final expenses = await fetchAllExpenses(user: user);
                   ref.read(expensesProvider.notifier).initExpenses(expenses);
                   if (!mounted) return;
                   await Navigator.of(context).pushReplacementNamed('/home');

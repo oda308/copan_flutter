@@ -1,7 +1,7 @@
-import 'package:copan_flutter/main.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/local/db/dao.dart' as db;
+import '../../data/user.dart';
 import '../../theme/app_theme.dart';
 
 class AppDrawer extends StatelessWidget {
@@ -37,7 +37,7 @@ class AppDrawer extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          user?.email ?? '',
+                          User.instance?.email ?? '',
                           style: TextStyle(
                               color: appTheme.appColors.secondaryText),
                         ),

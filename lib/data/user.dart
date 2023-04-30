@@ -1,6 +1,13 @@
 class User {
-  String? email;
-  String? accessToken;
+  final String email;
+  final String accessToken;
 
-  User(this.email, this.accessToken);
+  static User? instance;
+
+  factory User({required String email, required String accessToken}) {
+    instance ??= User._internal(email: email, accessToken: accessToken);
+    return instance!;
+  }
+
+  User._internal({required this.email, required this.accessToken});
 }

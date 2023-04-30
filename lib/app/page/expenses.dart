@@ -1,10 +1,8 @@
-import 'dart:convert';
-
 import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/main.dart';
+import 'package:copan_flutter/requester/requester.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 
 import '../../data/expense/expense.dart';
 import '../../data/local/db/dao.dart' as db;
@@ -240,7 +238,7 @@ class _Expenses extends ConsumerWidget {
                     },
                   ),
                   onDismissed: (_) {
-                    _request(
+                    Requester.instance.deleteExpenseRequester(
                       expenseUuid: expense.expenseUuid,
                     );
 
@@ -329,25 +327,4 @@ class ExpensesByCategory {
 
 String _getMonthAndDay(DateTime date) {
   return "${date.month}/${date.day}";
-}
-
-Future<void> _request({
-  required String expenseUuid,
-}) async {
-  final req = <String, dynamic>{
-    "action": "deleteExpense",
-    "expenseUuid": expenseUuid,
-  };
-  Map<String, String> headers = {'content-type': 'application/json'};
-  String body = json.encode(req);
-  try {
-    http.Response resp =
-        await http.post(Uri.parse(uri), headers: headers, body: body);
-
-    if (resp.statusCode != 200) {
-      throw AssertionError("Failed get response");
-    }
-  } catch (e) {
-    rethrow;
-  }
 }

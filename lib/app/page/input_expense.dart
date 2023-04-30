@@ -1,12 +1,10 @@
-import 'dart:convert';
-
 import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/main.dart';
+import 'package:copan_flutter/requester/requester.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:http/http.dart' as http;
 import 'package:uuid/uuid.dart';
 
 import '../../data/expense/expense.dart';
@@ -263,7 +261,7 @@ class _RecordButton extends ConsumerWidget {
             }
 
             // requestを送信, DBに保存
-            _request(
+            Requester.instance.inputExpenseRequester(
               price: inputted.price,
               categoryId: inputted.categoryId.index,
               description: inputted.description,
@@ -288,32 +286,4 @@ class _RecordButton extends ConsumerWidget {
       ),
     );
   }
-}
-
-void _request({
-  required int price,
-  required int categoryId,
-  required String description,
-  required DateTime date,
-  required String expenseUuid,
-}) async {
-  final expense = <String, dynamic>{
-    "action": "insertExpense",
-    "price": price,
-    "categoryId": categoryId,
-    "description": description,
-    "date": date.toString(),
-    "expenseUuid": expenseUuid,
-  };
-  Map<String, String> headers = {'content-type': 'application/json'};
-  String body = json.encode(expense);
-
-  http.Response resp =
-      await http.post(Uri.parse(uri), headers: headers, body: body);
-
-  if (resp.statusCode != 200) {
-    throw AssertionError("Failed get response");
-  }
-
-  print(resp);
 }

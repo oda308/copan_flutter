@@ -7,6 +7,7 @@ import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/data/expense/expense.dart';
 import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/data/user.dart';
+import 'package:copan_flutter/requester/requester.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -20,7 +21,6 @@ import 'notifier/notifier.dart';
 import 'theme/app_theme.dart';
 
 const appTitle = '家計簿アプリCopan';
-User? user;
 String uri =
     Platform.isAndroid ? "http://10.0.2.2:5500" : "http://127.0.0.1:5500";
 late final StateNotifierProvider<SelectedMonthStateNotifier, DateTime>
@@ -32,14 +32,18 @@ void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
   final userTable = await db.copanDB.getUser;
+  User? user;
+
   if (userTable.isNotEmpty) {
-    user = User(userTable.first.email, userTable.first.accessToken);
+    user = User(
+        email: userTable.first.email, accessToken: userTable.first.accessToken);
+    Requester.instance.accessToken = userTable.first.accessToken;
   }
 
   List<Expense> expenses = [];
 
   if (user != null) {
-    expenses = await fetchAllExpenses();
+    expenses = await fetchAllExpenses(user: user);
   }
 
   selectedMonthProvider =
@@ -49,21 +53,16 @@ void main() async {
       (ref) => ExpenseStateNotifier(expenses: expenses));
 
   runApp(ProviderScope(
-      overrides: [selectedMonthProvider, expensesProvider],
-      child: MyApp(user: user)));
+      overrides: [selectedMonthProvider, expensesProvider], child: MyApp()));
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({
-    required this.user,
-    Key? key,
-  }) : super(key: key);
-
-  final dynamic user;
+  const MyApp({Key? key}) : super(key: key);
 
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+    final user = User.instance;
     return MaterialApp(
         title: appTitle,
         localizationsDelegates: L10n.localizationsDelegates,
