@@ -1,6 +1,7 @@
-import 'package:copan_flutter/main.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../providers/expenses_provider.dart';
+import '../../providers/selected_month_provider.dart';
 import '../data/expense/expense.dart';
 
 class ExpenseStateNotifier extends StateNotifier<List<Expense>> {
@@ -25,6 +26,10 @@ class SelectedMonthStateNotifier extends StateNotifier<DateTime> {
   SelectedMonthStateNotifier({
     required DateTime date,
   }) : super(date);
+
+  void initMonth() {
+    state = DateTime.now();
+  }
 
   void changeMonth(DateTime date) {
     state = date;

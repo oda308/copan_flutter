@@ -1,12 +1,13 @@
 import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/data/user.dart';
-import 'package:copan_flutter/main.dart';
+import 'package:copan_flutter/providers/selected_month_provider.dart';
 import 'package:copan_flutter/requester/requester.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/local/db/dao.dart' as db;
+import '../../providers/expenses_provider.dart';
 
 class Login extends StatelessWidget {
   const Login({Key? key}) : super(key: key);
@@ -155,6 +156,7 @@ class _LoginFormState extends ConsumerState<_LoginForm> {
                   print(user.email);
 
                   final expenses = await fetchAllExpenses(user: user);
+                  ref.read(selectedMonthProvider.notifier).initMonth();
                   ref.read(expensesProvider.notifier).initExpenses(expenses);
                   if (!mounted) return;
                   await Navigator.of(context).pushReplacementNamed('/home');

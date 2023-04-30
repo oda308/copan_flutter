@@ -1,4 +1,5 @@
 import 'package:copan_flutter/data/api/register_user.dart';
+import 'package:copan_flutter/data/user.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 
@@ -96,6 +97,8 @@ class _SignUpState extends State<SignUp> {
                           email: drift.Value(inputFields.email),
                           accessToken: drift.Value(token),
                         ));
+
+                        User(email: inputFields.email, accessToken: token);
 
                         await Navigator.of(context)
                             .pushNamed('/signUpCompleted');

@@ -1,5 +1,4 @@
 import 'package:copan_flutter/data/expense/expense_category.dart';
-import 'package:copan_flutter/main.dart';
 import 'package:copan_flutter/requester/requester.dart';
 import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
@@ -9,6 +8,7 @@ import 'package:uuid/uuid.dart';
 
 import '../../data/expense/expense.dart';
 import '../../data/local/db/dao.dart' as db;
+import '../../providers/expenses_provider.dart';
 import '../../resources/expense_category.dart';
 import '../../theme/app_theme.dart';
 

@@ -8,12 +8,9 @@ Future<String> registerUser(
     required String password}) async {
   try {
     final requester = Requester.instance;
-    if (requester == null) {
-      return "";
-    }
-    // webサーバから取得
-    return await requester.registerUserRequester(
+    final accesstoken = await requester.registerUserRequester(
         name: name, email: email, password: password);
+    return accesstoken;
   } catch (e) {
     rethrow;
   }

@@ -1,10 +1,14 @@
+import 'package:copan_flutter/providers/selected_month_provider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class SignUpCompleted extends StatelessWidget {
+import '../../providers/expenses_provider.dart';
+
+class SignUpCompleted extends ConsumerWidget {
   const SignUpCompleted({Key? key}) : super(key: key);
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return Scaffold(
       resizeToAvoidBottomInset: false,
       appBar: AppBar(
@@ -23,6 +27,8 @@ class SignUpCompleted extends StatelessWidget {
                   fixedSize: const Size.fromWidth(double.maxFinite)),
               onPressed: () async {
                 print("家計簿に進む");
+                ref.read(selectedMonthProvider.notifier).initMonth();
+                ref.read(expensesProvider.notifier).initExpenses([]);
                 await Navigator.of(context).pushReplacementNamed('/home');
               },
               child: const Text('家計簿に進む'),

@@ -44,23 +44,6 @@ class Requester {
     }
   }
 
-  Future<void> logoutRequester() async {
-    final logoutUri = "${uri}auth/logout";
-
-    if (accessToken == null) {
-      print("アクセストークンがありません");
-      return;
-    }
-
-    final response = await http.post(Uri.parse(logoutUri),
-        headers: header(needsAccessToken: true));
-
-    // これなんで201??
-    if (response.statusCode == 201) {
-      // ログアウト時に実行する処理
-    }
-  }
-
   Future<List<dynamic>> allExpensesRequester() async {
     final req = <String, dynamic>{
       "action": "getAllExpenses",

@@ -14,19 +14,17 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
 import '../../data/local/db/dao.dart' as db;
+import '../../providers/expenses_provider.dart';
+import '../../providers/selected_month_provider.dart';
+import '../notifier/notifier.dart';
 import 'app/page/expenses.dart';
 import 'app/page/input_expense.dart';
 import 'app/page/select_category.dart';
-import 'notifier/notifier.dart';
 import 'theme/app_theme.dart';
 
 const appTitle = '家計簿アプリCopan';
 String uri =
     Platform.isAndroid ? "http://10.0.2.2:5500" : "http://127.0.0.1:5500";
-late final StateNotifierProvider<SelectedMonthStateNotifier, DateTime>
-    selectedMonthProvider;
-late final StateNotifierProvider<ExpenseStateNotifier, List<Expense>>
-    expensesProvider;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -46,9 +44,6 @@ void main() async {
     expenses = await fetchAllExpenses(user: user);
   }
 
-  selectedMonthProvider =
-      StateNotifierProvider<SelectedMonthStateNotifier, DateTime>(
-          (ref) => SelectedMonthStateNotifier(date: DateTime.now()));
   expensesProvider = StateNotifierProvider<ExpenseStateNotifier, List<Expense>>(
       (ref) => ExpenseStateNotifier(expenses: expenses));
 

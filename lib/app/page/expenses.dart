@@ -1,5 +1,4 @@
 import 'package:copan_flutter/data/expense/expense_category.dart';
-import 'package:copan_flutter/main.dart';
 import 'package:copan_flutter/requester/requester.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -7,6 +6,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../data/expense/expense.dart';
 import '../../data/local/db/dao.dart' as db;
 import '../../notifier/notifier.dart';
+import '../../providers/expenses_provider.dart';
+import '../../providers/selected_month_provider.dart';
 import '../../resources/expense_category.dart';
 import '../../theme/app_theme.dart';
 import '../../utility/format_price.dart';
