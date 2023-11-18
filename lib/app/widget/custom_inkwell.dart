@@ -5,8 +5,8 @@ class CustomInkWell extends StatelessWidget {
   const CustomInkWell({
     required this.icon,
     required this.onTap,
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   final IconData icon;
   final VoidCallback onTap;

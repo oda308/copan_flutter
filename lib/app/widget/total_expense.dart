@@ -6,7 +6,7 @@ import '../../utility/expense_list.dart';
 import '../../utility/format_price.dart';
 
 class TotalExpense extends ConsumerWidget {
-  const TotalExpense({required this.width, Key? key}) : super(key: key);
+  const TotalExpense({required this.width, super.key});
 
   final double width;
 

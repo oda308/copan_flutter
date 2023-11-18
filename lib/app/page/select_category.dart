@@ -4,7 +4,7 @@ import 'package:flutter/material.dart';
 import '../../resources/expense_category.dart';
 
 class SelectCategory extends StatelessWidget {
-  const SelectCategory({Key? key}) : super(key: key);
+  const SelectCategory({super.key});
 
   @override
   Widget build(BuildContext context) {

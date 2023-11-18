@@ -13,7 +13,7 @@ import '../../resources/expense_category.dart';
 import '../../theme/app_theme.dart';
 
 class InputExpense extends StatelessWidget {
-  const InputExpense({Key? key}) : super(key: key);
+  const InputExpense({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,8 +50,7 @@ class InputExpense extends StatelessWidget {
 class _Price extends StatelessWidget {
   const _Price({
     required this.inputted,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Expense inputted;
 
@@ -91,8 +90,7 @@ class _Price extends StatelessWidget {
 class _Category extends StatefulWidget {
   const _Category({
     required this.inputted,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Expense inputted;
 
@@ -142,8 +140,7 @@ class _CategoryState extends State<_Category> {
 class _Date extends StatefulWidget {
   const _Date({
     required this.inputted,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Expense inputted;
 
@@ -190,8 +187,7 @@ class _DateState extends State<_Date> {
 class _Content extends StatelessWidget {
   const _Content({
     required this.inputted,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Expense inputted;
 
@@ -223,8 +219,7 @@ class _Content extends StatelessWidget {
 class _RecordButton extends ConsumerWidget {
   const _RecordButton({
     required this.inputted,
-    Key? key,
-  }) : super(key: key);
+  });
 
   final Expense inputted;
 

@@ -5,7 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/expenses_provider.dart';
 
 class SignUpCompleted extends ConsumerWidget {
-  const SignUpCompleted({Key? key}) : super(key: key);
+  const SignUpCompleted({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

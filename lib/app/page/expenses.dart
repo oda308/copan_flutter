@@ -18,7 +18,7 @@ import '../widget/total_expense.dart';
 import 'drawer.dart';
 
 class Expenses extends StatelessWidget {
-  const Expenses({Key? key}) : super(key: key);
+  const Expenses({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -92,7 +92,7 @@ class Expenses extends StatelessWidget {
 }
 
 class MonthSelector extends ConsumerStatefulWidget {
-  const MonthSelector({Key? key}) : super(key: key);
+  const MonthSelector({super.key});
 
   @override
   MonthSelectorState createState() => MonthSelectorState();
@@ -154,7 +154,7 @@ class MonthSelectorState extends ConsumerState<MonthSelector> {
 }
 
 class _Expenses extends ConsumerWidget {
-  const _Expenses({Key? key}) : super(key: key);
+  const _Expenses();
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

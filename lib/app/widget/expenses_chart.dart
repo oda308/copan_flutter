@@ -8,8 +8,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 class ExpensesChart extends ConsumerStatefulWidget {
   const ExpensesChart({
-    Key? key,
-  }) : super(key: key);
+    super.key,
+  });
 
   @override
   ExpensesChartState createState() => ExpensesChartState();

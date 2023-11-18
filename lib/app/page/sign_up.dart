@@ -6,7 +6,7 @@ import 'package:flutter/material.dart';
 import '../../data/local/db/dao.dart' as db;
 
 class SignUp extends StatefulWidget {
-  const SignUp({Key? key}) : super(key: key);
+  const SignUp({super.key});
 
   @override
   State<SignUp> createState() => _SignUpState();

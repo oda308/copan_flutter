@@ -10,7 +10,7 @@ import '../../data/local/db/dao.dart' as db;
 import '../../providers/expenses_provider.dart';
 
 class Login extends StatelessWidget {
-  const Login({Key? key}) : super(key: key);
+  const Login({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class Login extends StatelessWidget {
 }
 
 class _Title extends StatelessWidget {
-  const _Title({Key? key}) : super(key: key);
+  const _Title();
 
   @override
   Widget build(BuildContext context) {
@@ -66,7 +66,7 @@ class _Title extends StatelessWidget {
 }
 
 class _LoginForm extends ConsumerStatefulWidget {
-  const _LoginForm({Key? key}) : super(key: key);
+  const _LoginForm();
 
   @override
   _LoginFormState createState() => _LoginFormState();
