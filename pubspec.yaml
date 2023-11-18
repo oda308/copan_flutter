@@ -4,32 +4,32 @@ publish_to: 'none'
 version: 1.0.0+1
 
 environment:
-  sdk: ">=2.19.0 <3.0.0"
+  sdk: '>=3.2.0 <4.0.0'
 
 dependencies:
   flutter:
     sdk: flutter
   flutter_localizations:
     sdk: flutter
-  intl: ^0.17.0
+  intl: ^0.18.1
 
   cupertino_icons: ^1.0.2
   auto_size_text: ^3.0.0
-  syncfusion_flutter_datepicker: ^20.3.52
+  syncfusion_flutter_datepicker: ^23.1.44
   flutter_riverpod: ^2.1.1
-  fl_chart: ^0.55.2
+  fl_chart: ^0.64.0
   drift: ^2.7.0
   sqlite3_flutter_libs: ^0.5.5
   path_provider: ^2.0.9
   path: ^1.8.0
   drift_dev: ^2.7.0
-  http: ^0.13.4
-  uuid: ^3.0.6
+  http: ^1.1.0
+  uuid: ^4.2.1
 
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_lints: ^2.0.0
+  flutter_lints: ^3.0.1
   build_runner: ^2.3.3
 
 flutter:
