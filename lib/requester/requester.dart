@@ -2,7 +2,6 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:copan_flutter/main.dart';
-import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
 
 class Requester {
@@ -23,7 +22,7 @@ class Requester {
 
     return header;
   }
-  
+
   Future<List<dynamic>> allExpensesRequester() async {
     final req = <String, dynamic>{
       "action": "getAllExpenses",

@@ -1,13 +1,11 @@
 import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/requester/requester.dart';
-import 'package:drift/drift.dart' as drift;
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../data/expense/expense.dart';
-import '../../data/local/db/dao.dart' as db;
 import '../../providers/expenses_provider.dart';
 import '../../resources/expense_category.dart';
 import '../../theme/app_theme.dart';
@@ -19,7 +17,7 @@ class InputExpense extends StatelessWidget {
   Widget build(BuildContext context) {
     final inputted = Expense(
       price: 0,
-      categoryId: CategoryId.food,
+      category: defaultExpenseCategory,
       createDate: DateTime.now(),
       description: '',
       expenseUuid: const Uuid().v4(),
@@ -101,9 +99,7 @@ class _Category extends StatefulWidget {
 class _CategoryState extends State<_Category> {
   @override
   Widget build(BuildContext context) {
-    final categoryId = widget.inputted.categoryId;
-
-    expenseCategoryMap[categoryId];
+    final category = widget.inputted.category;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -113,13 +109,12 @@ class _CategoryState extends State<_Category> {
         leading: SizedBox(
           height: double.infinity,
           child: Icon(
-            expenseCategoryMap[categoryId]?.icon ?? defaultExpenseCategory.icon,
-            color: expenseCategoryMap[categoryId]?.iconColor ??
-                defaultExpenseCategory.iconColor,
+            category.icon,
+            color: category.iconColor,
           ),
         ),
         title: Text(
-          expenseCategoryMap[categoryId]!.name,
+          category.name,
           textAlign: TextAlign.left,
         ),
         onTap: () async {
@@ -128,7 +123,9 @@ class _CategoryState extends State<_Category> {
                   as CategoryId?;
           if (selectedCategoryId != null) {
             setState(() {
-              widget.inputted.categoryId = selectedCategoryId;
+              widget.inputted.category =
+                  expenseCategoryMap[selectedCategoryId] ??
+                      defaultExpenseCategory;
             });
           }
         },
@@ -250,27 +247,17 @@ class _RecordButton extends ConsumerWidget {
 
             // 空だった場合は内容の項目に費目を入れる
             if (inputted.description == '') {
-              inputted.description =
-                  expenseCategoryMap[inputted.categoryId]?.name ??
-                      defaultExpenseCategory.name;
+              inputted.description = inputted.category.name;
             }
 
             // requestを送信, DBに保存
             Requester.instance.inputExpenseRequester(
               price: inputted.price,
-              categoryId: inputted.categoryId.index,
+              categoryId: inputted.category.id.index,
               description: inputted.description,
               date: inputted.createDate,
               expenseUuid: inputted.expenseUuid,
             );
-
-            db.copanDB.addExpense(db.ExpensesTableCompanion(
-              price: drift.Value(inputted.price),
-              categoryId: drift.Value(inputted.categoryId.index),
-              description: drift.Value(inputted.description),
-              createDate: drift.Value(inputted.createDate),
-              expenseUuid: drift.Value(inputted.expenseUuid),
-            ));
 
             ref.read(expensesProvider.notifier).addExpense(inputted);
           },

@@ -75,9 +75,9 @@ class ExpensesChartState extends ConsumerState<ExpensesChart> {
     for (var expense in expensesList) {
       totalPrice += expense.price;
       final price =
-          categoryTotalPriceMap[expense.categoryId]?.categoryPrice ?? 0;
-      categoryTotalPriceMap[expense.categoryId] = PieChartCategoryTotal(
-        categoryId: expense.categoryId,
+          categoryTotalPriceMap[expense.category.id]?.categoryPrice ?? 0;
+      categoryTotalPriceMap[expense.category.id] = PieChartCategoryTotal(
+        categoryId: expense.category.id,
         categoryPrice: price + expense.price,
       );
     }

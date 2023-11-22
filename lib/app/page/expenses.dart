@@ -4,11 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/expense/expense.dart';
-import '../../data/local/db/dao.dart' as db;
 import '../../notifier/notifier.dart';
 import '../../providers/expenses_provider.dart';
 import '../../providers/selected_month_provider.dart';
-import '../../resources/expense_category.dart';
 import '../../theme/app_theme.dart';
 import '../../utility/format_price.dart';
 import '../widget/custom_card.dart';
@@ -169,19 +167,6 @@ class _Expenses extends ConsumerWidget {
         delegate: SliverChildBuilderDelegate(
           (context, index) {
             final expensesByCategory = expensesByCategoryList[index];
-            late final String expenseName;
-            late final IconData expenseCategoryIcon;
-            late final Color? expenseCategoryIconColor;
-
-            expenseName =
-                expenseCategoryMap[expensesByCategory.categoryId]?.name ??
-                    defaultExpenseCategory.name;
-            expenseCategoryIcon =
-                expenseCategoryMap[expensesByCategory.categoryId]?.icon ??
-                    defaultExpenseCategory.icon;
-            expenseCategoryIconColor =
-                expenseCategoryMap[expensesByCategory.categoryId]?.iconColor ??
-                    defaultExpenseCategory.iconColor;
 
             final listTiles = <Dismissible>[];
             for (final expense in expensesByCategory.expenses) {
@@ -243,10 +228,6 @@ class _Expenses extends ConsumerWidget {
                       expenseUuid: expense.expenseUuid,
                     );
 
-                    db.copanDB.deleteExpense(
-                      expenseUuid: expense.expenseUuid,
-                    );
-
                     ref
                         .read(expensesProvider.notifier)
                         .deleteExpense(expense.expenseUuid);
@@ -257,13 +238,13 @@ class _Expenses extends ConsumerWidget {
 
             return ExpansionTile(
               leading: Icon(
-                expenseCategoryIcon,
-                color: expenseCategoryIconColor,
+                expensesByCategory.category.icon,
+                color: expensesByCategory.category.iconColor,
               ),
               title: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(expenseName),
+                    Text(expensesByCategory.category.name),
                     Text(
                         '\u00A5 ${getFormattedPrice(expensesByCategory.totalPrice)}')
                   ]),
@@ -297,7 +278,7 @@ List<ExpensesByCategory> getExpensesByCategory(
   for (final expense in expenses) {
     bool containsCategory = false;
     for (final expensesByCategory in expensesByCategoryList) {
-      if (expensesByCategory.categoryId == expense.categoryId) {
+      if (expensesByCategory.category.id == expense.category.id) {
         containsCategory = true;
         expensesByCategory.expenses.add(expense);
         expensesByCategory.totalPrice += expense.price;
@@ -306,7 +287,7 @@ List<ExpensesByCategory> getExpensesByCategory(
     // まだ追加していないカテゴリをリストに加える
     if (!containsCategory) {
       expensesByCategoryList.add(ExpensesByCategory(
-          categoryId: expense.categoryId,
+          category: expense.category,
           expenses: [expense],
           totalPrice: expense.price));
     }
@@ -316,12 +297,12 @@ List<ExpensesByCategory> getExpensesByCategory(
 
 class ExpensesByCategory {
   ExpensesByCategory({
-    required this.categoryId,
+    required this.category,
     required this.expenses,
     required this.totalPrice,
   });
 
-  CategoryId categoryId;
+  ExpenseCategory category;
   List<Expense> expenses;
   int totalPrice;
 }
