@@ -241,7 +241,7 @@ class _RecordButton extends ConsumerWidget {
             shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(30.0)),
           ),
-          icon: const Icon(Icons.edit),
+          icon: Icon(Icons.edit, color: appTheme.appColors.secondaryText),
           onPressed: () {
             Navigator.of(context).pop();
 
@@ -261,8 +261,9 @@ class _RecordButton extends ConsumerWidget {
 
             ref.read(expensesProvider.notifier).addExpense(inputted);
           },
-          label: const Text(
+          label: Text(
             '計上する',
+            style: TextStyle(color: appTheme.appColors.secondaryText),
           ),
         ),
       ),
