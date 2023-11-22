@@ -2,13 +2,10 @@ import 'dart:io';
 
 import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/data/expense/expense.dart';
-import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/data/user.dart';
-import 'package:copan_flutter/resources/expense_category.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:intl/intl.dart';
 
 import '../../providers/expenses_provider.dart';
 import '../../providers/selected_month_provider.dart';
@@ -52,33 +49,4 @@ class MyApp extends StatelessWidget {
           '/selectCategory': (BuildContext context) => const SelectCategory(),
         });
   }
-}
-
-List<Expense> convertWebAPIToExpenses(List<dynamic> expensesFromWeb) {
-  final expenses = <Expense>[];
-
-  for (final entry in expensesFromWeb) {
-    final dateTime = entry['date'].substring(0, 10);
-    final formatter = DateFormat('yyyy-MM-dd');
-    final formatted = formatter.parseStrict(dateTime as String);
-
-    final category =
-        expenseCategoryMap[CategoryId.values[entry['category'] as int]];
-
-    // TODO: 不明なカテゴリとして扱った方が良いかもしれない
-    if (category == null) {
-      continue;
-    }
-
-    final expense = Expense(
-      price: entry['price'] as int,
-      category: category,
-      createDate: formatted,
-      description: entry['content'] as String,
-      expenseUuid: entry['expense_uuid'] as String,
-    );
-    expenses.add(expense);
-  }
-
-  return expenses;
 }
