@@ -1,12 +1,7 @@
 import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:flutter/material.dart';
 
-final defaultExpenseCategory = ExpenseCategory(
-  id: CategoryId.food,
-  name: '食費',
-  icon: Icons.fastfood_outlined,
-  iconColor: Colors.green,
-);
+final defaultExpenseCategory = expenseCategoryList.first;
 
 final expenseCategoryList = [
   ExpenseCategory(

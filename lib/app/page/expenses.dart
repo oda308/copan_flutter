@@ -1,5 +1,6 @@
 import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/requester/requester.dart';
+import 'package:copan_flutter/utility/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -156,6 +157,7 @@ class _Expenses extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
+    final l10n = useL10n(context);
     final expensesList = ref.watch(filteredExpensesProvider);
     final expensesByCategoryList =
         getExpensesByCategory(expenses: expensesList);
@@ -255,12 +257,12 @@ class _Expenses extends ConsumerWidget {
         ),
       );
     } else {
-      widget = const SliverToBoxAdapter(
+      widget = SliverToBoxAdapter(
         child: Padding(
           padding: EdgeInsets.symmetric(vertical: 32),
           child: Center(
             child: Text(
-              '今月の支出はありません',
+              l10n.no_expenses_this_month,
               style: TextStyle(color: Colors.grey),
             ),
           ),

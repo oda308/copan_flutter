@@ -1,4 +1,15 @@
 {
     "@@locale": "ja",
-    "test": "テスト"
-}
+    "app_title": "家計簿アプリCopan",
+    "selected_purchase_date": "購入した日付を選択してください",
+    "no_expenses_this_month": "今月の支出はありません",
+    "cancel": "キャンセル",
+    "invalid_date": "その日付は指定できません",
+    "memo": "メモ",
+    "record_expense": "計上する",
+    "select_expense_category": "費目の選択",
+    "shared_budget": "家計簿の共有",
+    "input_expense": "支出の入力",
+    "amount": "金額",
+    "payment_ratio": "支払割合"
+  }

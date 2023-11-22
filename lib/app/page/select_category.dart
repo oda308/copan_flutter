@@ -1,4 +1,5 @@
 import 'package:copan_flutter/data/expense/expense_category.dart';
+import 'package:copan_flutter/utility/l10n.dart';
 import 'package:flutter/material.dart';
 
 import '../../resources/expense_category.dart';
@@ -8,12 +9,13 @@ class SelectCategory extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = useL10n(context);
     final expenseCategoryList = expenseCategoryMap.values.toList();
     final itemCount = expenseCategoryMap.length;
     late final CategoryId selectedCategoryId;
     return Scaffold(
       appBar: AppBar(
-        title: const Text('費目の選択'),
+        title: Text(l10n.select_expense_category),
       ),
       body: SafeArea(
         bottom: false,

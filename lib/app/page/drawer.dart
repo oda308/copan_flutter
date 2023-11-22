@@ -1,3 +1,4 @@
+import 'package:copan_flutter/utility/l10n.dart';
 import 'package:flutter/material.dart';
 
 import '../../data/user.dart';
@@ -9,6 +10,7 @@ class AppDrawer extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = getAppTheme(context);
+    final l10n = useL10n(context);
     return Drawer(
         child: ListView(padding: EdgeInsets.zero, children: [
       DrawerHeader(
@@ -18,11 +20,11 @@ class AppDrawer extends StatelessWidget {
         child: _HeaderContent(),
       ),
       ListTile(
-        title: const Text('家計簿の共有'),
+        title: Text(l10n.shared_budget),
         onTap: () {},
       ),
       ListTile(
-        title: const Text('支払割合'),
+        title: Text(l10n.payment_ratio),
         onTap: () {},
       ),
     ]));
@@ -34,11 +36,12 @@ class _HeaderContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = getAppTheme(context);
+    final l10n = useL10n(context);
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Text(
-          '家計簿アプリCopan',
+          l10n.app_title,
           style: TextStyle(color: appTheme.appColors.secondaryText),
         ),
         Spacer(),

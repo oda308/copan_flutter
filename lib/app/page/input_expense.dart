@@ -1,5 +1,6 @@
 import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/requester/requester.dart';
+import 'package:copan_flutter/utility/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -23,9 +24,11 @@ class InputExpense extends StatelessWidget {
       expenseUuid: const Uuid().v4(),
     );
 
+    final l10n = useL10n(context);
+
     return Scaffold(
       appBar: AppBar(
-        title: const Text('支出の入力'),
+        title: Text(l10n.input_expense),
       ),
       body: SafeArea(
         child: SingleChildScrollView(
@@ -54,6 +57,7 @@ class _Price extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = useL10n(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 20,
@@ -67,8 +71,8 @@ class _Price extends StatelessWidget {
           ),
         ),
         title: TextField(
-          decoration: const InputDecoration(
-            labelText: '金額',
+          decoration: InputDecoration(
+            labelText: l10n.amount,
           ),
           textAlign: TextAlign.right,
           keyboardType: TextInputType.number,
@@ -167,14 +171,16 @@ class _DateState extends State<_Date> {
   }
 
   Future<void> _selectDate(BuildContext context) async {
+    final l10n = useL10n(context);
     final picked = await showDatePicker(
-        context: context,
-        initialDate: widget.inputted.createDate,
-        firstDate: DateTime(2021),
-        lastDate: DateTime(2032),
-        helpText: '購入した日付を選択してください',
-        cancelText: 'キャンセル',
-        errorFormatText: 'その日付は指定できません');
+      context: context,
+      initialDate: widget.inputted.createDate,
+      firstDate: DateTime(2021),
+      lastDate: DateTime(2032),
+      helpText: l10n.selected_purchase_date,
+      cancelText: l10n.cancel,
+      errorFormatText: l10n.invalid_date,
+    );
     if (picked != null) {
       setState(() => widget.inputted.createDate = picked);
     }
@@ -190,6 +196,7 @@ class _Content extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = useL10n(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 20,
@@ -200,8 +207,8 @@ class _Content extends StatelessWidget {
           child: Icon(Icons.note_alt, color: Colors.green),
         ),
         title: TextField(
-          decoration: const InputDecoration(
-            labelText: '内容',
+          decoration: InputDecoration(
+            labelText: l10n.memo,
           ),
           textAlign: TextAlign.left,
           onChanged: (value) {
@@ -223,6 +230,7 @@ class _RecordButton extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = getAppTheme(context);
+    final l10n = useL10n(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 20,
@@ -262,7 +270,7 @@ class _RecordButton extends ConsumerWidget {
             ref.read(expensesProvider.notifier).addExpense(inputted);
           },
           label: Text(
-            '計上する',
+            l10n.record_expense,
             style: TextStyle(color: appTheme.appColors.secondaryText),
           ),
         ),

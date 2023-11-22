@@ -18,7 +18,6 @@ import 'app/page/input_expense.dart';
 import 'app/page/select_category.dart';
 import 'theme/app_theme.dart';
 
-const appTitle = '家計簿アプリCopan';
 String uri =
     Platform.isAndroid ? "http://10.0.2.2:5500" : "http://127.0.0.1:5500";
 
@@ -39,11 +38,9 @@ void main() async {
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        title: appTitle,
         localizationsDelegates: L10n.localizationsDelegates,
         supportedLocales: L10n.supportedLocales,
         theme: AppTheme.light().themeData,
