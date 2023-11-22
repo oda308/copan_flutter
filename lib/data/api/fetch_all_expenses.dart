@@ -3,10 +3,9 @@ import 'dart:async';
 import 'package:copan_flutter/data/expense/expense.dart';
 import 'package:copan_flutter/main.dart';
 
-import '../../data/user.dart';
 import '../../requester/requester.dart';
 
-Future<List<Expense>> fetchAllExpenses({required User user}) async {
+Future<List<Expense>> fetchAllExpenses() async {
   late final List<Expense> expenses;
   try {
     // webサーバから取得

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../../data/local/db/dao.dart' as db;
 import '../../data/user.dart';
 import '../../theme/app_theme.dart';
 
@@ -37,7 +36,7 @@ class AppDrawer extends StatelessWidget {
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8),
                         child: Text(
-                          User.instance?.email ?? '',
+                          User().name,
                           style: TextStyle(
                               color: appTheme.appColors.secondaryText),
                         ),
@@ -57,13 +56,6 @@ class AppDrawer extends StatelessWidget {
           ListTile(
             title: const Text('支払割合'),
             onTap: () {},
-          ),
-          ListTile(
-            title: const Text('ログアウト'),
-            onTap: () async {
-              db.copanDB.deleteUser();
-              await Navigator.of(context).pushReplacementNamed('/login');
-            },
           ),
         ],
       ),

@@ -1,19 +1,14 @@
 import 'dart:io';
 
-import 'package:copan_flutter/app/page/login.dart';
-import 'package:copan_flutter/app/page/sign_up.dart';
-import 'package:copan_flutter/app/page/sign_up_completed.dart';
 import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/data/expense/expense.dart';
 import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/data/user.dart';
-import 'package:copan_flutter/requester/requester.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_gen/gen_l10n/l10n.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:intl/intl.dart';
 
-import '../../data/local/db/dao.dart' as db;
 import '../../providers/expenses_provider.dart';
 import '../../providers/selected_month_provider.dart';
 import '../notifier/notifier.dart';
@@ -29,20 +24,9 @@ String uri =
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
 
-  final userTable = await db.copanDB.getUser;
-  User? user;
+  await User().init();
 
-  if (userTable.isNotEmpty) {
-    user = User(
-        email: userTable.first.email, accessToken: userTable.first.accessToken);
-    Requester.instance.accessToken = userTable.first.accessToken;
-  }
-
-  List<Expense> expenses = [];
-
-  if (user != null) {
-    expenses = await fetchAllExpenses(user: user);
-  }
+  List<Expense> expenses = await fetchAllExpenses();
 
   expensesProvider = StateNotifierProvider<ExpenseStateNotifier, List<Expense>>(
       (ref) => ExpenseStateNotifier(expenses: expenses));
@@ -57,18 +41,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    final user = User.instance;
     return MaterialApp(
         title: appTitle,
         localizationsDelegates: L10n.localizationsDelegates,
         supportedLocales: L10n.supportedLocales,
         theme: AppTheme.light().themeData,
         darkTheme: AppTheme.dark().themeData,
-        home: user != null ? const Expenses() : const Login(),
+        home: const Expenses(),
         routes: <String, WidgetBuilder>{
-          '/login': (BuildContext context) => const Login(),
-          '/signUp': (BuildContext context) => const SignUp(),
-          '/signUpCompleted': (BuildContext context) => const SignUpCompleted(),
           '/home': (BuildContext context) => const Expenses(),
           '/inputExpense': (BuildContext context) => const InputExpense(),
           '/selectCategory': (BuildContext context) => const SelectCategory(),
