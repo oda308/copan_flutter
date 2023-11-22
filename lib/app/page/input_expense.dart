@@ -4,11 +4,9 @@ import 'package:copan_flutter/utility/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:uuid/uuid.dart';
 
 import '../../data/expense/expense.dart';
 import '../../providers/expenses_provider.dart';
-import '../../resources/expense_category.dart';
 import '../../theme/app_theme.dart';
 
 class InputExpense extends StatelessWidget {
@@ -16,13 +14,7 @@ class InputExpense extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final inputted = Expense(
-      price: 0,
-      category: defaultExpenseCategory,
-      createDate: DateTime.now(),
-      description: '',
-      expenseUuid: const Uuid().v4(),
-    );
+    final inputted = Expense();
 
     final l10n = useL10n(context);
 
@@ -122,14 +114,12 @@ class _CategoryState extends State<_Category> {
           textAlign: TextAlign.left,
         ),
         onTap: () async {
-          final selectedCategoryId =
+          final selectedCategory =
               await Navigator.pushNamed(context, '/selectCategory')
-                  as CategoryId?;
-          if (selectedCategoryId != null) {
+                  as ExpenseCategory?;
+          if (selectedCategory != null) {
             setState(() {
-              widget.inputted.category =
-                  expenseCategoryMap[selectedCategoryId] ??
-                      defaultExpenseCategory;
+              widget.inputted.category = selectedCategory;
             });
           }
         },

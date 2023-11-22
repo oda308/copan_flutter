@@ -12,7 +12,7 @@ class SelectCategory extends StatelessWidget {
     final l10n = useL10n(context);
     final expenseCategoryList = expenseCategoryMap.values.toList();
     final itemCount = expenseCategoryMap.length;
-    late final CategoryId selectedCategoryId;
+    late final ExpenseCategory selectedCategory;
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.select_expense_category),
@@ -33,8 +33,8 @@ class SelectCategory extends StatelessWidget {
                   style: const TextStyle(fontSize: 14),
                 ),
                 onTap: () {
-                  selectedCategoryId = expenseCategoryList[index].id;
-                  Navigator.of(context).pop(selectedCategoryId);
+                  selectedCategory = expenseCategoryList[index];
+                  Navigator.of(context).pop(selectedCategory);
                 },
               );
             },
