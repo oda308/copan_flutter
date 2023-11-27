@@ -2,14 +2,10 @@ import 'dart:async';
 
 import '../../requester/requester.dart';
 
-Future<String> registerUser(
-    {required String name,
-    required String email,
-    required String password}) async {
+Future<String> registerUser() async {
   try {
     final requester = Requester.instance;
-    final accesstoken = await requester.registerUserRequester(
-        name: name, email: email, password: password);
+    final accesstoken = await requester.registerUserRequester();
     return accesstoken;
   } catch (e) {
     rethrow;

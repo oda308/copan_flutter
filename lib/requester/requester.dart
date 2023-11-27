@@ -1,12 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:copan_flutter/data/user.dart';
 import 'package:copan_flutter/main.dart';
 import 'package:http/http.dart' as http;
 
 class Requester {
-  String? accessToken;
-
   static Requester instance = Requester();
 
   Map<String, String> header({required bool needsAccessToken}) {
@@ -16,8 +15,8 @@ class Requester {
       "Content-Type": "application/json",
     };
 
-    if (needsAccessToken && accessToken != null) {
-      header["Authorization"] = accessToken!;
+    if (needsAccessToken) {
+      header["Authorization"] = User().token;
     }
 
     return header;
@@ -51,21 +50,13 @@ class Requester {
     return expenses;
   }
 
-  Future<String> registerUserRequester(
-      {required String name,
-      required String email,
-      required String password}) async {
-    final req = <String, dynamic>{
-      "action": "registerUser",
-      "name": name,
-      "email": email,
-      "password": password
-    };
+  Future<String> registerUserRequester() async {
+    final req = <String, dynamic>{"action": "registerUser"};
     String body = json.encode(req);
 
     try {
       http.Response resp = await http
-          .post(Uri.parse(uri),
+          .post(Uri.parse("$uri/registerUser"),
               headers: header(needsAccessToken: false), body: body)
           .timeout(const Duration(seconds: 5));
 

@@ -1,8 +1,8 @@
+import 'package:copan_flutter/data/api/register_user.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
-import 'package:uuid/uuid.dart';
 
 class User {
-  late final String id;
+  late final String token;
   // TODO: DBから取得するようにする
   final name = 'TEST';
   static User? _instance;
@@ -17,19 +17,20 @@ class User {
   User._internal();
 
   Future<void> init() async {
-    String? id = await readId();
-    if (id == null) {
-      id = const Uuid().v4();
-      await storeId(id: id);
+    String? token = await readToken();
+    if (token == null) {
+      final token = await registerUser();
+      await storeToken(token: token);
     }
-    _instance?.id = id;
+    print('token: $token');
+    _instance?.token = token!;
   }
 
-  Future<String?> readId() async {
-    return _storage.read(key: 'id', aOptions: _aOptions);
+  Future<String?> readToken() async {
+    return _storage.read(key: 'token', aOptions: _aOptions);
   }
 
-  Future<void> storeId({required String id}) async {
-    await _storage.write(key: 'id', value: id, aOptions: _aOptions);
+  Future<void> storeToken({required String token}) async {
+    await _storage.write(key: 'token', value: token, aOptions: _aOptions);
   }
 }
