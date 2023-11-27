@@ -39,7 +39,7 @@ class SelectCategory extends StatelessWidget {
               );
             },
             separatorBuilder: (BuildContext context, int index) =>
-                const Divider(),
+                Divider(color: Colors.grey),
             itemCount: itemCount,
           ),
         ),

@@ -65,6 +65,10 @@ class _Price extends StatelessWidget {
         title: TextField(
           decoration: InputDecoration(
             labelText: l10n.amount,
+            labelStyle: TextStyle(color: Colors.grey),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+            ),
           ),
           textAlign: TextAlign.right,
           keyboardType: TextInputType.number,
@@ -199,6 +203,10 @@ class _Content extends StatelessWidget {
         title: TextField(
           decoration: InputDecoration(
             labelText: l10n.memo,
+            labelStyle: TextStyle(color: Colors.grey),
+            enabledBorder: UnderlineInputBorder(
+              borderSide: BorderSide(color: Colors.grey),
+            ),
           ),
           textAlign: TextAlign.left,
           onChanged: (value) {

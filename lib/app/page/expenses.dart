@@ -212,10 +212,6 @@ class _Expenses extends ConsumerWidget {
                     title: Text(
                       expense.description,
                       style: const TextStyle(fontSize: 14),
-                      textHeightBehavior: const TextHeightBehavior(
-                        applyHeightToFirstAscent: false,
-                        applyHeightToLastDescent: false,
-                      ),
                     ),
                     trailing: Text(
                       '\u00A5$formattedPrice',
@@ -238,19 +234,22 @@ class _Expenses extends ConsumerWidget {
               );
             }
 
-            return ExpansionTile(
-              leading: Icon(
-                expensesByCategory.category.icon,
-                color: expensesByCategory.category.iconColor,
+            return Theme(
+              data: ThemeData().copyWith(dividerColor: Colors.transparent),
+              child: ExpansionTile(
+                leading: Icon(
+                  expensesByCategory.category.icon,
+                  color: expensesByCategory.category.iconColor,
+                ),
+                title: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Text(expensesByCategory.category.name),
+                      Text(
+                          '\u00A5 ${getFormattedPrice(expensesByCategory.totalPrice)}')
+                    ]),
+                children: listTiles,
               ),
-              title: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(expensesByCategory.category.name),
-                    Text(
-                        '\u00A5 ${getFormattedPrice(expensesByCategory.totalPrice)}')
-                  ]),
-              children: listTiles,
             );
           },
           childCount: expensesByCategoryList.length,
