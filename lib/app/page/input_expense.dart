@@ -230,46 +230,45 @@ class _RecordButton extends ConsumerWidget {
     final appTheme = getAppTheme(context);
     final l10n = useL10n(context);
     return Padding(
-      padding: const EdgeInsets.symmetric(
-        vertical: 20,
-      ),
+      padding: const EdgeInsets.all(24),
       child: Center(
-        child: ElevatedButton.icon(
-          style: ElevatedButton.styleFrom(
-            backgroundColor: appTheme.appColors.accentColor,
-            elevation: 6.0,
-            padding: const EdgeInsets.only(
-              top: 10,
-              right: 20,
-              bottom: 10,
-              left: 20,
+        child: Container(
+          width: double.infinity,
+          child: ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: appTheme.appColors.accentColor,
+              elevation: 1.0,
+              padding: const EdgeInsets.all(16),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30.0)),
             ),
-            shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30.0)),
-          ),
-          icon: Icon(Icons.edit, color: appTheme.appColors.secondaryText),
-          onPressed: () {
-            Navigator.of(context).pop();
+            onPressed: () {
+              Navigator.of(context).pop();
 
-            // 空だった場合は内容の項目に費目を入れる
-            if (inputted.description == '') {
-              inputted.description = inputted.category.name;
-            }
+              // 空だった場合は内容の項目に費目を入れる
+              if (inputted.description == '') {
+                inputted.description = inputted.category.name;
+              }
 
-            // requestを送信, DBに保存
-            Requester.instance.inputExpenseRequester(
-              price: inputted.price,
-              categoryId: inputted.category.id.index,
-              description: inputted.description,
-              date: inputted.createDate,
-              expenseUuid: inputted.expenseUuid,
-            );
+              // requestを送信, DBに保存
+              Requester.instance.inputExpenseRequester(
+                price: inputted.price,
+                categoryId: inputted.category.id.index,
+                description: inputted.description,
+                date: inputted.createDate,
+                expenseUuid: inputted.expenseUuid,
+              );
 
-            ref.read(expensesProvider.notifier).addExpense(inputted);
-          },
-          label: Text(
-            l10n.record_expense,
-            style: TextStyle(color: appTheme.appColors.secondaryText),
+              ref.read(expensesProvider.notifier).addExpense(inputted);
+            },
+            child: Text(
+              l10n.record_expense,
+              style: TextStyle(
+                color: appTheme.appColors.secondaryText,
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
           ),
         ),
       ),
