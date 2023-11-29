@@ -9,13 +9,18 @@ import '../../data/expense/expense.dart';
 import '../../providers/expenses_provider.dart';
 import '../../theme/app_theme.dart';
 
-class InputExpense extends StatelessWidget {
+class InputExpense extends StatefulWidget {
   const InputExpense({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    final inputted = Expense();
+  State<InputExpense> createState() => _InputExpenseState();
+}
 
+class _InputExpenseState extends State<InputExpense> {
+  Expense inputted = Expense();
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = useL10n(context);
 
     return Scaffold(
@@ -27,10 +32,10 @@ class InputExpense extends StatelessWidget {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.start,
             children: [
-              _Price(inputted: inputted),
-              _Category(inputted: inputted),
-              _Date(inputted: inputted),
-              _Content(inputted: inputted),
+              _Price(inputted: inputted, updateInputted: updateInputted),
+              _Category(inputted: inputted, updateInputted: updateInputted),
+              _Date(inputted: inputted, updateInputted: updateInputted),
+              _Content(inputted: inputted, updateInputted: updateInputted),
               _RecordButton(inputted: inputted),
             ],
           ),
@@ -38,14 +43,19 @@ class InputExpense extends StatelessWidget {
       ),
     );
   }
+
+  void updateInputted({required Expense inputted}) {
+    setState(() {
+      this.inputted = inputted;
+    });
+  }
 }
 
 class _Price extends StatelessWidget {
-  const _Price({
-    required this.inputted,
-  });
+  const _Price({required this.inputted, required this.updateInputted});
 
   final Expense inputted;
+  final Function updateInputted;
 
   @override
   Widget build(BuildContext context) {
@@ -74,10 +84,8 @@ class _Price extends StatelessWidget {
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           onChanged: (value) {
-            // 数字以外が入力された場合に取得する空文字は無視する
-            if (value != '') {
-              inputted.price = int.parse(value);
-            }
+            inputted.price = int.parse(value == '' ? '0' : value);
+            updateInputted(inputted: inputted);
           },
         ),
       ),
@@ -85,21 +93,18 @@ class _Price extends StatelessWidget {
   }
 }
 
-class _Category extends StatefulWidget {
+class _Category extends StatelessWidget {
   const _Category({
     required this.inputted,
+    required this.updateInputted,
   });
 
   final Expense inputted;
+  final Function updateInputted;
 
-  @override
-  State<_Category> createState() => _CategoryState();
-}
-
-class _CategoryState extends State<_Category> {
   @override
   Widget build(BuildContext context) {
-    final category = widget.inputted.category;
+    final category = inputted.category;
 
     return Padding(
       padding: const EdgeInsets.symmetric(
@@ -122,9 +127,8 @@ class _CategoryState extends State<_Category> {
               await Navigator.pushNamed(context, '/selectCategory')
                   as ExpenseCategory?;
           if (selectedCategory != null) {
-            setState(() {
-              widget.inputted.category = selectedCategory;
-            });
+            inputted.category = selectedCategory;
+            updateInputted(inputted: inputted);
           }
         },
       ),
@@ -132,20 +136,18 @@ class _CategoryState extends State<_Category> {
   }
 }
 
-class _Date extends StatefulWidget {
+class _Date extends StatelessWidget {
   const _Date({
     required this.inputted,
+    required this.updateInputted,
   });
 
   final Expense inputted;
+  final Function updateInputted;
 
-  @override
-  State<_Date> createState() => _DateState();
-}
-
-class _DateState extends State<_Date> {
   @override
   Widget build(BuildContext context) {
+    final l10n = useL10n(context);
     return Padding(
       padding: const EdgeInsets.symmetric(
         vertical: 20,
@@ -156,37 +158,35 @@ class _DateState extends State<_Date> {
           child: Icon(Icons.calendar_today, color: Colors.green),
         ),
         title: Text(
-            "${widget.inputted.createDate.year}年${widget.inputted.createDate.month}月${widget.inputted.createDate.day}日"),
-        onTap: () {
-          _selectDate(context);
+            "${inputted.createDate.year}年${inputted.createDate.month}月${inputted.createDate.day}日"),
+        onTap: () async {
+          final picked = await showDatePicker(
+            context: context,
+            initialDate: inputted.createDate,
+            firstDate: DateTime(2021),
+            lastDate: DateTime(2032),
+            helpText: l10n.selected_purchase_date,
+            cancelText: l10n.cancel,
+            errorFormatText: l10n.invalid_date,
+          );
+          if (picked != null) {
+            inputted.createDate = picked;
+            updateInputted(inputted: inputted);
+          }
         },
       ),
     );
-  }
-
-  Future<void> _selectDate(BuildContext context) async {
-    final l10n = useL10n(context);
-    final picked = await showDatePicker(
-      context: context,
-      initialDate: widget.inputted.createDate,
-      firstDate: DateTime(2021),
-      lastDate: DateTime(2032),
-      helpText: l10n.selected_purchase_date,
-      cancelText: l10n.cancel,
-      errorFormatText: l10n.invalid_date,
-    );
-    if (picked != null) {
-      setState(() => widget.inputted.createDate = picked);
-    }
   }
 }
 
 class _Content extends StatelessWidget {
   const _Content({
     required this.inputted,
+    required this.updateInputted,
   });
 
   final Expense inputted;
+  final Function updateInputted;
 
   @override
   Widget build(BuildContext context) {
@@ -211,6 +211,7 @@ class _Content extends StatelessWidget {
           textAlign: TextAlign.left,
           onChanged: (value) {
             inputted.description = value;
+            updateInputted(inputted: inputted);
           },
         ),
       ),
@@ -225,6 +226,14 @@ class _RecordButton extends ConsumerWidget {
 
   final Expense inputted;
 
+  // 0円で計上する場合は計上理由を残すと思われるので
+  // 金額とメモどちらも入力がなかった場合は計上ボタンをdisableにする
+  bool get _isDisabled {
+    return inputted.price == 0 && inputted.description == '';
+  }
+
+  double get _opacity => _isDisabled ? 0.6 : 1;
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final appTheme = getAppTheme(context);
@@ -236,11 +245,13 @@ class _RecordButton extends ConsumerWidget {
           width: double.infinity,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
-              backgroundColor: appTheme.appColors.accentColor,
-              elevation: 1.0,
+              backgroundColor:
+                  appTheme.appColors.accentColor.withOpacity(_opacity),
+              elevation: _isDisabled ? null : 0,
               padding: const EdgeInsets.all(16),
               shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(30.0)),
+              splashFactory: _isDisabled ? NoSplash.splashFactory : null,
             ),
             onPressed: () {
               Navigator.of(context).pop();
