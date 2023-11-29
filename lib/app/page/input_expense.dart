@@ -261,7 +261,6 @@ class _RecordButton extends ConsumerWidget {
                 inputted.description = inputted.category.name;
               }
 
-              // requestを送信, DBに保存
               Requester.instance.inputExpenseRequester(
                 price: inputted.price,
                 categoryId: inputted.category.id.index,
@@ -270,7 +269,7 @@ class _RecordButton extends ConsumerWidget {
                 expenseUuid: inputted.expenseUuid,
               );
 
-              ref.read(expensesProvider.notifier).addExpense(inputted);
+              ref.read(expensesProvider.notifier).add(inputted);
             },
             child: Text(
               l10n.record_expense,

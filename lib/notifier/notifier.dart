@@ -13,12 +13,16 @@ class ExpenseStateNotifier extends StateNotifier<List<Expense>> {
     state = expenses;
   }
 
-  void addExpense(Expense expense) {
+  void add(Expense expense) {
     state = [...state, expense];
   }
 
-  void deleteExpense(String expenseUuid) {
-    state.removeWhere((Expense expense) => expense.expenseUuid == expenseUuid);
+  void delete(String expenseUuid) {
+    state.removeWhere((Expense expense) {
+      print(expense.expenseUuid);
+      print(expenseUuid);
+      return expense.expenseUuid == expenseUuid;
+    });
   }
 }
 

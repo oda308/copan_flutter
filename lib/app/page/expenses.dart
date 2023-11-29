@@ -228,7 +228,7 @@ class _Expenses extends ConsumerWidget {
 
                     ref
                         .read(expensesProvider.notifier)
-                        .deleteExpense(expense.expenseUuid);
+                        .delete(expense.expenseUuid);
                   },
                 ),
               );
