@@ -152,11 +152,22 @@ class MonthSelectorState extends ConsumerState<MonthSelector> {
   }
 }
 
-class _Expenses extends ConsumerWidget {
+class _Expenses extends ConsumerStatefulWidget {
   const _Expenses();
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  _ExpensesState createState() => _ExpensesState();
+}
+
+class _ExpensesState extends ConsumerState<_Expenses> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(expensesProvider);
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final l10n = useL10n(context);
     final expensesList = ref.watch(filteredExpensesProvider);
     final expensesByCategoryList =

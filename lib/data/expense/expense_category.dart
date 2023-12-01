@@ -13,16 +13,17 @@ enum CategoryId {
   others,
 }
 
+@immutable
 class ExpenseCategory {
-  CategoryId id; // ユニークID(インクリメントで管理)
-  String name; // 費目名
-  IconData icon; // アイコン
-  Color? iconColor; // アイコンの色
-
-  ExpenseCategory({
+  const ExpenseCategory({
     required this.id,
     required this.name,
     required this.icon,
     required this.iconColor,
   });
+
+  final CategoryId id; // ユニークID(インクリメントで管理)
+  final String name; // 費目名
+  final IconData icon; // アイコン
+  final Color? iconColor; // アイコンの色
 }

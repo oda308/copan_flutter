@@ -84,7 +84,7 @@ class _Price extends StatelessWidget {
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           onChanged: (value) {
-            inputted.price = int.parse(value == '' ? '0' : value);
+            inputted.copyWith(price: int.parse(value == '' ? '0' : value));
             updateInputted(inputted: inputted);
           },
         ),
@@ -127,7 +127,7 @@ class _Category extends StatelessWidget {
               await Navigator.pushNamed(context, '/selectCategory')
                   as ExpenseCategory?;
           if (selectedCategory != null) {
-            inputted.category = selectedCategory;
+            inputted.copyWith(category: selectedCategory);
             updateInputted(inputted: inputted);
           }
         },
@@ -170,7 +170,7 @@ class _Date extends StatelessWidget {
             errorFormatText: l10n.invalid_date,
           );
           if (picked != null) {
-            inputted.createDate = picked;
+            inputted.copyWith(createDate: picked);
             updateInputted(inputted: inputted);
           }
         },
@@ -210,7 +210,7 @@ class _Content extends StatelessWidget {
           ),
           textAlign: TextAlign.left,
           onChanged: (value) {
-            inputted.description = value;
+            inputted.copyWith(description: value);
             updateInputted(inputted: inputted);
           },
         ),
@@ -258,7 +258,7 @@ class _RecordButton extends ConsumerWidget {
 
               // 空だった場合は内容の項目に費目を入れる
               if (inputted.description == '') {
-                inputted.description = inputted.category.name;
+                inputted.copyWith(description: inputted.category.name);
               }
 
               Requester.instance.inputExpenseRequester(

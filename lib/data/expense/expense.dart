@@ -1,25 +1,36 @@
 import 'package:copan_flutter/data/expense/expense_category.dart';
 import 'package:copan_flutter/resources/expense_category.dart';
+import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
 
-// TODO: StateNotifierのステートとして使用するためimmutableにする
-// https://riverpod.dev/ja/docs/providers/state_notifier_provider
+@immutable
 class Expense {
-  int price;
-  ExpenseCategory category;
-  DateTime createDate;
-  String description;
-  String expenseUuid;
-
   Expense({
-    int? price,
-    ExpenseCategory? category,
+    this.price = 0,
+    this.category = defaultExpenseCategory,
     DateTime? createDate,
-    String? description,
+    this.description = '',
     String? expenseUuid,
-  })  : price = price ?? 0,
-        category = category ?? defaultExpenseCategory,
-        createDate = createDate ?? DateTime.now(),
-        description = description ?? '',
-        expenseUuid = expenseUuid ?? const Uuid().v4();
+  })  : createDate = createDate ?? DateTime.now(),
+        expenseUuid = expenseUuid ?? Uuid().v4();
+
+  final int price;
+  final ExpenseCategory category;
+  final DateTime createDate;
+  final String description;
+  final String expenseUuid;
+
+  Expense copyWith(
+      {int? price,
+      ExpenseCategory? category,
+      DateTime? createDate,
+      String? description}) {
+    return Expense(
+      price: price ?? this.price,
+      category: category ?? this.category,
+      createDate: createDate,
+      description: description ?? this.description,
+      expenseUuid: expenseUuid,
+    );
+  }
 }
