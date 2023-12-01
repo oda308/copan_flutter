@@ -11,5 +11,8 @@
     "shared_budget": "家計簿の共有",
     "input_expense": "支出の入力",
     "amount": "金額",
-    "payment_ratio": "支払割合"
+    "payment_ratio": "支払割合",
+    "deletion_confirmation": "支出を削除しますか？",
+    "yes": "はい",
+    "no": "いいえ"
   }

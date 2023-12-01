@@ -170,65 +170,42 @@ class _Expenses extends ConsumerWidget {
           (context, index) {
             final expensesByCategory = expensesByCategoryList[index];
 
-            final listTiles = <Dismissible>[];
+            final listTiles = <ListTile>[];
             for (final expense in expensesByCategory.expenses) {
               final formattedPrice = getFormattedPrice(expense.price);
               listTiles.add(
-                Dismissible(
-                  key: UniqueKey(),
-                  background: Container(
-                    color: Colors.red,
-                    child: Align(
-                        alignment: Alignment.centerLeft,
-                        child: Padding(
-                          padding: const EdgeInsets.symmetric(horizontal: 12),
-                          child: Row(
-                            children: const [
-                              Icon(
-                                Icons.delete,
-                                color: Colors.white,
-                              ),
-                              Icon(
-                                Icons.navigate_next,
-                                color: Colors.white,
-                              ),
-                            ],
-                          ),
-                        )),
+                ListTile(
+                  // leadingで上下中央によせるため、
+                  // ColumnのmainAxisAlignmentで調整、回避している
+                  leading: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        _getMonthAndDay(expense.createDate),
+                        style: const TextStyle(fontSize: 14),
+                      ),
+                    ],
                   ),
-                  direction: DismissDirection.startToEnd,
-                  child: ListTile(
-                    // leadingで上下中央によせるため、
-                    // ColumnのmainAxisAlignmentで調整、回避している
-                    leading: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Text(
-                          _getMonthAndDay(expense.createDate),
-                          style: const TextStyle(fontSize: 14),
-                        ),
-                      ],
-                    ),
-                    title: Text(
-                      expense.description,
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    trailing: Text(
-                      '\u00A5$formattedPrice',
-                      style: const TextStyle(fontSize: 14),
-                    ),
-                    onTap: () {
-                      // TODO: 各費目をタップしたときの処理
-                    },
+                  title: Text(
+                    expense.description,
+                    style: const TextStyle(fontSize: 14),
                   ),
-                  onDismissed: (_) {
-                    Requester.instance.deleteExpenseRequester(
-                      expenseUuid: expense.expenseUuid,
+                  trailing: Text(
+                    '\u00A5$formattedPrice',
+                    style: const TextStyle(fontSize: 14),
+                  ),
+                  onTap: () {
+                    _showDeleteDialog(
+                      context: context,
+                      deleteAction: () {
+                        Requester.instance.deleteExpenseRequester(
+                          expenseUuid: expense.expenseUuid,
+                        );
+                        ref
+                            .read(expensesProvider.notifier)
+                            .delete(expense.expenseUuid);
+                      },
                     );
-
-                    ref
-                        .read(expensesProvider.notifier)
-                        .delete(expense.expenseUuid);
                   },
                 ),
               );
@@ -310,4 +287,37 @@ class ExpensesByCategory {
 
 String _getMonthAndDay(DateTime date) {
   return "${date.month}/${date.day}";
+}
+
+Future<void> _showDeleteDialog({
+  required BuildContext context,
+  required Function deleteAction,
+}) async {
+  final l10n = useL10n(context);
+  return showDialog<void>(
+    context: context,
+    barrierDismissible: false,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        content: SingleChildScrollView(
+          child: Text(l10n.deletion_confirmation),
+        ),
+        actions: <Widget>[
+          TextButton(
+            child: Text(l10n.yes),
+            onPressed: () {
+              Navigator.of(context).pop();
+              deleteAction();
+            },
+          ),
+          TextButton(
+            child: Text(l10n.no),
+            onPressed: () {
+              Navigator.of(context).pop();
+            },
+          ),
+        ],
+      );
+    },
+  );
 }
