@@ -84,8 +84,9 @@ class _Price extends StatelessWidget {
           keyboardType: TextInputType.number,
           inputFormatters: [FilteringTextInputFormatter.digitsOnly],
           onChanged: (value) {
-            inputted.copyWith(price: int.parse(value == '' ? '0' : value));
-            updateInputted(inputted: inputted);
+            final updated =
+                inputted.copyWith(price: int.parse(value == '' ? '0' : value));
+            updateInputted(inputted: updated);
           },
         ),
       ),
@@ -127,8 +128,8 @@ class _Category extends StatelessWidget {
               await Navigator.pushNamed(context, '/selectCategory')
                   as ExpenseCategory?;
           if (selectedCategory != null) {
-            inputted.copyWith(category: selectedCategory);
-            updateInputted(inputted: inputted);
+            final updated = inputted.copyWith(category: selectedCategory);
+            updateInputted(inputted: updated);
           }
         },
       ),
@@ -170,8 +171,8 @@ class _Date extends StatelessWidget {
             errorFormatText: l10n.invalid_date,
           );
           if (picked != null) {
-            inputted.copyWith(createDate: picked);
-            updateInputted(inputted: inputted);
+            final updated = inputted.copyWith(createDate: picked);
+            updateInputted(inputted: updated);
           }
         },
       ),
@@ -210,8 +211,8 @@ class _Content extends StatelessWidget {
           ),
           textAlign: TextAlign.left,
           onChanged: (value) {
-            inputted.copyWith(description: value);
-            updateInputted(inputted: inputted);
+            final updated = inputted.copyWith(description: value);
+            updateInputted(inputted: updated);
           },
         ),
       ),
@@ -219,23 +220,37 @@ class _Content extends StatelessWidget {
   }
 }
 
-class _RecordButton extends ConsumerWidget {
+class _RecordButton extends ConsumerStatefulWidget {
   const _RecordButton({
     required this.inputted,
   });
 
   final Expense inputted;
 
+  @override
+  _RecordButtonState createState() => _RecordButtonState();
+}
+
+class _RecordButtonState extends ConsumerState<_RecordButton> {
+  @override
+  void initState() {
+    super.initState();
+    ref.read(expensesProvider);
+  }
+
   // 0円で計上する場合は計上理由を残すと思われるので
   // 金額とメモどちらも入力がなかった場合は計上ボタンをdisableにする
   bool get _isDisabled {
-    return inputted.price == 0 && inputted.description == '';
+    final isDisabled =
+        widget.inputted.price == 0 && widget.inputted.description == '';
+    print("計上できないか: $isDisabled");
+    return isDisabled;
   }
 
   double get _opacity => _isDisabled ? 0.6 : 1;
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  Widget build(BuildContext context) {
     final appTheme = getAppTheme(context);
     final l10n = useL10n(context);
     return Padding(
@@ -257,19 +272,20 @@ class _RecordButton extends ConsumerWidget {
               Navigator.of(context).pop();
 
               // 空だった場合は内容の項目に費目を入れる
-              if (inputted.description == '') {
-                inputted.copyWith(description: inputted.category.name);
+              if (widget.inputted.description == '') {
+                widget.inputted
+                    .copyWith(description: widget.inputted.category.name);
               }
 
               Requester.instance.inputExpenseRequester(
-                price: inputted.price,
-                categoryId: inputted.category.id.index,
-                description: inputted.description,
-                date: inputted.createDate,
-                expenseUuid: inputted.expenseUuid,
+                price: widget.inputted.price,
+                categoryId: widget.inputted.category.id.index,
+                description: widget.inputted.description,
+                date: widget.inputted.createDate,
+                expenseUuid: widget.inputted.expenseUuid,
               );
 
-              ref.read(expensesProvider.notifier).add(inputted);
+              ref.read(expensesProvider.notifier).add(widget.inputted);
             },
             child: Text(
               l10n.record_expense,
