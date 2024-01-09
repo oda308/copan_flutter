@@ -43,7 +43,7 @@ class Expenses extends StatelessWidget {
                 color: appTheme.appColors.secondaryBackground,
                 child: CustomCard(
                   child: Column(children: [
-                    const MonthSelector(),
+                    MonthSelector(),
                     Row(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
@@ -90,36 +90,21 @@ class Expenses extends StatelessWidget {
   }
 }
 
-class MonthSelector extends ConsumerStatefulWidget {
-  const MonthSelector({super.key});
-
-  @override
-  MonthSelectorState createState() => MonthSelectorState();
-}
-
-class MonthSelectorState extends ConsumerState<MonthSelector> {
-  late String showDateString;
-
-  @override
-  void initState() {
-    super.initState();
-    ref.read(selectedMonthProvider);
+class MonthSelector extends ConsumerWidget {
+  void showPrevMonth(WidgetRef ref) {
+    final selectedMonth = ref.watch(selectedMonthProvider);
+    final prevMonth = DateTime(selectedMonth.year, selectedMonth.month - 1);
+    ref.read(selectedMonthProvider.notifier).changeMonth(prevMonth);
   }
 
-  void showPrevMonth() {
-    var selectedMonth = ref.watch(selectedMonthProvider);
-    ref.read(selectedMonthProvider.notifier).state =
-        DateTime(selectedMonth.year, selectedMonth.month - 1);
-  }
-
-  void showNextMonth() {
-    var selectedMonth = ref.watch(selectedMonthProvider);
-    ref.read(selectedMonthProvider.notifier).state =
-        DateTime(selectedMonth.year, selectedMonth.month + 1);
+  void showNextMonth(WidgetRef ref) {
+    final selectedMonth = ref.watch(selectedMonthProvider);
+    final nextMonth = DateTime(selectedMonth.year, selectedMonth.month + 1);
+    ref.read(selectedMonthProvider.notifier).changeMonth(nextMonth);
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final targetMonth = ref.watch(selectedMonthProvider);
     final dateString = getDateString(targetMonth: targetMonth);
     return Container(
@@ -131,12 +116,20 @@ class MonthSelectorState extends ConsumerState<MonthSelector> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                CustomInkWell(icon: Icons.arrow_left, onTap: showPrevMonth),
+                CustomInkWell(
+                    icon: Icons.arrow_left,
+                    onTap: () {
+                      showPrevMonth(ref);
+                    }),
                 Text(
                   dateString,
                   style: const TextStyle(fontSize: 18),
                 ),
-                CustomInkWell(icon: Icons.arrow_right, onTap: showNextMonth),
+                CustomInkWell(
+                    icon: Icons.arrow_right,
+                    onTap: () {
+                      showNextMonth(ref);
+                    }),
               ],
             ),
           );
