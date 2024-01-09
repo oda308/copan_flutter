@@ -241,10 +241,7 @@ class _RecordButtonState extends ConsumerState<_RecordButton> {
   // 0円で計上する場合は計上理由を残すと思われるので
   // 金額とメモどちらも入力がなかった場合は計上ボタンをdisableにする
   bool get _isDisabled {
-    final isDisabled =
-        widget.inputted.price == 0 && widget.inputted.description == '';
-    print("計上できないか: $isDisabled");
-    return isDisabled;
+    return widget.inputted.price == 0 && widget.inputted.description == '';
   }
 
   double get _opacity => _isDisabled ? 0.6 : 1;
