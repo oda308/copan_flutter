@@ -139,28 +139,15 @@ class MonthSelector extends ConsumerWidget {
   }
 
   String getDateString({required DateTime targetMonth}) {
-    String showDateString = '${targetMonth.year}年${targetMonth.month}月~';
-
-    return showDateString;
+    return '${targetMonth.year}年${targetMonth.month}月~';
   }
 }
 
-class _Expenses extends ConsumerStatefulWidget {
+class _Expenses extends ConsumerWidget {
   const _Expenses();
 
   @override
-  _ExpensesState createState() => _ExpensesState();
-}
-
-class _ExpensesState extends ConsumerState<_Expenses> {
-  @override
-  void initState() {
-    super.initState();
-    ref.read(expensesProvider);
-  }
-
-  @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final l10n = useL10n(context);
     final expensesList = ref.watch(filteredExpensesProvider);
     final expensesByCategoryList =

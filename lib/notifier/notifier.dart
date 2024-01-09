@@ -9,20 +9,15 @@ class ExpenseStateNotifier extends StateNotifier<List<Expense>> {
     required List<Expense> expenses,
   }) : super(expenses);
 
-  void initExpenses(List<Expense> expenses) {
-    state = expenses;
-  }
-
   void add(Expense expense) {
     state = [...state, expense];
   }
 
   void delete(String expenseUuid) {
-    state.removeWhere((Expense expense) {
-      print(expense.expenseUuid);
-      print(expenseUuid);
-      return expense.expenseUuid == expenseUuid;
-    });
+    state = [
+      for (final expense in state)
+        if (expense.expenseUuid != expenseUuid) expense
+    ];
   }
 }
 
