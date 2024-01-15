@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:copan_flutter/app/page/home.dart';
 import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/data/expense/expense.dart';
 import 'package:copan_flutter/data/user.dart';
@@ -10,7 +11,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../providers/expenses_provider.dart';
 import '../../providers/selected_month_provider.dart';
 import '../notifier/notifier.dart';
-import 'app/page/expenses.dart';
 import 'app/page/input_expense.dart';
 import 'app/page/select_category.dart';
 import 'theme/app_theme.dart';
@@ -42,9 +42,9 @@ class MyApp extends StatelessWidget {
         supportedLocales: L10n.supportedLocales,
         theme: AppTheme.light().themeData,
         darkTheme: AppTheme.dark().themeData,
-        home: const Expenses(),
+        home: const Home(),
         routes: <String, WidgetBuilder>{
-          '/home': (BuildContext context) => const Expenses(),
+          '/home': (BuildContext context) => const Home(),
           '/inputExpense': (BuildContext context) => const InputExpense(),
           '/selectCategory': (BuildContext context) => const SelectCategory(),
         });

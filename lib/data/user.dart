@@ -5,6 +5,8 @@ class User {
   late final String token;
   // TODO: DBから取得するようにする
   final name = 'TEST';
+  // TODO: DBから取得するようにする
+  final isSharing = true;
   static User? _instance;
   final _storage = FlutterSecureStorage();
   final _aOptions = const AndroidOptions(encryptedSharedPreferences: true);

@@ -14,5 +14,7 @@
     "payment_ratio": "支払割合",
     "deletion_confirmation": "支出を削除しますか？",
     "yes": "はい",
-    "no": "いいえ"
+    "no": "いいえ",
+    "private": "プライベート",
+    "shared": "共有"
   }

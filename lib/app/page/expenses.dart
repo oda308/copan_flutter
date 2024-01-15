@@ -14,7 +14,6 @@ import '../widget/custom_card.dart';
 import '../widget/custom_inkwell.dart';
 import '../widget/expenses_chart.dart';
 import '../widget/total_expense.dart';
-import 'drawer.dart';
 
 class Expenses extends StatelessWidget {
   const Expenses({super.key});
@@ -22,71 +21,53 @@ class Expenses extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = getAppTheme(context);
-    return Scaffold(
-      backgroundColor: Colors.white,
-      appBar: AppBar(
-        title: const Text('家計簿'),
-      ),
-      drawer: const AppDrawer(),
-      body: SafeArea(
-        bottom: false,
-        child: CustomScrollView(slivers: [
-          SliverToBoxAdapter(
-            child: Container(
-              color: appTheme.appColors.secondaryBackground,
-              height: 12,
-            ),
-          ),
-          SliverToBoxAdapter(
-            child: LayoutBuilder(builder: (context, constraint) {
-              return Container(
-                color: appTheme.appColors.secondaryBackground,
-                child: CustomCard(
-                  child: Column(children: [
-                    MonthSelector(),
-                    Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const Expanded(
-                          child: ExpensesChart(),
-                        ),
-                        Expanded(
-                          child: Padding(
-                            padding: const EdgeInsets.symmetric(horizontal: 12),
-                            child: TotalExpense(
-                              width: constraint.maxWidth / 2,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 16),
-                  ]),
-                ),
-              );
-            }),
-          ),
-          SliverToBoxAdapter(
-            child: Container(
-              color: appTheme.appColors.secondaryBackground,
-              height: 12,
-            ),
-          ),
-          const _Expenses(),
-          const SliverToBoxAdapter(
-            child: SizedBox(height: 96),
-          ),
-        ]),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushNamed('/inputExpense'),
-        backgroundColor: appTheme.appColors.accentColor,
-        child: Icon(
-          Icons.add,
-          color: appTheme.appColors.secondaryText,
+    return CustomScrollView(slivers: [
+      SliverToBoxAdapter(
+        child: Container(
+          color: appTheme.appColors.secondaryBackground,
+          height: 12,
         ),
       ),
-    );
+      SliverToBoxAdapter(
+        child: LayoutBuilder(builder: (context, constraint) {
+          return Container(
+            color: appTheme.appColors.secondaryBackground,
+            child: CustomCard(
+              child: Column(children: [
+                MonthSelector(),
+                Row(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Expanded(
+                      child: ExpensesChart(),
+                    ),
+                    Expanded(
+                      child: Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 12),
+                        child: TotalExpense(
+                          width: constraint.maxWidth / 2,
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 16),
+              ]),
+            ),
+          );
+        }),
+      ),
+      SliverToBoxAdapter(
+        child: Container(
+          color: appTheme.appColors.secondaryBackground,
+          height: 12,
+        ),
+      ),
+      const _Expenses(),
+      const SliverToBoxAdapter(
+        child: SizedBox(height: 96),
+      ),
+    ]);
   }
 }
 
