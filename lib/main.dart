@@ -1,6 +1,8 @@
 import 'dart:io';
 
 import 'package:copan_flutter/app/page/home.dart';
+import 'package:copan_flutter/app/page/home_with_tab_bar.dart';
+import 'package:copan_flutter/app/page/shared_setting.dart';
 import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/data/expense/expense.dart';
 import 'package:copan_flutter/data/user.dart';
@@ -42,11 +44,11 @@ class MyApp extends StatelessWidget {
         supportedLocales: L10n.supportedLocales,
         theme: AppTheme.light().themeData,
         darkTheme: AppTheme.dark().themeData,
-        home: const Home(),
+        home: User().isShared ? HomeWithTabBar() : Home(),
         routes: <String, WidgetBuilder>{
-          '/home': (BuildContext context) => const Home(),
           '/inputExpense': (BuildContext context) => const InputExpense(),
           '/selectCategory': (BuildContext context) => const SelectCategory(),
+          '/sharedSetting': (BuildContext context) => SharedSetting(),
         });
   }
 }

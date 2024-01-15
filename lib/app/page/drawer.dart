@@ -27,6 +27,13 @@ class AppDrawer extends StatelessWidget {
         title: Text(l10n.payment_ratio),
         onTap: () {},
       ),
+      // デバッグ用
+      ListTile(
+        title: Text("共有家計簿の表示切替"),
+        onTap: () {
+          Navigator.of(context).pushNamed('/sharedSetting');
+        },
+      ),
     ]));
   }
 }

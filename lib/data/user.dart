@@ -6,7 +6,7 @@ class User {
   // TODO: DBから取得するようにする
   final name = 'TEST';
   // TODO: DBから取得するようにする
-  final isSharing = true;
+  var isShared = true;
   static User? _instance;
   final _storage = FlutterSecureStorage();
   final _aOptions = const AndroidOptions(encryptedSharedPreferences: true);
@@ -34,5 +34,10 @@ class User {
 
   Future<void> storeToken({required String token}) async {
     await _storage.write(key: 'token', value: token, aOptions: _aOptions);
+  }
+
+  // TODO: Userをriverpodで管理して設定の変更でリビルドさせる
+  Future<void> updateSharedSetting({required bool isShared}) async {
+    this.isShared = isShared;
   }
 }
