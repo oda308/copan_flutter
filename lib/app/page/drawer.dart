@@ -23,13 +23,14 @@ class AppDrawer extends StatelessWidget {
         title: Text(l10n.shared_budget),
         onTap: () {},
       ),
-      ListTile(
-        title: Text(l10n.payment_ratio),
-        onTap: () {},
-      ),
+      if (User().isShared)
+        ListTile(
+          title: Text(l10n.payment_ratio),
+          onTap: () {},
+        ),
       // デバッグ用
       ListTile(
-        title: Text("共有家計簿の表示切替"),
+        title: Text("共有状態の切替"),
         onTap: () {
           Navigator.of(context).pushNamed('/sharedSetting');
         },

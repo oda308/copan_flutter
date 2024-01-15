@@ -18,7 +18,7 @@ class _SharedSettingState extends State<SharedSetting> {
         body: SafeArea(
             child: ListTile(
                 leading: null,
-                title: Text("共有家計簿の表示"),
+                title: Text("共有状態の切替"),
                 trailing: CupertinoSwitch(
                   value: isShared,
                   onChanged: (value) {
