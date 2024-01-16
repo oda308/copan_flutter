@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:copan_flutter/app/page/home.dart';
 import 'package:copan_flutter/app/page/home_with_tab_bar.dart';
+import 'package:copan_flutter/app/page/payment_ratio.dart';
 import 'package:copan_flutter/app/page/scanner.dart';
 import 'package:copan_flutter/app/page/shared_setting.dart';
 import 'package:copan_flutter/app/page/sharing.dart';
@@ -53,6 +54,7 @@ class MyApp extends StatelessWidget {
           '/sharedSetting': (BuildContext context) => SharedSetting(),
           '/sharing': (BuildContext context) => Sharing(),
           '/scanner': (BuildContext context) => Scanner(),
+          '/paymentRatio': (BuildContext context) => PaymentRatio(),
         });
   }
 }

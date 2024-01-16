@@ -28,7 +28,9 @@ class AppDrawer extends StatelessWidget {
       if (User().isShared)
         ListTile(
           title: Text(l10n.payment_ratio),
-          onTap: () {},
+          onTap: () {
+            Navigator.of(context).pushNamed('/paymentRatio');
+          },
         ),
       // デバッグ用
       ListTile(
