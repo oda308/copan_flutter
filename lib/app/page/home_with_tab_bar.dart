@@ -19,7 +19,7 @@ class HomeWithTabBar extends StatelessWidget {
           appBar: AppBar(
             title: const Text('家計簿'),
             bottom: TabBar(tabs: [
-              Tab(text: l10n.shared),
+              Tab(text: l10n.sharing),
               Tab(text: l10n.private),
             ]),
           ),

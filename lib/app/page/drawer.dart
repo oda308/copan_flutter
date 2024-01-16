@@ -21,7 +21,9 @@ class AppDrawer extends StatelessWidget {
       ),
       ListTile(
         title: Text(l10n.shared_budget),
-        onTap: () {},
+        onTap: () {
+          Navigator.of(context).pushNamed('/sharing');
+        },
       ),
       if (User().isShared)
         ListTile(

@@ -2,7 +2,9 @@ import 'dart:io';
 
 import 'package:copan_flutter/app/page/home.dart';
 import 'package:copan_flutter/app/page/home_with_tab_bar.dart';
+import 'package:copan_flutter/app/page/scanner.dart';
 import 'package:copan_flutter/app/page/shared_setting.dart';
+import 'package:copan_flutter/app/page/sharing.dart';
 import 'package:copan_flutter/data/api/fetch_all_expenses.dart';
 import 'package:copan_flutter/data/expense/expense.dart';
 import 'package:copan_flutter/data/user.dart';
@@ -49,6 +51,8 @@ class MyApp extends StatelessWidget {
           '/inputExpense': (BuildContext context) => const InputExpense(),
           '/selectCategory': (BuildContext context) => const SelectCategory(),
           '/sharedSetting': (BuildContext context) => SharedSetting(),
+          '/sharing': (BuildContext context) => Sharing(),
+          '/scanner': (BuildContext context) => Scanner(),
         });
   }
 }
