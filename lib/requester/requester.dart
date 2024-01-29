@@ -2,7 +2,7 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:copan_flutter/data/user.dart';
-import 'package:copan_flutter/main.dart';
+import 'package:copan_flutter/main_production.dart';
 import 'package:http/http.dart' as http;
 
 class Requester {
