@@ -1,8 +1,8 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:copan_flutter/config/base_url.dart';
 import 'package:copan_flutter/data/user.dart';
-import 'package:copan_flutter/main_production.dart';
 import 'package:http/http.dart' as http;
 
 class Requester {
@@ -31,7 +31,7 @@ class Requester {
 
     try {
       http.Response resp = await http
-          .post(Uri.parse(uri),
+          .post(Uri.parse(BaseUrl.url),
               headers: header(needsAccessToken: true), body: body)
           .timeout(const Duration(seconds: 5));
 
@@ -56,7 +56,7 @@ class Requester {
 
     try {
       http.Response resp = await http
-          .post(Uri.parse("$uri/registerUser"),
+          .post(Uri.parse("${BaseUrl.url}/registerUser"),
               headers: header(needsAccessToken: false), body: body)
           .timeout(const Duration(seconds: 5));
 
@@ -92,7 +92,7 @@ class Requester {
     };
     String body = json.encode(expense);
 
-    http.Response resp = await http.post(Uri.parse(uri),
+    http.Response resp = await http.post(Uri.parse(BaseUrl.url),
         headers: header(needsAccessToken: true), body: body);
 
     if (resp.statusCode != 200) {
@@ -111,7 +111,7 @@ class Requester {
     };
     String body = json.encode(req);
     try {
-      http.Response resp = await http.post(Uri.parse(uri),
+      http.Response resp = await http.post(Uri.parse(BaseUrl.url),
           headers: header(needsAccessToken: true), body: body);
 
       if (resp.statusCode != 200) {

@@ -1,5 +1,3 @@
-import 'dart:io';
-
 import 'package:copan_flutter/app/page/home.dart';
 import 'package:copan_flutter/app/page/home_with_tab_bar.dart';
 import 'package:copan_flutter/app/page/payment_ratio.dart';
@@ -19,9 +17,6 @@ import '../notifier/notifier.dart';
 import 'app/page/input_expense.dart';
 import 'app/page/select_category.dart';
 import 'theme/app_theme.dart';
-
-String uri =
-    Platform.isAndroid ? "http://10.0.2.2:5500" : "http://127.0.0.1:5500";
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
