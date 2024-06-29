@@ -24,12 +24,12 @@ class Requester {
     return header;
   }
 
-  Future<List<Map<String, dynamic>>> allExpensesRequester() async {
+  Future<List<dynamic>> allExpensesRequester() async {
     final req = <String, dynamic>{
       'action': 'getAllExpenses',
     };
     final body = json.encode(req);
-    late List<Map<String, dynamic>> expenses;
+    late List<dynamic> expenses;
 
     try {
       final resp = await http
@@ -43,10 +43,7 @@ class Requester {
       if (resp.statusCode != 200) {
         throw AssertionError('Failed get response');
       }
-      // TODO(oda308): jsonDecodeを2回使用しないとlistではなくstringが返ってくる
-      // https://stackoverflow.com/questions/73511236/flutter-jsondecode-returns-string-instead-of-list
-      expenses = jsonDecode(jsonDecode(resp.body) as String)
-          as List<Map<String, dynamic>>;
+      expenses = jsonDecode(jsonDecode(resp.body) as String) as List<dynamic>;
     } on TimeoutException catch (_) {
       throw AssertionError('A timeout occured.');
     }
@@ -107,7 +104,7 @@ class Requester {
     }
 
     assert(() {
-      debugPrint(resp as String);
+      debugPrint(resp.toString());
       return true;
     }());
   }

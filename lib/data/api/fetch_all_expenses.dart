@@ -13,7 +13,7 @@ Future<List<Expense>> fetchAllExpenses() async {
   return expenses;
 }
 
-List<Expense> toExpenses({required List<Map<String, dynamic>> fetched}) {
+List<Expense> toExpenses({required List<dynamic> fetched}) {
   final expenses = <Expense>[];
 
   for (final entry in fetched) {
@@ -34,7 +34,7 @@ List<Expense> toExpenses({required List<Map<String, dynamic>> fetched}) {
       category: category,
       createDate: formatted,
       description: entry['content'] as String,
-      expenseUuid: entry['expense_uuid'] as String,
+      expenseUuid: entry['expense_uuid'] as String? ?? '',
     );
     expenses.add(expense);
   }
