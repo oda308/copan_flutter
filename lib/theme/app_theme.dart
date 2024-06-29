@@ -30,7 +30,7 @@ class AppTheme {
           ),
           colorScheme: const ColorScheme.light().copyWith(
               primary: AppColors.light().accentColor,
-              background: AppColors.light().primaryBackground)),
+              surface: AppColors.light().primaryBackground)),
       appColors: AppColors.light(),
     );
   }
@@ -48,7 +48,7 @@ class AppTheme {
           ),
           colorScheme: const ColorScheme.dark().copyWith(
               primary: AppColors.dark().accentColor,
-              background: AppColors.dark().primaryBackground)),
+              surface: AppColors.dark().primaryBackground)),
       appColors: AppColors.dark(),
     );
   }
