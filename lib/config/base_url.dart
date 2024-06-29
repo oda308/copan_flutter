@@ -1,15 +1,12 @@
 import 'dart:io';
 
-class BaseUrl {
-  BaseUrl({required bool isProduction}) {
-    url = isProduction ? baseUrlProduction : _getDevelopmentBaseUrl();
-  }
+import 'app_environment.dart' as env;
 
-  static late final String url;
-  // TODO(oda308): ProductionのURLが確定したら書き換え
-  static const String baseUrlProduction = 'https://127.0.0.1:5500';
+String get baseUrl =>
+    env.isProduction() ? _baseUrlProduction : _getDevelopmentBaseUrl();
 
-  // 開発環境のベースURLを取得
-  static String _getDevelopmentBaseUrl() =>
-      Platform.isAndroid ? 'http://10.0.2.2:5500' : 'http://127.0.0.1:5500';
-}
+// TODO(oda308): ProductionのURLが確定したら書き換え
+const String _baseUrlProduction = 'https://127.0.0.1:5500';
+
+String _getDevelopmentBaseUrl() =>
+    Platform.isAndroid ? 'http://10.0.2.2:5500' : 'http://127.0.0.1:5500';

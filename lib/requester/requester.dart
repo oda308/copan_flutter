@@ -34,7 +34,7 @@ class Requester {
     try {
       final resp = await http
           .post(
-            Uri.parse(BaseUrl.url),
+            Uri.parse(baseUrl),
             headers: header(needsAccessToken: true),
             body: body,
           )
@@ -60,7 +60,7 @@ class Requester {
     try {
       final resp = await http
           .post(
-            Uri.parse('${BaseUrl.url}/registerUser'),
+            Uri.parse('$baseUrl/registerUser'),
             headers: header(needsAccessToken: false),
             body: body,
           )
@@ -97,7 +97,7 @@ class Requester {
     final body = json.encode(expense);
 
     final resp = await http.post(
-      Uri.parse(BaseUrl.url),
+      Uri.parse(baseUrl),
       headers: header(needsAccessToken: true),
       body: body,
     );
@@ -122,7 +122,7 @@ class Requester {
     final body = json.encode(req);
 
     final resp = await http.post(
-      Uri.parse(BaseUrl.url),
+      Uri.parse(baseUrl),
       headers: header(needsAccessToken: true),
       body: body,
     );
