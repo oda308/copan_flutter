@@ -22,7 +22,7 @@ class TotalExpense extends ConsumerWidget {
         width: width,
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
+          children: <Widget>[
             const Padding(
               padding: EdgeInsets.symmetric(vertical: 8),
               child: Text(
@@ -33,7 +33,7 @@ class TotalExpense extends ConsumerWidget {
             Align(
               alignment: Alignment.bottomRight,
               child: Text(
-                "\u00a5 $totalExpenseString",
+                '\u00a5 $totalExpenseString',
                 style:
                     const TextStyle(fontWeight: FontWeight.bold, fontSize: 18),
               ),

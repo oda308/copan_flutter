@@ -1,5 +1,6 @@
-import 'package:copan_flutter/utility/l10n.dart';
 import 'package:flutter/material.dart';
+
+import '../../utility/l10n.dart';
 
 class PaymentRatio extends StatelessWidget {
   const PaymentRatio({super.key});

@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../notifier/notifier.dart';
 
-final selectedMonthProvider =
+final StateNotifierProvider<SelectedMonthStateNotifier, DateTime>
+    selectedMonthProvider =
     StateNotifierProvider<SelectedMonthStateNotifier, DateTime>(
-        (ref) => SelectedMonthStateNotifier(date: DateTime.now()));
+  (ref) => SelectedMonthStateNotifier(date: DateTime.now()),
+);

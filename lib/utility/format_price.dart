@@ -1,6 +1,6 @@
 import 'package:intl/intl.dart';
 
 String getFormattedPrice(int priceString) {
-  var f = NumberFormat(",###");
+  final f = NumberFormat(',###');
   return f.format(priceString);
 }

@@ -1,7 +1,8 @@
-import 'package:copan_flutter/app/page/drawer.dart';
-import 'package:copan_flutter/app/page/expenses.dart';
-import 'package:copan_flutter/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+
+import '../../theme/app_theme.dart';
+import 'drawer.dart';
+import 'expenses.dart';
 
 class Home extends StatelessWidget {
   const Home({super.key});
@@ -15,12 +16,12 @@ class Home extends StatelessWidget {
         title: const Text('家計簿'),
       ),
       drawer: const AppDrawer(),
-      body: SafeArea(
+      body: const SafeArea(
         bottom: false,
         child: Expenses(),
       ),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => Navigator.of(context).pushNamed('/inputExpense'),
+        onPressed: () async => Navigator.of(context).pushNamed('/inputExpense'),
         backgroundColor: appTheme.appColors.accentColor,
         child: Icon(
           Icons.add,

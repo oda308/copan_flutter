@@ -1,15 +1,15 @@
-import 'package:copan_flutter/data/expense/expense_category.dart';
-import 'package:copan_flutter/requester/requester.dart';
-import 'package:copan_flutter/utility/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/expense/expense.dart';
+import '../../data/expense/expense_category.dart';
 import '../../notifier/notifier.dart';
 import '../../providers/expenses_provider.dart';
 import '../../providers/selected_month_provider.dart';
+import '../../requester/requester.dart';
 import '../../theme/app_theme.dart';
 import '../../utility/format_price.dart';
+import '../../utility/l10n.dart';
 import '../widget/custom_card.dart';
 import '../widget/custom_inkwell.dart';
 import '../widget/expenses_chart.dart';
@@ -21,57 +21,63 @@ class Expenses extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final appTheme = getAppTheme(context);
-    return CustomScrollView(slivers: [
-      SliverToBoxAdapter(
-        child: Container(
-          color: appTheme.appColors.secondaryBackground,
-          height: 12,
-        ),
-      ),
-      SliverToBoxAdapter(
-        child: LayoutBuilder(builder: (context, constraint) {
-          return Container(
+    return CustomScrollView(
+      slivers: <Widget>[
+        SliverToBoxAdapter(
+          child: Container(
             color: appTheme.appColors.secondaryBackground,
-            child: CustomCard(
-              child: Column(children: [
-                MonthSelector(),
-                Row(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    const Expanded(
-                      child: ExpensesChart(),
-                    ),
-                    Expanded(
-                      child: Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 12),
-                        child: TotalExpense(
-                          width: constraint.maxWidth / 2,
+            height: 12,
+          ),
+        ),
+        SliverToBoxAdapter(
+          child: LayoutBuilder(
+            builder: (context, constraint) => ColoredBox(
+              color: appTheme.appColors.secondaryBackground,
+              child: CustomCard(
+                child: Column(
+                  children: <Widget>[
+                    const MonthSelector(),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: <Widget>[
+                        const Expanded(
+                          child: ExpensesChart(),
                         ),
-                      ),
+                        Expanded(
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 12),
+                            child: TotalExpense(
+                              width: constraint.maxWidth / 2,
+                            ),
+                          ),
+                        ),
+                      ],
                     ),
+                    const SizedBox(height: 16),
                   ],
                 ),
-                const SizedBox(height: 16),
-              ]),
+              ),
             ),
-          );
-        }),
-      ),
-      SliverToBoxAdapter(
-        child: Container(
-          color: appTheme.appColors.secondaryBackground,
-          height: 12,
+          ),
         ),
-      ),
-      const _Expenses(),
-      const SliverToBoxAdapter(
-        child: SizedBox(height: 96),
-      ),
-    ]);
+        SliverToBoxAdapter(
+          child: Container(
+            color: appTheme.appColors.secondaryBackground,
+            height: 12,
+          ),
+        ),
+        const _Expenses(),
+        const SliverToBoxAdapter(
+          child: SizedBox(height: 96),
+        ),
+      ],
+    );
   }
 }
 
 class MonthSelector extends ConsumerWidget {
+  const MonthSelector({super.key});
+
   void showPrevMonth(WidgetRef ref) {
     final selectedMonth = ref.watch(selectedMonthProvider);
     final prevMonth = DateTime(selectedMonth.year, selectedMonth.month - 1);
@@ -91,37 +97,36 @@ class MonthSelector extends ConsumerWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8),
       child: LayoutBuilder(
-        builder: (context, constraints) {
-          return Padding(
-            padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                CustomInkWell(
-                    icon: Icons.arrow_left,
-                    onTap: () {
-                      showPrevMonth(ref);
-                    }),
-                Text(
-                  dateString,
-                  style: const TextStyle(fontSize: 18),
-                ),
-                CustomInkWell(
-                    icon: Icons.arrow_right,
-                    onTap: () {
-                      showNextMonth(ref);
-                    }),
-              ],
-            ),
-          );
-        },
+        builder: (context, constraints) => Padding(
+          padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 32),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: <Widget>[
+              CustomInkWell(
+                icon: Icons.arrow_left,
+                onTap: () {
+                  showPrevMonth(ref);
+                },
+              ),
+              Text(
+                dateString,
+                style: const TextStyle(fontSize: 18),
+              ),
+              CustomInkWell(
+                icon: Icons.arrow_right,
+                onTap: () {
+                  showNextMonth(ref);
+                },
+              ),
+            ],
+          ),
+        ),
       ),
     );
   }
 
-  String getDateString({required DateTime targetMonth}) {
-    return '${targetMonth.year}年${targetMonth.month}月~';
-  }
+  String getDateString({required DateTime targetMonth}) =>
+      '${targetMonth.year}年${targetMonth.month}月~';
 }
 
 class _Expenses extends ConsumerWidget {
@@ -134,7 +139,7 @@ class _Expenses extends ConsumerWidget {
     final expensesByCategoryList =
         getExpensesByCategory(expenses: expensesList);
 
-    late final Widget widget;
+    late Widget widget;
 
     if (expensesByCategoryList.isNotEmpty) {
       widget = SliverList(
@@ -151,7 +156,7 @@ class _Expenses extends ConsumerWidget {
                   // ColumnのmainAxisAlignmentで調整、回避している
                   leading: Column(
                     mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
+                    children: <Widget>[
                       Text(
                         _getMonthAndDay(expense.createDate),
                         style: const TextStyle(fontSize: 14),
@@ -166,8 +171,8 @@ class _Expenses extends ConsumerWidget {
                     '\u00A5$formattedPrice',
                     style: const TextStyle(fontSize: 14),
                   ),
-                  onTap: () {
-                    _showDeleteDialog(
+                  onTap: () async {
+                    await _showDeleteDialog(
                       context: context,
                       deleteAction: () {
                         Requester.instance.deleteExpenseRequester(
@@ -191,12 +196,14 @@ class _Expenses extends ConsumerWidget {
                   color: expensesByCategory.category.iconColor,
                 ),
                 title: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Text(expensesByCategory.category.name),
-                      Text(
-                          '\u00A5 ${getFormattedPrice(expensesByCategory.totalPrice)}')
-                    ]),
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: <Widget>[
+                    Text(expensesByCategory.category.name),
+                    Text(
+                      '''\u00A5 ${getFormattedPrice(expensesByCategory.totalPrice)}''',
+                    ),
+                  ],
+                ),
                 children: listTiles,
               ),
             );
@@ -207,11 +214,11 @@ class _Expenses extends ConsumerWidget {
     } else {
       widget = SliverToBoxAdapter(
         child: Padding(
-          padding: EdgeInsets.symmetric(vertical: 32),
+          padding: const EdgeInsets.symmetric(vertical: 32),
           child: Center(
             child: Text(
               l10n.no_expenses_this_month,
-              style: TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey),
             ),
           ),
         ),
@@ -221,12 +228,13 @@ class _Expenses extends ConsumerWidget {
   }
 }
 
-List<ExpensesByCategory> getExpensesByCategory(
-    {required List<Expense> expenses}) {
+List<ExpensesByCategory> getExpensesByCategory({
+  required List<Expense> expenses,
+}) {
   final expensesByCategoryList = <ExpensesByCategory>[];
 
   for (final expense in expenses) {
-    bool containsCategory = false;
+    var containsCategory = false;
     for (final expensesByCategory in expensesByCategoryList) {
       if (expensesByCategory.category.id == expense.category.id) {
         containsCategory = true;
@@ -236,10 +244,13 @@ List<ExpensesByCategory> getExpensesByCategory(
     }
     // まだ追加していないカテゴリをリストに加える
     if (!containsCategory) {
-      expensesByCategoryList.add(ExpensesByCategory(
+      expensesByCategoryList.add(
+        ExpensesByCategory(
           category: expense.category,
-          expenses: [expense],
-          totalPrice: expense.price));
+          expenses: <Expense>[expense],
+          totalPrice: expense.price,
+        ),
+      );
     }
   }
   return expensesByCategoryList;
@@ -257,39 +268,35 @@ class ExpensesByCategory {
   int totalPrice;
 }
 
-String _getMonthAndDay(DateTime date) {
-  return "${date.month}/${date.day}";
-}
+String _getMonthAndDay(DateTime date) => '${date.month}/${date.day}';
 
 Future<void> _showDeleteDialog({
   required BuildContext context,
-  required Function deleteAction,
+  required VoidCallback deleteAction,
 }) async {
   final l10n = useL10n(context);
   return showDialog<void>(
     context: context,
     barrierDismissible: false,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        content: SingleChildScrollView(
-          child: Text(l10n.deletion_confirmation),
+    builder: (context) => AlertDialog(
+      content: SingleChildScrollView(
+        child: Text(l10n.deletion_confirmation),
+      ),
+      actions: <Widget>[
+        TextButton(
+          child: Text(l10n.yes),
+          onPressed: () async {
+            Navigator.of(context).pop();
+            deleteAction();
+          },
         ),
-        actions: <Widget>[
-          TextButton(
-            child: Text(l10n.yes),
-            onPressed: () {
-              Navigator.of(context).pop();
-              deleteAction();
-            },
-          ),
-          TextButton(
-            child: Text(l10n.no),
-            onPressed: () {
-              Navigator.of(context).pop();
-            },
-          ),
-        ],
-      );
-    },
+        TextButton(
+          child: Text(l10n.no),
+          onPressed: () {
+            Navigator.of(context).pop();
+          },
+        ),
+      ],
+    ),
   );
 }

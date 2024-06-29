@@ -1,13 +1,13 @@
-import 'package:copan_flutter/data/expense/expense_category.dart';
-import 'package:copan_flutter/requester/requester.dart';
-import 'package:copan_flutter/utility/l10n.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../data/expense/expense.dart';
+import '../../data/expense/expense_category.dart';
 import '../../providers/expenses_provider.dart';
+import '../../requester/requester.dart';
 import '../../theme/app_theme.dart';
+import '../../utility/l10n.dart';
 
 class InputExpense extends StatefulWidget {
   const InputExpense({super.key});
@@ -30,12 +30,31 @@ class _InputExpenseState extends State<InputExpense> {
       body: SafeArea(
         child: SingleChildScrollView(
           child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              _Price(inputted: inputted, updateInputted: updateInputted),
-              _Category(inputted: inputted, updateInputted: updateInputted),
-              _Date(inputted: inputted, updateInputted: updateInputted),
-              _Content(inputted: inputted, updateInputted: updateInputted),
+            children: <Widget>[
+              _Price(
+                inputted: inputted,
+                updateInputted: (inputted) {
+                  updateInputted(inputted: inputted);
+                },
+              ),
+              _Category(
+                inputted: inputted,
+                updateInputted: (inputted) {
+                  updateInputted(inputted: inputted);
+                },
+              ),
+              _Date(
+                inputted: inputted,
+                updateInputted: (inputted) {
+                  updateInputted(inputted: inputted);
+                },
+              ),
+              _Content(
+                inputted: inputted,
+                updateInputted: (inputted) {
+                  updateInputted(inputted: inputted);
+                },
+              ),
               _RecordButton(inputted: inputted),
             ],
           ),
@@ -55,7 +74,7 @@ class _Price extends StatelessWidget {
   const _Price({required this.inputted, required this.updateInputted});
 
   final Expense inputted;
-  final Function updateInputted;
+  final void Function(Expense) updateInputted;
 
   @override
   Widget build(BuildContext context) {
@@ -75,18 +94,20 @@ class _Price extends StatelessWidget {
         title: TextField(
           decoration: InputDecoration(
             labelText: l10n.amount,
-            labelStyle: TextStyle(color: Colors.grey),
-            enabledBorder: UnderlineInputBorder(
+            labelStyle: const TextStyle(color: Colors.grey),
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
           ),
           textAlign: TextAlign.right,
           keyboardType: TextInputType.number,
-          inputFormatters: [FilteringTextInputFormatter.digitsOnly],
+          inputFormatters: <TextInputFormatter>[
+            FilteringTextInputFormatter.digitsOnly,
+          ],
           onChanged: (value) {
             final updated =
                 inputted.copyWith(price: int.parse(value == '' ? '0' : value));
-            updateInputted(inputted: updated);
+            updateInputted(updated);
           },
         ),
       ),
@@ -101,7 +122,7 @@ class _Category extends StatelessWidget {
   });
 
   final Expense inputted;
-  final Function updateInputted;
+  final void Function(Expense) updateInputted;
 
   @override
   Widget build(BuildContext context) {
@@ -129,7 +150,7 @@ class _Category extends StatelessWidget {
                   as ExpenseCategory?;
           if (selectedCategory != null) {
             final updated = inputted.copyWith(category: selectedCategory);
-            updateInputted(inputted: updated);
+            updateInputted(updated);
           }
         },
       ),
@@ -144,7 +165,7 @@ class _Date extends StatelessWidget {
   });
 
   final Expense inputted;
-  final Function updateInputted;
+  final void Function(Expense) updateInputted;
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +180,8 @@ class _Date extends StatelessWidget {
           child: Icon(Icons.calendar_today, color: Colors.green),
         ),
         title: Text(
-            "${inputted.createDate.year}年${inputted.createDate.month}月${inputted.createDate.day}日"),
+          '''${inputted.createDate.year}年${inputted.createDate.month}月${inputted.createDate.day}日''',
+        ),
         onTap: () async {
           final picked = await showDatePicker(
             context: context,
@@ -172,7 +194,7 @@ class _Date extends StatelessWidget {
           );
           if (picked != null) {
             final updated = inputted.copyWith(createDate: picked);
-            updateInputted(inputted: updated);
+            updateInputted(updated);
           }
         },
       ),
@@ -187,7 +209,7 @@ class _Content extends StatelessWidget {
   });
 
   final Expense inputted;
-  final Function updateInputted;
+  final void Function(Expense) updateInputted;
 
   @override
   Widget build(BuildContext context) {
@@ -204,15 +226,15 @@ class _Content extends StatelessWidget {
         title: TextField(
           decoration: InputDecoration(
             labelText: l10n.memo,
-            labelStyle: TextStyle(color: Colors.grey),
-            enabledBorder: UnderlineInputBorder(
+            labelStyle: const TextStyle(color: Colors.grey),
+            enabledBorder: const UnderlineInputBorder(
               borderSide: BorderSide(color: Colors.grey),
             ),
           ),
           textAlign: TextAlign.left,
           onChanged: (value) {
             final updated = inputted.copyWith(description: value);
-            updateInputted(inputted: updated);
+            updateInputted(updated);
           },
         ),
       ),
@@ -240,9 +262,8 @@ class _RecordButtonState extends ConsumerState<_RecordButton> {
 
   // 0円で計上する場合は計上理由を残すと思われるので
   // 金額とメモどちらも入力がなかった場合は計上ボタンをdisableにする
-  bool get _isDisabled {
-    return widget.inputted.price == 0 && widget.inputted.description == '';
-  }
+  bool get _isDisabled =>
+      widget.inputted.price == 0 && widget.inputted.description == '';
 
   double get _opacity => _isDisabled ? 0.6 : 1;
 
@@ -253,7 +274,7 @@ class _RecordButtonState extends ConsumerState<_RecordButton> {
     return Padding(
       padding: const EdgeInsets.all(24),
       child: Center(
-        child: Container(
+        child: SizedBox(
           width: double.infinity,
           child: ElevatedButton(
             style: ElevatedButton.styleFrom(
@@ -262,10 +283,11 @@ class _RecordButtonState extends ConsumerState<_RecordButton> {
               elevation: _isDisabled ? null : 0,
               padding: const EdgeInsets.all(16),
               shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(30.0)),
+                borderRadius: BorderRadius.circular(30),
+              ),
               splashFactory: _isDisabled ? NoSplash.splashFactory : null,
             ),
-            onPressed: () {
+            onPressed: () async {
               Navigator.of(context).pop();
 
               // 空だった場合は内容の項目に費目を入れる
@@ -274,7 +296,7 @@ class _RecordButtonState extends ConsumerState<_RecordButton> {
                     .copyWith(description: widget.inputted.category.name);
               }
 
-              Requester.instance.inputExpenseRequester(
+              await Requester.instance.inputExpenseRequester(
                 price: widget.inputted.price,
                 categoryId: widget.inputted.category.id.index,
                 description: widget.inputted.description,

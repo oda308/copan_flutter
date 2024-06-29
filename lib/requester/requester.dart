@@ -1,9 +1,11 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:copan_flutter/config/base_url.dart';
-import 'package:copan_flutter/data/user.dart';
+import 'package:flutter/foundation.dart';
 import 'package:http/http.dart' as http;
+
+import '../config/base_url.dart';
+import '../data/user.dart';
 
 class Requester {
   static Requester instance = Requester();
@@ -11,71 +13,73 @@ class Requester {
   Map<String, String> header({required bool needsAccessToken}) {
     late Map<String, String> header;
 
-    header = {
-      "Content-Type": "application/json",
+    header = <String, String>{
+      'Content-Type': 'application/json',
     };
 
     if (needsAccessToken) {
-      header["Authorization"] = User().token;
+      header['Authorization'] = User().token;
     }
 
     return header;
   }
 
-  Future<List<dynamic>> allExpensesRequester() async {
+  Future<List<Map<String, dynamic>>> allExpensesRequester() async {
     final req = <String, dynamic>{
-      "action": "getAllExpenses",
+      'action': 'getAllExpenses',
     };
-    String body = json.encode(req);
-    late List<dynamic> expenses;
+    final body = json.encode(req);
+    late List<Map<String, dynamic>> expenses;
 
     try {
-      http.Response resp = await http
-          .post(Uri.parse(BaseUrl.url),
-              headers: header(needsAccessToken: true), body: body)
+      final resp = await http
+          .post(
+            Uri.parse(BaseUrl.url),
+            headers: header(needsAccessToken: true),
+            body: body,
+          )
           .timeout(const Duration(seconds: 5));
 
       if (resp.statusCode != 200) {
-        throw AssertionError("Failed get response");
+        throw AssertionError('Failed get response');
       }
-      // TODO: jsonDecodeを2回使用しないとlistではなくstringが返ってくる
+      // TODO(oda308): jsonDecodeを2回使用しないとlistではなくstringが返ってくる
       // https://stackoverflow.com/questions/73511236/flutter-jsondecode-returns-string-instead-of-list
-      expenses = jsonDecode(jsonDecode(resp.body) as String) as List<dynamic>;
+      expenses = jsonDecode(jsonDecode(resp.body) as String)
+          as List<Map<String, dynamic>>;
     } on TimeoutException catch (_) {
-      throw AssertionError("A timeout occured.");
-    } catch (e) {
-      expenses = [];
-      rethrow;
+      throw AssertionError('A timeout occured.');
     }
     return expenses;
   }
 
   Future<String> registerUserRequester() async {
-    final req = <String, dynamic>{"action": "registerUser"};
-    String body = json.encode(req);
+    final req = <String, dynamic>{'action': 'registerUser'};
+    final body = json.encode(req);
 
     try {
-      http.Response resp = await http
-          .post(Uri.parse("${BaseUrl.url}/registerUser"),
-              headers: header(needsAccessToken: false), body: body)
+      final resp = await http
+          .post(
+            Uri.parse('${BaseUrl.url}/registerUser'),
+            headers: header(needsAccessToken: false),
+            body: body,
+          )
           .timeout(const Duration(seconds: 5));
 
       if (resp.statusCode != 200) {
-        throw AssertionError("Failed get response");
+        throw AssertionError('Failed get response');
       }
 
       final json = jsonDecode(resp.body) as Map<String, dynamic>;
-      final token = json["access_token"] as String;
+      final token = json['access_token'] as String;
 
       return token;
     } on TimeoutException catch (_) {
-      throw AssertionError("A timeout occured.");
-    } catch (e) {
-      rethrow;
+      throw AssertionError('A timeout occured.');
     }
   }
 
-  void inputExpenseRequester({
+  Future<void> inputExpenseRequester({
     required int price,
     required int categoryId,
     required String description,
@@ -83,64 +87,68 @@ class Requester {
     required String expenseUuid,
   }) async {
     final expense = <String, dynamic>{
-      "action": "insertExpense",
-      "price": price,
-      "categoryId": categoryId,
-      "description": description,
-      "date": date.toString(),
-      "expenseUuid": expenseUuid,
+      'action': 'insertExpense',
+      'price': price,
+      'categoryId': categoryId,
+      'description': description,
+      'date': date.toString(),
+      'expenseUuid': expenseUuid,
     };
-    String body = json.encode(expense);
+    final body = json.encode(expense);
 
-    http.Response resp = await http.post(Uri.parse(BaseUrl.url),
-        headers: header(needsAccessToken: true), body: body);
+    final resp = await http.post(
+      Uri.parse(BaseUrl.url),
+      headers: header(needsAccessToken: true),
+      body: body,
+    );
 
     if (resp.statusCode != 200) {
-      throw AssertionError("Failed get response");
+      throw AssertionError('Failed get response');
     }
 
-    print(resp);
+    assert(() {
+      debugPrint(resp as String);
+      return true;
+    }());
   }
 
   Future<void> deleteExpenseRequester({
     required String expenseUuid,
   }) async {
     final req = <String, dynamic>{
-      "action": "deleteExpense",
-      "expenseUuid": expenseUuid,
+      'action': 'deleteExpense',
+      'expenseUuid': expenseUuid,
     };
-    String body = json.encode(req);
-    try {
-      http.Response resp = await http.post(Uri.parse(BaseUrl.url),
-          headers: header(needsAccessToken: true), body: body);
+    final body = json.encode(req);
 
-      if (resp.statusCode != 200) {
-        throw AssertionError("Failed get response");
-      }
-    } catch (e) {
-      rethrow;
+    final resp = await http.post(
+      Uri.parse(BaseUrl.url),
+      headers: header(needsAccessToken: true),
+      body: body,
+    );
+
+    if (resp.statusCode != 200) {
+      throw AssertionError('Failed get response');
     }
   }
 }
 
 class AuthRequest {
+  AuthRequest({
+    this.email = '',
+    this.password = '',
+  });
   final String email;
   final String password;
 
-  AuthRequest({
-    this.email = "",
-    this.password = "",
-  });
-
-  Map<String, dynamic> toJson() => {
+  Map<String, dynamic> toJson() => <String, dynamic>{
         'email': email,
         'password': password,
       };
 }
 
 class AuthResponse {
-  final String accessToken;
-
   AuthResponse.fromJson(Map<String, dynamic> json)
       : accessToken = json['accessToken'] as String;
+  final String accessToken;
 }

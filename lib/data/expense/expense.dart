@@ -1,7 +1,8 @@
-import 'package:copan_flutter/data/expense/expense_category.dart';
-import 'package:copan_flutter/resources/expense_category.dart';
 import 'package:flutter/foundation.dart';
 import 'package:uuid/uuid.dart';
+
+import '../../resources/expense_category.dart';
+import 'expense_category.dart';
 
 @immutable
 class Expense {
@@ -12,7 +13,7 @@ class Expense {
     this.description = '',
     String? expenseUuid,
   })  : createDate = createDate ?? DateTime.now(),
-        expenseUuid = expenseUuid ?? Uuid().v4();
+        expenseUuid = expenseUuid ?? const Uuid().v4();
 
   final int price;
   final ExpenseCategory category;
@@ -20,17 +21,17 @@ class Expense {
   final String description;
   final String expenseUuid;
 
-  Expense copyWith(
-      {int? price,
-      ExpenseCategory? category,
-      DateTime? createDate,
-      String? description}) {
-    return Expense(
-      price: price ?? this.price,
-      category: category ?? this.category,
-      createDate: createDate,
-      description: description ?? this.description,
-      expenseUuid: expenseUuid,
-    );
-  }
+  Expense copyWith({
+    int? price,
+    ExpenseCategory? category,
+    DateTime? createDate,
+    String? description,
+  }) =>
+      Expense(
+        price: price ?? this.price,
+        category: category ?? this.category,
+        createDate: createDate,
+        description: description ?? this.description,
+        expenseUuid: expenseUuid,
+      );
 }

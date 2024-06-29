@@ -1,38 +1,30 @@
 import 'dart:async';
 
-import 'package:copan_flutter/data/expense/expense.dart';
-import 'package:copan_flutter/data/expense/expense_category.dart';
-import 'package:copan_flutter/resources/expense_category.dart';
 import 'package:intl/intl.dart';
 
 import '../../requester/requester.dart';
+import '../../resources/expense_category.dart';
+import '../expense/expense.dart';
+import '../expense/expense_category.dart';
 
 Future<List<Expense>> fetchAllExpenses() async {
-  late final List<Expense> expenses;
-  try {
-    final fetched = await Requester.instance.allExpensesRequester();
-
-    expenses = _toExpenses(fetched: fetched);
-  } catch (e) {
-    expenses = [];
-    rethrow;
-  }
-
+  final fetched = await Requester.instance.allExpensesRequester();
+  final expenses = toExpenses(fetched: fetched);
   return expenses;
 }
 
-List<Expense> _toExpenses({required List<dynamic> fetched}) {
+List<Expense> toExpenses({required List<Map<String, dynamic>> fetched}) {
   final expenses = <Expense>[];
 
   for (final entry in fetched) {
-    final dateTime = entry['date'].substring(0, 10);
+    final dateTime = (entry['date'] as String).substring(0, 10);
     final formatter = DateFormat('yyyy-MM-dd');
-    final formatted = formatter.parseStrict(dateTime as String);
+    final formatted = formatter.parseStrict(dateTime);
 
     final category =
         expenseCategoryMap[CategoryId.values[entry['category'] as int]];
 
-    // TODO: 不明なカテゴリとして扱った方が良いかもしれない
+    // TODO(oda308): 不明なカテゴリとして扱った方が良いかもしれない
     if (category == null) {
       continue;
     }

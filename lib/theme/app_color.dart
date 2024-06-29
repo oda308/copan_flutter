@@ -11,8 +11,7 @@ class AppColors {
     required this.accentColor,
   });
 
-  factory AppColors.light() {
-    return AppColors(
+  factory AppColors.light() => AppColors(
       primaryText: Colors.black,
       secondaryText: Colors.white,
       appBarBackground: Colors.white,
@@ -21,10 +20,8 @@ class AppColors {
       secondaryBackground: const Color(0xffECECEC),
       accentColor: Colors.green,
     );
-  }
 
-  factory AppColors.dark() {
-    return AppColors(
+  factory AppColors.dark() => AppColors(
       primaryText: Colors.black,
       secondaryText: Colors.white,
       appBarBackground: Colors.white,
@@ -33,7 +30,6 @@ class AppColors {
       secondaryBackground: const Color(0xffECECEC),
       accentColor: Colors.green,
     );
-  }
 
   final Color primaryText;
   final Color secondaryText;

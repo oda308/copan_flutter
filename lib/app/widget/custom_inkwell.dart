@@ -1,5 +1,6 @@
-import 'package:copan_flutter/theme/app_theme.dart';
 import 'package:flutter/material.dart';
+
+import '../../theme/app_theme.dart';
 
 class CustomInkWell extends StatelessWidget {
   const CustomInkWell({
@@ -21,14 +22,12 @@ class CustomInkWell extends StatelessWidget {
         color: Colors.transparent,
         child: InkWell(
           borderRadius: BorderRadius.circular(30),
+          onTap: onTap,
           child: Icon(
             icon,
             color: appTheme.appColors.accentColor,
             size: 42,
           ),
-          onTap: () {
-            onTap();
-          },
         ),
       ),
     );

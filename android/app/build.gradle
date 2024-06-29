@@ -42,7 +42,7 @@ android {
     }
 
     defaultConfig {
-        // TODO: Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
+        // TODO(oda308): Specify your own unique Application ID (https://developer.android.com/studio/build/application-id.html).
         applicationId "com.example.copan_flutter"
         minSdkVersion flutter.minSdkVersion
         targetSdkVersion flutter.targetSdkVersion
@@ -52,7 +52,7 @@ android {
 
     buildTypes {
         release {
-            // TODO: Add your own signing config for the release build.
+            // TODO(oda308): Add your own signing config for the release build.
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }

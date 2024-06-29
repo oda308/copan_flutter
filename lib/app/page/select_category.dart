@@ -1,8 +1,8 @@
-import 'package:copan_flutter/data/expense/expense_category.dart';
-import 'package:copan_flutter/utility/l10n.dart';
 import 'package:flutter/material.dart';
 
+import '../../data/expense/expense_category.dart';
 import '../../resources/expense_category.dart';
+import '../../utility/l10n.dart';
 
 class SelectCategory extends StatelessWidget {
   const SelectCategory({super.key});
@@ -12,7 +12,7 @@ class SelectCategory extends StatelessWidget {
     final l10n = useL10n(context);
     final expenseCategoryList = expenseCategoryMap.values.toList();
     final itemCount = expenseCategoryMap.length;
-    late final ExpenseCategory selectedCategory;
+    late ExpenseCategory selectedCategory;
     return Scaffold(
       appBar: AppBar(
         title: Text(l10n.select_expense_category),
@@ -22,24 +22,22 @@ class SelectCategory extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.only(top: 16),
           child: ListView.separated(
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                leading: Icon(
-                  expenseCategoryList[index].icon,
-                  color: expenseCategoryList[index].iconColor,
-                ),
-                title: Text(
-                  expenseCategoryList[index].name,
-                  style: const TextStyle(fontSize: 14),
-                ),
-                onTap: () {
-                  selectedCategory = expenseCategoryList[index];
-                  Navigator.of(context).pop(selectedCategory);
-                },
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) =>
-                Divider(color: Colors.grey),
+            itemBuilder: (context, index) => ListTile(
+              leading: Icon(
+                expenseCategoryList[index].icon,
+                color: expenseCategoryList[index].iconColor,
+              ),
+              title: Text(
+                expenseCategoryList[index].name,
+                style: const TextStyle(fontSize: 14),
+              ),
+              onTap: () {
+                selectedCategory = expenseCategoryList[index];
+                Navigator.of(context).pop(selectedCategory);
+              },
+            ),
+            separatorBuilder: (context, index) =>
+                const Divider(color: Colors.grey),
             itemCount: itemCount,
           ),
         ),
