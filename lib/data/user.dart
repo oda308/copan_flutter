@@ -4,35 +4,31 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'api/register_user.dart';
 
 class User {
-  factory User() {
-    _instance ??= User._internal();
-    return _instance!;
-  }
+  factory User() => _instance;
 
   User._internal();
+  static final User _instance = User._internal();
+
   late final String token;
   // TODO(oda308): DBから取得するようにする
   final String name = 'TEST';
   // TODO(oda308): DBから取得するようにする
   bool isShared = true;
-  static User? _instance;
+
   final FlutterSecureStorage _storage = const FlutterSecureStorage();
   final AndroidOptions _aOptions =
       const AndroidOptions(encryptedSharedPreferences: true);
 
   Future<void> init() async {
-    final token = await readToken();
-    if (token == null) {
-      final token = await registerUser();
+    token = await readToken() ?? '';
+    if (token.isEmpty) {
+      token = await registerUser();
       await storeToken(token: token);
     }
-
     assert(() {
       debugPrint('token: $token');
       return true;
     }());
-
-    _instance?.token = token!;
   }
 
   Future<String?> readToken() async =>
