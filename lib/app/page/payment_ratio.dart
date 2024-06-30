@@ -9,6 +9,7 @@ class PaymentRatio extends StatelessWidget {
   Widget build(BuildContext context) {
     final l10n = useL10n(context);
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(l10n.payment_ratio),
       ),

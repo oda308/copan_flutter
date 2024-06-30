@@ -24,6 +24,7 @@ class _InputExpenseState extends State<InputExpense> {
     final l10n = useL10n(context);
 
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(l10n.input_expense),
       ),

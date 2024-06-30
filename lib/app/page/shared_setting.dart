@@ -15,9 +15,11 @@ class _SharedSettingState extends State<SharedSetting> {
 
   @override
   Widget build(BuildContext context) => Scaffold(
+        backgroundColor: Colors.white,
+        appBar: AppBar(title: const Text('家計簿の共有切替')),
         body: SafeArea(
           child: ListTile(
-            title: const Text('共有状態の切替'),
+            title: const Text('家計簿の共有をオンにする'),
             trailing: CupertinoSwitch(
               value: isShared,
               onChanged: (value) async {

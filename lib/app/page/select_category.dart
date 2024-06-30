@@ -14,6 +14,7 @@ class SelectCategory extends StatelessWidget {
     final itemCount = expenseCategoryMap.length;
     late ExpenseCategory selectedCategory;
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: AppBar(
         title: Text(l10n.select_expense_category),
       ),
