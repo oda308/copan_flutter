@@ -28,6 +28,7 @@ class AppTheme {
           colorScheme: const ColorScheme.light().copyWith(
             primary: AppColors.light().accentColor,
             surface: AppColors.light().primaryBackground,
+            outlineVariant: Colors.transparent,
           ),
         ),
         appColors: AppColors.light(),
@@ -46,6 +47,7 @@ class AppTheme {
           colorScheme: const ColorScheme.dark().copyWith(
             primary: AppColors.dark().accentColor,
             surface: AppColors.dark().primaryBackground,
+            outlineVariant: Colors.transparent,
           ),
         ),
         appColors: AppColors.dark(),
